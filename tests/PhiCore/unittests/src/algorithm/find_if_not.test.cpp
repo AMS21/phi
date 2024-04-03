@@ -50,9 +50,9 @@ static PHI_CONSTEXPR bool always_false(const int& /*value*/) PHI_NOEXCEPT
     return false;
 }
 
-static PHI_CONSTEXPR bool always_false_throw(const int& /*value*/)
+static bool always_false_throw(const int& /*value*/)
 {
-    return false;
+    throw "";
 }
 
 #if PHI_HAS_FEATURE_LAMBDA()
