@@ -2,6 +2,7 @@
 
 ![GitHub](https://img.shields.io/github/license/AMS21/Phi)
 [![https://good-labs.github.io/greater-good-affirmation/assets/images/badge.svg](https://good-labs.github.io/greater-good-affirmation/assets/images/badge.svg)](https://good-labs.github.io/greater-good-affirmation)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](.github/CODE_OF_CONDUCT.md)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/AMS21/Phi)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/AMS21/Phi)
 
