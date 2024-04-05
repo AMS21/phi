@@ -4,6 +4,6 @@ phi_include_guard()
 # https://cmake.org/cmake/help/latest/command/target_link_options.html
 if(${CMAKE_VERSION} VERSION_LESS "3.13")
   macro(target_link_options)
-    target_link_libraries(${ARGN})
+    target_compile_options(${ARGN})
   endmacro(target_link_options)
 endif()

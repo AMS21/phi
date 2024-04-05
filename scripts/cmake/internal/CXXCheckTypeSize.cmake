@@ -20,15 +20,28 @@ function(phi_cxx_check_type_size TYPE VARIABLE)
     set(src "static_assert(sizeof(${TYPE}) == ${size}, \"\")\; int main() { return 0\; }")
     file(WRITE ${src_path} ${src})
 
-    try_compile(
-      HAVE_${var}_${size} ${CMAKE_BINARY_DIR}
-      ${src_path}
-      COMPILE_DEFINITIONS ${CMAKE_REQUIRED_DEFINITIONS}
-      LINK_OPTIONS ${CMAKE_REQUIRED_LINK_OPTIONS}
-      LINK_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES}
-      CMAKE_FLAGS "-DCOMPILE_DEFINITIONS:STRING=${CMAKE_REQUIRED_FLAGS}"
-                  "-DINCLUDE_DIRECTORIES:STRING=${CMAKE_REQUIRED_INCLUDES}"
-      OUTPUT_VARIABLE output)
+    # CMake versions before '3.14' don't support 'LINK_OPTIONS'
+    # https://cmake.org/cmake/help/latest/command/try_compile.html
+    if(CMAKE_VERSION VERSION_LESS "3.14")
+      try_compile(
+        HAVE_${var}_${size} ${CMAKE_BINARY_DIR}
+        ${src_path}
+        COMPILE_DEFINITIONS ${CMAKE_REQUIRED_DEFINITIONS}
+        LINK_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES}
+        CMAKE_FLAGS "-DCOMPILE_DEFINITIONS:STRING=${CMAKE_REQUIRED_FLAGS}"
+                    "-DINCLUDE_DIRECTORIES:STRING=${CMAKE_REQUIRED_INCLUDES}"
+        OUTPUT_VARIABLE output)
+    else()
+      try_compile(
+        HAVE_${var}_${size} ${CMAKE_BINARY_DIR}
+        ${src_path}
+        COMPILE_DEFINITIONS ${CMAKE_REQUIRED_DEFINITIONS}
+        LINK_OPTIONS ${CMAKE_REQUIRED_LINK_OPTIONS}
+        LINK_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES}
+        CMAKE_FLAGS "-DCOMPILE_DEFINITIONS:STRING=${CMAKE_REQUIRED_FLAGS}"
+                    "-DINCLUDE_DIRECTORIES:STRING=${CMAKE_REQUIRED_INCLUDES}"
+        OUTPUT_VARIABLE output)
+    endif()
 
     # Check if compile worked
     if(HAVE_${var}_${size})
@@ -39,6 +52,6 @@ function(phi_cxx_check_type_size TYPE VARIABLE)
   endforeach()
 
   # No suitable size found
-  phi_log("Checking size of ${TYPE} - Failed")
+  phi_warn("Checking size of ${TYPE} - Failed")
   phi_set_cache_value(${VARIABLE} "0")
 endfunction()
