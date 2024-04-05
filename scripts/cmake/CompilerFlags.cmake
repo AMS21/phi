@@ -444,8 +444,6 @@ elseif(PHI_COMPILER_GCC)
 
   set(phi_warning_flags
       -Wall
-      -Walloc-zero
-      -Walloca
       -Warray-bounds
       -Wcast-align # warn for potential performance problem casts
       -Wcast-qual
@@ -455,9 +453,7 @@ elseif(PHI_COMPILER_GCC)
       -Wduplicated-cond # warn if if / else chain has duplicated conditions
       -Wextra # reasonable and standard
       -Wfloat-equal
-      -Wformat-overflow=2
       -Wformat-signedness
-      -Wformat-truncation=2
       -Wformat=2 # warn on security issues around functions that format output (ie printf)
       -Winvalid-pch
       -Wlogical-op # warn about logical operations being used where bitwise were probably wanted
@@ -470,13 +466,11 @@ elseif(PHI_COMPILER_GCC)
       -Wpedantic # warn if non-standard C++ is used
       -Wpointer-arith
       -Wredundant-decls
-      -Wrestrict
       -Wshadow # warn the user if a variable declaration shadows one from a parent context
       -Wshift-overflow=2
       -Wsign-conversion # warn on sign conversions
       -Wstack-protector
       -Wstrict-aliasing=2
-      -Wstringop-overflow=2
       -Wsuggest-attribute=format
       -Wsuggest-attribute=noreturn
       -Wsuggest-final-methods
@@ -493,14 +487,12 @@ elseif(PHI_COMPILER_GCC)
       -Wvector-operation-performance
       -Wvla)
   set(phi_cxx_warning_flags
-      -Waligned-new=all
       -Wdelete-non-virtual-dtor
       -Wnon-virtual-dtor # warn the user if a class with virtual functions has a non-virtual
       # destructor. This helps catch hard to track down memory errors
       -Wold-style-cast # warn for c-style casts
       -Woverloaded-virtual # warn if you overload (not override) a virtual function
       -Wplacement-new=2
-      -Wregister
       -Wreorder
       -Wsign-promo
       -Wstrict-null-sentinel
@@ -532,8 +524,8 @@ elseif(PHI_COMPILER_GCC)
                              -fnothrow-opt -fstrict-enums)
   set(phi_lto_flags -flto=${PHI_PROCESSOR_COUNT} -Wl,--no-as-needed)
   set(phi_lto_optimization_flags -fipa-pta -fwhole-program -fdevirtualize-at-ltrans)
-  set(phi_common_flags -fms-extensions -fstrong-eval-order -pipe)
-  set(phi_cxx_common_flags -faligned-new -fsized-deallocation -fconcepts)
+  set(phi_common_flags -fms-extensions -pipe)
+  set(phi_cxx_common_flags -fsized-deallocation -fconcepts)
   set(phi_color_diagnostics_flag -fdiagnostics-color)
   set(phi_disable_all_warnings_flag -w)
   set(phi_debug_flags -fasynchronous-unwind-tables -fcheck-new -fvar-tracking
@@ -581,6 +573,21 @@ elseif(PHI_COMPILER_GCC)
   # https://digitalkarabela.com/mingw-w64-how-to-fix-file-too-big-too-many-sections/
   if(PHI_PLATFORM_WINDOWS)
     set(phi_common_flags ${phi_common_flags} -Wa,-mbig-obj)
+  endif()
+
+  # GCC-7 flags
+  if(PHI_GCC_VERSION VERSION_GREATER_EQUAL 7)
+    set(phi_warning_flags
+        ${phi_warning_flags}
+        -Walloc-zero
+        -Walloca
+        -Wformat-overflow=2
+        -Wformat-truncation=2
+        -Wrestrict
+        -Wstringop-overflow=2)
+    set(phi_cxx_warning_flags ${phi_cxx_warning_flags} -Waligned-new=all -Wregister)
+    set(phi_common_flags ${phi_common_flags} -fstrong-eval-order)
+    set(phi_cxx_common_flags ${phi_cxx_common_flags} -faligned-new)
   endif()
 
   # GCC-8 flags
