@@ -27,8 +27,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Install
         run: scripts/ci/InstallTools.sh clang-format-${{ env.LLVM_VERSION }}
@@ -55,8 +53,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Setup python
         uses: actions/setup-python@v5
@@ -88,8 +84,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Install
         run: sudo apt-get install moreutils
@@ -124,8 +118,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Install
         run: sudo apt-get install dos2unix recode
@@ -156,8 +148,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Determine reporter
         uses: haya14busa/action-cond@v1
@@ -184,8 +174,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Determine reporter
         uses: haya14busa/action-cond@v1
@@ -212,8 +200,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Determine reporter
         uses: haya14busa/action-cond@v1
@@ -239,8 +225,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Determine reporter
         uses: haya14busa/action-cond@v1
@@ -266,8 +250,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Determine reporter
         uses: haya14busa/action-cond@v1
@@ -293,8 +275,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Determine reporter
         uses: haya14busa/action-cond@v1
@@ -320,8 +300,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Determine reporter
         uses: haya14busa/action-cond@v1
@@ -347,8 +325,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Run shfmt with reviewdog
         uses: reviewdog/action-shfmt@v1
@@ -365,8 +341,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Determine reporter
         uses: haya14busa/action-cond@v1
