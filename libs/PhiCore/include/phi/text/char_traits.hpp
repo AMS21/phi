@@ -13,6 +13,7 @@
 #include "phi/compiler_support/noexcept.hpp"
 #include "phi/core/assert.hpp"
 #include "phi/core/memcmp.hpp"
+#include "phi/core/streamoff.hpp"
 #include "phi/core/wint_t.hpp"
 #include "phi/forward/char_traits.hpp"
 #include <iosfwd>
@@ -26,7 +27,7 @@ public:
     using this_type  = char_traits<char>;
     using char_type  = char;
     using int_type   = int;
-    using off_type   = std::streamoff;
+    using off_type   = streamoff;
     using pos_type   = std::fpos<mbstate_t>;
     using state_type = mbstate_t;
 
@@ -73,7 +74,7 @@ struct char_traits<wchar_t>
 {
     using char_type  = wchar_t;
     using int_type   = wint_t;
-    using off_type   = std::streamoff;
+    using off_type   = streamoff;
     using pos_type   = std::fpos<mbstate_t>;
     using state_type = mbstate_t;
 
@@ -120,7 +121,7 @@ struct char_traits<char8_t>
 {
     using char_type  = char8_t;
     using int_type   = unsigned int;
-    using off_type   = std::streamoff;
+    using off_type   = streamoff;
     using pos_type   = std::fpos<mbstate_t>;
     using state_type = mbstate_t;
 
@@ -167,7 +168,7 @@ struct char_traits<char16_t>
 {
     using char_type  = char16_t;
     using int_type   = unsigned int;
-    using off_type   = std::streamoff;
+    using off_type   = streamoff;
     using pos_type   = std::fpos<mbstate_t>;
     using state_type = mbstate_t;
 
@@ -214,7 +215,7 @@ struct char_traits<char32_t>
 {
     using char_type  = char32_t;
     using int_type   = unsigned int;
-    using off_type   = std::streamoff;
+    using off_type   = streamoff;
     using pos_type   = std::fpos<mbstate_t>;
     using state_type = mbstate_t;
 
