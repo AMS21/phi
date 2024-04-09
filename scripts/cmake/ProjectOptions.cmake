@@ -139,11 +139,6 @@ function(phi_configure_project)
     # User Linker
     phi_configure_linker(${target})
 
-    # Sanitizers
-    if(DEFINED conf_SANITIZER)
-      phi_target_enable_sanitizer(TARGET ${target} SANITIZERS ${conf_SANITIZER})
-    endif()
-
     # Standard
     set(use_std latest)
     if(DEFINED conf_STANDARD)
@@ -233,6 +228,11 @@ function(phi_configure_project)
       phi_target_set_stdlib(TARGET ${target} LIBRARY ${conf_STANDARD_LIBRARY})
     else()
       phi_target_set_stdlib(TARGET ${target} LIBRARY DEFAULT)
+    endif()
+
+    # Sanitizers
+    if(DEFINED conf_SANITIZER AND NOT is_external)
+      phi_target_enable_sanitizer(TARGET ${target} SANITIZERS ${conf_SANITIZER})
     endif()
 
     # Thread support
