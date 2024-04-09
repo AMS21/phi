@@ -96,6 +96,7 @@ file(
   "src/core/sized_types.test.cpp"
   "src/core/ssize_t.test.cpp"
   "src/core/stop_watch.test.cpp"
+  "src/core/streamoff.test.cpp"
   "src/core/to_address.test.cpp"
   "src/core/types.test.cpp"
   "src/core/unsafe_cast.test.cpp"

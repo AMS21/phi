@@ -208,6 +208,7 @@ file(
   "include/phi/core/source_location.hpp"
   "include/phi/core/ssize_t.hpp"
   "include/phi/core/stop_watch.hpp"
+  "include/phi/core/streamoff.hpp"
   "include/phi/core/to_address.hpp"
   "include/phi/core/types.hpp"
   "include/phi/core/unsafe_cast.hpp"
