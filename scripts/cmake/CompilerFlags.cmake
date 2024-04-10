@@ -73,7 +73,7 @@ if(PHI_COMPILER_APPLECLANG)
                       -ftrivial-auto-var-init=pattern -grecord-command-line)
   set(phi_debug_only_flags)
   set(phi_coverage_compile_flags -fno-common -fno-inline -fno-inline-functions
-                                 -fno-omit-frame-pointer)
+                                 -fno-omit-frame-pointer -fno-elide-constructors)
   set(phi_coverage_link_flags -fprofile-arcs -ftest-coverage -fprofile-instr-generate
                               -fcoverage-mapping)
   set(phi_noexcept_flag -fno-exceptions)
@@ -360,7 +360,7 @@ elseif(PHI_COMPILER_CLANG)
                       -ftrivial-auto-var-init=pattern -grecord-command-line)
   set(phi_debug_only_flags)
   set(phi_coverage_compile_flags -fno-common -fno-inline -fno-inline-functions
-                                 -fno-omit-frame-pointer)
+                                 -fno-omit-frame-pointer -fno-elide-constructors)
   set(phi_coverage_link_flags -fprofile-arcs -ftest-coverage -fprofile-instr-generate
                               -fcoverage-mapping)
   set(phi_noexcept_flag -fno-exceptions)
@@ -531,8 +531,8 @@ elseif(PHI_COMPILER_GCC)
   set(phi_debug_flags -fasynchronous-unwind-tables -fcheck-new -fvar-tracking
                       -fvar-tracking-assignments -grecord-gcc-switches)
   set(phi_debug_only_flags)
-  set(phi_coverage_compile_flags -fno-common -fno-inline -fno-inline-functions
-                                 -fno-omit-frame-pointer)
+  set(phi_coverage_compile_flags -fno-common -fno-inline -fno-default-inline -fno-inline-functions
+                                 -fno-omit-frame-pointer -fno-elide-constructors)
   set(phi_coverage_link_flags -fprofile-arcs -ftest-coverage --coverage)
   set(phi_noexcept_flag -fno-exceptions)
   set(phi_exception_warning_flag -Wnoexcept)
