@@ -40,6 +40,7 @@ if(PHI_COMPILER_APPLECLANG)
       -Wno-missing-prototypes
       -Wno-missing-variable-declarations
       -Wno-padded
+      -Wno-switch-default
       -Wno-switch-enum
       -Wno-unused-macros
       -Wno-unused-template
@@ -327,6 +328,7 @@ elseif(PHI_COMPILER_CLANG)
       -Wno-missing-prototypes
       -Wno-missing-variable-declarations
       -Wno-padded
+      -Wno-switch-default
       -Wno-switch-enum
       -Wno-unused-macros
       -Wno-unused-template
