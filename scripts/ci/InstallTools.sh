@@ -224,6 +224,11 @@ install_valgrind() {
 
 # Expects first parameter to the the requested version
 install_cppcheck() {
+    # Install dependencies
+    echo "-- Installing dependencies for cppcheck..."
+    apt_install "libpcre3" "libpcre3-dev"
+    echo "-- Installing dependencies for cppcheck done"
+
     mkdir cppcheck -p
 
     # Download archive
@@ -238,7 +243,7 @@ install_cppcheck() {
     mkdir build -p
     cd build || exit
 
-    cmake .. -DCMAKE_BUILD_TYPE:STRING="Release" -DUSE_MATCHCOMPILER:BOOL=ON -DHAVE_RULES:BOOL=ON -DCMAKE_CXX_FLAGS:STRING="$cmake_build_flags"
+    cmake .. -DCMAKE_BUILD_TYPE:STRING="Release" -DUSE_MATCHCOMPILER:BOOL=On -DHAVE_RULES:BOOL=ON -DCMAKE_CXX_FLAGS:STRING="$cmake_build_flags"
     cmake --build . "-j$(nproc)"
     echo "-- Building cppcheck done"
 
