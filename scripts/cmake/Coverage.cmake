@@ -37,8 +37,21 @@ function(phi_target_enable_coverage)
     set(visibility_scope PRIVATE)
   endif()
 
+  # Get linker language
+  get_property(
+    target_linker_language
+    TARGET ${cov_TARGET}
+    PROPERTY LINKER_LANGUAGE)
+
   # Set coverage compile flags
-  target_compile_options(${cov_TARGET} ${visibility_scope} ${phi_coverage_compile_flags})
+  if("${target_linker_language}" STREQUAL "CXX" OR "${target_linker_language}" STREQUAL "")
+    # Set C/C++ warning flags
+    target_compile_options(${cov_TARGET} ${visibility_scope} ${phi_coverage_compile_flags}
+                           ${phi_cxx_coverage_compile_flags})
+  elseif("${target_linker_language}" STREQUAL "C")
+    # Set only C warning flags
+    target_compile_options(${cov_TARGET} ${visibility_scope} ${phi_coverage_compile_flags})
+  endif()
 
   # Set coverage linker flags
   target_compile_options(${cov_TARGET} ${visibility_scope} ${phi_coverage_link_flags})
