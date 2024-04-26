@@ -415,6 +415,21 @@ install_ninja() {
     echo "-- Verifying ninja done"
 }
 
+# Check is sudo command exists and try to install it otherwise
+if ! command -v sudo /dev/null; then
+    echo "No sudo found, probably ran inside a docker container"
+
+    apt update
+
+    # NOTE: We can't use the the 'apt_install' function since it uses the 'sudo' command
+    retry apt install sudo -y --no-install-recommends
+fi
+
+# Ensure required packages are installed (mostly for running inside a docker container)
+echo "- Ensuring required packages are installed..."
+apt_install wget gnupg lsb-release software-properties-common pip
+echo "- Ensuring required packages are installed done"
+
 for tool in "$@"; do
     if [[ "$tool" == "gcovr" ]]; then
         install_gcovr
