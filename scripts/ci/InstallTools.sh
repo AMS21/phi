@@ -71,7 +71,7 @@ add_llvm_apt() {
         echo "Adding the apt repo: $apt_repo"
 
         # Add the required repo
-        retry sudo add-apt-repository "deb $apt_repo"
+        retry sudo add-apt-repository "deb $apt_repo" -y
 
         # Update repo list
         echo "-- Updating apt..."
@@ -87,7 +87,7 @@ add_llvm_apt() {
 add_ubuntu_test_ppa() {
     if [[ "$added_ubuntu_test_ppa" == 0 ]]; then
         echo "-- Adding Ubuntu Test PPA..."
-        retry sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        retry sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
         echo "-- Adding Ubuntu Test PPA done"
 
         echo "-- Updating apt..."
