@@ -210,7 +210,7 @@ jobs:
           if_false: 'github-check'
 
       - name: Run markdownlint with reviewdog
-        uses: prologic/action-markdownlint@v0.17
+        uses: prologic/action-markdownlint@v0.18
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: ${{ steps.reporter.outputs.value }}
