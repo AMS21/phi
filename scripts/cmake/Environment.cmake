@@ -115,27 +115,6 @@ endif()
 phi_log("System: ${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_VERSION}")
 phi_log("System processor: ${CMAKE_SYSTEM_PROCESSOR}")
 
-# Detect the architecture
-phi_cxx_check_type_size(void* PHI_SIZEOF_VOID_PTR)
-
-if(${PHI_SIZEOF_VOID_PTR})
-  if(${PHI_SIZEOF_VOID_PTR} STREQUAL "4")
-    phi_set_cache_value(PHI_ARCH_32BITS 1)
-    phi_set_cache_value(PHI_SIZEOF_VOID_PTR 4)
-
-    phi_trace("Arch: 32bits")
-  elseif(${PHI_SIZEOF_VOID_PTR} STREQUAL "8")
-    phi_set_cache_value(PHI_ARCH_64BITS 1)
-    phi_set_cache_value(PHI_SIZEOF_VOID_PTR 8)
-
-    phi_trace("Arch: 64bits")
-  else()
-    phi_warn("Unsupported architecture of size ${PHI_SIZEOF_VOID_PTR}")
-  endif()
-else()
-  phi_warn("Failed to get size of void*")
-endif()
-
 # Detect compiler
 phi_set_cache_value(PHI_FLAG_PREFIX_CHAR "-")
 
