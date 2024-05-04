@@ -33,6 +33,10 @@ PHI_GCC_SUPPRESS_WARNING_PUSH()
 #if PHI_COMPILER_IS_ATLEAST(GCC, 12, 0, 0)
 PHI_GCC_SUPPRESS_WARNING("-Wuse-after-free")
 #endif
+// gcc-6 wrongly complains about ignoring return values
+#if PHI_COMPILER_IS_BELOW(GCC, 7, 0, 0)
+PHI_GCC_SUPPRESS_WARNING("-Wunused-result")
+#endif
 
 DETAIL_PHI_BEGIN_NAMESPACE()
 

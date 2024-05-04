@@ -7,6 +7,7 @@
 #    pragma once
 #endif
 
+#include "phi/compiler_support/defect_report.hpp"
 #include "phi/compiler_support/features.hpp"
 #include "phi/preprocessor/if.hpp"
 
@@ -43,6 +44,13 @@
 #    define PHI_EXTENDED_CONSTEXPR_OR(alternative) constexpr
 #    define PHI_EXTENDED_CONSTEXPR_IF(condition)   PHI_IF(condition, constexpr)
 
+// Support for 'constexpr' on non literal classes which was fixed with DR1684
+#    if PHI_HAS_DR1684()
+#        define PHI_EXTENDED_CONSTEXPR_CLASS constexpr
+#    else
+#        define PHI_EXTENDED_CONSTEXPR_CLASS /* Nothing */
+#    endif
+
 #else
 
 #    define PHI_EXTENDED_CONSTEXPR                 /* Nothing */
@@ -51,6 +59,8 @@
 #    define PHI_EXTENDED_CONSTEXPR_OR_STATIC       static
 #    define PHI_EXTENDED_CONSTEXPR_OR(alternative) alternative
 #    define PHI_EXTENDED_CONSTEXPR_IF(condition)   /* Nothing */
+
+#    define PHI_EXTENDED_CONSTEXPR_CLASS /* Nothing */
 
 #endif
 

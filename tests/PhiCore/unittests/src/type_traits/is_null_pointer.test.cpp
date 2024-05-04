@@ -120,7 +120,7 @@ void test_is_null_pointer_impl()
 #if PHI_CPP_STANDARD_IS_ATLEAST(14)
     STATIC_REQUIRE(std::is_null_pointer<TypeT>::value);
 #endif
-#if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#if PHI_CPP_STANDARD_IS_ATLEAST(17) && PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     STATIC_REQUIRE(std::is_null_pointer_v<TypeT>);
 #endif
 }
@@ -152,7 +152,7 @@ void test_is_not_null_pointer_impl()
 #if PHI_CPP_STANDARD_IS_ATLEAST(14)
     STATIC_REQUIRE_FALSE(std::is_null_pointer<TypeT>::value);
 #endif
-#if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#if PHI_CPP_STANDARD_IS_ATLEAST(17) && PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     STATIC_REQUIRE_FALSE(std::is_null_pointer_v<TypeT>);
 #endif
 }

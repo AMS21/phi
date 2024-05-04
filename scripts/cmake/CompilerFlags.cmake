@@ -503,7 +503,7 @@ elseif(PHI_COMPILER_GCC)
   set(phi_warnings_as_errors_flag -Werror)
   set(phi_pedantic_flags -pedantic -pedantic-errors)
   set(phi_disabled_warnings_flags -Wno-padded -Wno-switch-enum -Wno-unused-macros
-                                  -Wno-variadic-macros -Wno-unused-function)
+                                  -Wno-variadic-macros -Wno-unused-function -Wno-long-long)
   set(phi_check_required_flags -Werror=attributes)
   set(phi_optimize_flags
       -fdevirtualize-speculatively

@@ -15,7 +15,9 @@ template <typename TypeT, typename ExpectedT>
 void test_remove_reference_impl()
 {
     CHECK_SAME_TYPE(typename phi::remove_reference<TypeT>::type, ExpectedT);
+#if PHI_HAS_FEATURE_ALIAS_TEMPLATES()
     CHECK_SAME_TYPE(phi::remove_reference_t<TypeT>, ExpectedT);
+#endif
 
     // Standard compatibility
     CHECK_SAME_TYPE(typename std::remove_reference<TypeT>::type, ExpectedT);

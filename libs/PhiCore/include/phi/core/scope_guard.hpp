@@ -8,7 +8,7 @@
 #endif
 
 #include "phi/compiler_support/constexpr.hpp"
-#include "phi/compiler_support/cpp_standard.hpp"
+#include "phi/compiler_support/features.hpp"
 #include "phi/compiler_support/nodiscard.hpp"
 #include "phi/compiler_support/noexcept.hpp"
 #include "phi/core/boolean.hpp"
@@ -36,7 +36,7 @@ public:
     PHI_CONSTEXPR explicit scope_guard(ActionT action) PHI_NOEXCEPT : m_Action(phi::move(action))
     {}
 
-#if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#if PHI_HAS_FEATURE_GUARANTEED_COPY_ELISION()
     scope_guard(scope_guard&&)      = delete;
     scope_guard(const scope_guard&) = delete;
 
@@ -81,7 +81,7 @@ public:
           m_Armed{true}
     {}
 
-#if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#if PHI_HAS_FEATURE_GUARANTEED_COPY_ELISION()
     armed_scope_guard(armed_scope_guard&&)      = delete;
     armed_scope_guard(const armed_scope_guard&) = delete;
 

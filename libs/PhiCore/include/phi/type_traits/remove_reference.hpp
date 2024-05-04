@@ -7,6 +7,7 @@
 #    pragma once
 #endif
 
+#include "phi/compiler_support/features.hpp"
 #include "phi/compiler_support/intrinsics/remove_reference.hpp"
 
 DETAIL_PHI_BEGIN_NAMESPACE()
@@ -19,8 +20,12 @@ struct remove_reference
     using type = PHI_REMOVE_REFERENCE(TypeT);
 };
 
+#    if PHI_HAS_FEATURE_ALIAS_TEMPLATES()
+
 template <typename TypeT>
 using remove_reference_t = PHI_REMOVE_REFERENCE(TypeT);
+
+#    endif
 
 #else
 
@@ -36,14 +41,22 @@ struct remove_reference<TypeT&>
     using type = TypeT;
 };
 
+#    if PHI_HAS_FEATURE_RVALUE_REFERENCES()
+
 template <typename TypeT>
 struct remove_reference<TypeT&&>
 {
     using type = TypeT;
 };
 
+#    endif
+
+#    if PHI_HAS_FEATURE_ALIAS_TEMPLATES()
+
 template <typename TypeT>
 using remove_reference_t = typename remove_reference<TypeT>::type;
+
+#    endif
 
 #endif
 

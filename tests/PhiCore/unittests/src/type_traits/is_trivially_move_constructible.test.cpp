@@ -364,7 +364,9 @@ TEST_CASE("is_trivially_move_constructible")
     test_is_trivially_move_constructible_only_c<non_moveable>();
     test_is_not_trivially_move_constructible<non_constructible>();
     test_is_not_trivially_move_constructible<tracked>();
+#if PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     test_is_trivially_move_constructible<trap_constructible>();
+#endif
     test_is_trivially_move_constructible_c<trap_implicit_conversion>();
     test_is_trivially_move_constructible_c<trap_comma>();
     test_is_trivially_move_constructible_c<trap_call>();

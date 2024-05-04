@@ -170,12 +170,20 @@ TEST_CASE("string_equals - char*, phi::string_view")
     EXT_STATIC_REQUIRE_FALSE(phi::string_equals(null, phi::string_view("")));
 
     EXT_STATIC_REQUIRE_FALSE(phi::string_equals("Hello", null_view));
+#if PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     EXT_STATIC_REQUIRE(phi::string_equals("Hello", phi::string_view("Hello")));
     EXT_STATIC_REQUIRE_FALSE(phi::string_equals("Hello", phi::string_view("")));
+#else
+    SKIP_CHECK();
+#endif
 
     EXT_STATIC_REQUIRE_FALSE(phi::string_equals("", null_view));
+#if PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     EXT_STATIC_REQUIRE_FALSE(phi::string_equals("", phi::string_view("Hello")));
     EXT_STATIC_REQUIRE(phi::string_equals("", phi::string_view("")));
+#else
+    SKIP_CHECK();
+#endif
 
     CHECK(phi::string_equals(null, null_view));
     CHECK_FALSE(phi::string_equals(null, phi::string_view("Hello")));
@@ -254,12 +262,20 @@ TEST_CASE("string_equals - phi::string_view, char*")
     EXT_STATIC_REQUIRE_FALSE(phi::string_equals(null_view, ""));
 
     EXT_STATIC_REQUIRE_FALSE(phi::string_equals(phi::string_view("Hello"), null));
+#if PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     EXT_STATIC_REQUIRE(phi::string_equals(phi::string_view("Hello"), "Hello"));
     EXT_STATIC_REQUIRE_FALSE(phi::string_equals(phi::string_view("Hello"), ""));
+#else
+    SKIP_CHECK();
+#endif
 
     EXT_STATIC_REQUIRE_FALSE(phi::string_equals(phi::string_view(""), null));
+#if PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     EXT_STATIC_REQUIRE_FALSE(phi::string_equals(phi::string_view(""), "Hello"));
     EXT_STATIC_REQUIRE(phi::string_equals(phi::string_view(""), ""));
+#else
+    SKIP_CHECK();
+#endif
 
     CHECK(phi::string_equals(null_view, null));
     CHECK_FALSE(phi::string_equals(null_view, "Hello"));
@@ -276,17 +292,29 @@ TEST_CASE("string_equals - phi::string_view, char*")
 
 TEST_CASE("string_equals - phi::string_view, phi::string_view")
 {
+#if PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     EXT_STATIC_REQUIRE(phi::string_equals(null_view, null_view));
+#else
+    SKIP_CHECK();
+#endif
     EXT_STATIC_REQUIRE_FALSE(phi::string_equals(null_view, phi::string_view("Hello")));
     EXT_STATIC_REQUIRE_FALSE(phi::string_equals(null_view, phi::string_view("")));
 
     EXT_STATIC_REQUIRE_FALSE(phi::string_equals(phi::string_view("Hello"), null_view));
+#if PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     EXT_STATIC_REQUIRE(phi::string_equals(phi::string_view("Hello"), phi::string_view("Hello")));
     EXT_STATIC_REQUIRE_FALSE(phi::string_equals(phi::string_view("Hello"), phi::string_view("")));
+#else
+    SKIP_CHECK();
+#endif
 
     EXT_STATIC_REQUIRE_FALSE(phi::string_equals(phi::string_view(""), null_view));
+#if PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     EXT_STATIC_REQUIRE_FALSE(phi::string_equals(phi::string_view(""), phi::string_view("Hello")));
     EXT_STATIC_REQUIRE(phi::string_equals(phi::string_view(""), phi::string_view("")));
+#else
+    SKIP_CHECK();
+#endif
 
     CHECK(phi::string_equals(null_view, null_view));
     CHECK_FALSE(phi::string_equals(null_view, phi::string_view("Hello")));

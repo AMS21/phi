@@ -13,6 +13,13 @@
 #include <memory>
 #include <type_traits>
 
+// NOTE: gcc-6 does not have 'std::invoke_result'
+#if PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
+#    define TEST_HAS_STD_INVOKE_RESULT() 1
+#else
+#    define TEST_HAS_STD_INVOKE_RESULT() 0
+#endif
+
 #if PHI_COMPILER_IS_ATLEAST(GCC, 10, 0, 0)
 PHI_GCC_SUPPRESS_WARNING("-Wvolatile")
 #endif
@@ -91,7 +98,7 @@ struct test_invoke_result<FnT(ArgsT...), RetT>
         CHECK_SAME_TYPE(RetT, phi::invoke_result_t<FnT, ArgsT...>);
 
         // Standard compatibility
-#    if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#    if PHI_CPP_STANDARD_IS_ATLEAST(17) && TEST_HAS_STD_INVOKE_RESULT()
         CHECK_SAME_TYPE(typename phi::invoke_result<FnT, ArgsT...>::type,
                         typename std::invoke_result<FnT, ArgsT...>::type);
         CHECK_SAME_TYPE(phi::invoke_result_t<FnT, ArgsT...>,
@@ -124,7 +131,7 @@ struct test_invoke_no_result<FnT(ArgsT...)>
         STATIC_REQUIRE_FALSE(HasType<phi::invoke_result<FnT, ArgsT...>>::value);
 
         // Standard compatibility
-#    if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#    if PHI_CPP_STANDARD_IS_ATLEAST(17) && TEST_HAS_STD_INVOKE_RESULT()
         STATIC_REQUIRE_FALSE(HasType<std::invoke_result<FnT, ArgsT...>>::value);
 #    endif
 #endif
@@ -139,7 +146,7 @@ void test_no_result()
     test_invoke_no_result<TypeT>::call();
 
     // Standard compatibility
-#    if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#    if PHI_CPP_STANDARD_IS_ATLEAST(17) && TEST_HAS_STD_INVOKE_RESULT()
     STATIC_REQUIRE_FALSE(HasType<std::invoke_result<TypeT>>::value);
 #    endif
 #endif

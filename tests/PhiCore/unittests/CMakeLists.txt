@@ -37,6 +37,7 @@ file(
   "src/compiler_support/counter.test.cpp"
   "src/compiler_support/cpp_standard.test.cpp"
   "src/compiler_support/current_function.test.cpp"
+  "src/compiler_support/defect_report.test.cpp"
   "src/compiler_support/inline.test.cpp"
   "src/compiler_support/likely.test.cpp"
   "src/compiler_support/noexcept.test.cpp"

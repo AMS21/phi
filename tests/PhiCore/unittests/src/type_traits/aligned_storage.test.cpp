@@ -177,7 +177,9 @@ TEST_CASE("aligned_storage")
     }
 
     PHI_GCC_SUPPRESS_WARNING_PUSH()
+#if PHI_COMPILER_IS_ATLEAST(GCC, 7, 0, 0)
     PHI_GCC_SUPPRESS_WARNING("-Wduplicated-branches")
+#endif
 
     {
         using T1 = phi::aligned_storage<16>::type;
@@ -216,6 +218,9 @@ TEST_CASE("aligned_storage")
         // https://learn.microsoft.com/cpp/cpp/align-cpp
 #if PHI_COMPILER_IS(MSVC) || PHI_COMPILER_IS(WINCLANG)
         PHI_CONSTEXPR_AND_CONST int align = 8192;
+#elif PHI_COMPILER_IS_BELOW(GCC, 7, 0, 0)
+        // Max align for gcc versions before 7 is 128
+        PHI_CONSTEXPR_AND_CONST int align = 128;
 #else
         PHI_CONSTEXPR_AND_CONST int align = 65536;
 #endif

@@ -81,7 +81,7 @@ void test_is_pointer_impl()
 
     // Standard compatibility
     STATIC_REQUIRE(std::is_pointer<TypeT>::value);
-#if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#if PHI_CPP_STANDARD_IS_ATLEAST(17) && PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     STATIC_REQUIRE(std::is_pointer_v<TypeT>);
 #endif
 }
@@ -109,9 +109,9 @@ void test_is_not_pointer_impl()
     TEST_TYPE_TRAITS_TYPE_DEFS(phi::is_pointer<TypeT>);
     TEST_TYPE_TRAITS_TYPE_DEFS(phi::is_not_pointer<TypeT>);
 
-    // Stanard compatibility
+    // Standard compatibility
     STATIC_REQUIRE_FALSE(std::is_pointer<TypeT>::value);
-#if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#if PHI_CPP_STANDARD_IS_ATLEAST(17) && PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     STATIC_REQUIRE_FALSE(std::is_pointer_v<TypeT>);
 #endif
 }

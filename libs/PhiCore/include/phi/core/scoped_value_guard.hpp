@@ -8,7 +8,7 @@
 #endif
 
 #include "phi/compiler_support/constexpr.hpp"
-#include "phi/compiler_support/cpp_standard.hpp"
+#include "phi/compiler_support/features.hpp"
 #include "phi/compiler_support/nodiscard.hpp"
 #include "phi/compiler_support/noexcept.hpp"
 #include "phi/core/boolean.hpp"
@@ -27,7 +27,7 @@ public:
           m_SavedValue(variable)
     {}
 
-#if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#if PHI_HAS_FEATURE_GUARANTEED_COPY_ELISION()
     scoped_value_guard(const scoped_value_guard&) = delete;
     scoped_value_guard(scoped_value_guard&&)      = delete;
 
@@ -85,7 +85,7 @@ public:
           m_Armed(true)
     {}
 
-#if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#if PHI_HAS_FEATURE_GUARANTEED_COPY_ELISION()
     armed_scoped_value_guard(const armed_scoped_value_guard&) = delete;
     armed_scoped_value_guard(armed_scoped_value_guard&&)      = delete;
 

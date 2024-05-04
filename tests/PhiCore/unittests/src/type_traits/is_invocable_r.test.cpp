@@ -58,7 +58,7 @@ void test_is_invocable_r()
     TEST_TYPE_TRAITS_TYPE_DEFS(phi::is_invocable_r<ReturnT, FunctionT, ArgsT...>);
     TEST_TYPE_TRAITS_TYPE_DEFS(phi::is_not_invocable_r<ReturnT, FunctionT, ArgsT...>);
 
-#if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#if PHI_CPP_STANDARD_IS_ATLEAST(17) && PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     STATIC_REQUIRE(std::is_invocable_r<ReturnT, FunctionT, ArgsT...>::value);
 #endif
 }
@@ -83,7 +83,7 @@ void test_is_not_invocable_r()
 {
     test_is_not_invocable_r_no_std<ReturnT, FunctionT, ArgsT...>();
 
-#if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#if PHI_CPP_STANDARD_IS_ATLEAST(17) && PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     STATIC_REQUIRE_FALSE(std::is_invocable_r<ReturnT, FunctionT, ArgsT...>::value);
 #endif
 }

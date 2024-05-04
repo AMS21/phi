@@ -18,7 +18,6 @@
 #include "phi/type_traits/has_element_type.hpp"
 #include "phi/type_traits/integral_constant.hpp"
 #include "phi/type_traits/is_void.hpp"
-#include "phi/type_traits/void_t.hpp"
 
 DETAIL_PHI_BEGIN_NAMESPACE()
 
@@ -125,10 +124,6 @@ struct pointer_traits
     };
 #endif
 
-private:
-    struct nat
-    {};
-
 public:
     static PHI_CONSTEXPR pointer
     pointer_to(conditional_t<is_void<element_type>::value, nat, element_type>& ptr) PHI_NOEXCEPT
@@ -155,10 +150,6 @@ struct pointer_traits<TypeT*>
         using other = OtherT*;
     };
 #endif
-
-private:
-    struct nat
-    {};
 
 public:
     static PHI_CONSTEXPR pointer

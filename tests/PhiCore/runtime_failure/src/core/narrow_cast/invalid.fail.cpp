@@ -1,7 +1,10 @@
 #include "SetupRuntimeFailure.hpp"
 
+#include <phi/compiler_support/warning.hpp>
 #include <phi/core/narrow_cast.hpp>
 #include <phi/core/sized_types.hpp>
+
+PHI_GCC_SUPPRESS_WARNING("-Wunused-result")
 
 int main()
 {

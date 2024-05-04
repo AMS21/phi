@@ -1,6 +1,6 @@
 #include <phi/test/test_macros.hpp>
 
-#include <phi/compiler_support/cpp_standard.hpp>
+#include <phi/compiler_support/features.hpp>
 #include <phi/core/scope_guard.hpp>
 #include <functional>
 
@@ -17,7 +17,7 @@ void set_global_to_zero()
     global_value = 0;
 }
 
-#if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#if PHI_HAS_FEATURE_CLASS_TEMPLATE_ARGUMENT_DEDUCTION()
 TEST_CASE("scope_guard lambda", "[Core][scope_guard]")
 {
     int value = 3;
@@ -149,7 +149,7 @@ TEST_CASE("make_scope_guard function pointer", "[Core][scope_guard][make_scope_g
 
 /* armed_scope_guard */
 
-#if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#if PHI_HAS_FEATURE_CLASS_TEMPLATE_ARGUMENT_DEDUCTION()
 TEST_CASE("armed_scope_guard default", "[Core][armed_scope_guard]")
 {
     int value = 0;

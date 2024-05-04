@@ -124,7 +124,7 @@ void test_is_enum_impl()
     // Standard compatibility
 #if PHI_HAS_WORKING_IS_ENUM()
     STATIC_REQUIRE(std::is_enum<TypeT>::value);
-#    if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#    if PHI_CPP_STANDARD_IS_ATLEAST(17) && PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     STATIC_REQUIRE(std::is_enum_v<TypeT>);
 #    endif
 #endif
@@ -156,7 +156,7 @@ void test_is_not_enum_impl()
 
     // Standard compatibility
     STATIC_REQUIRE_FALSE(std::is_enum<TypeT>::value);
-#    if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#    if PHI_CPP_STANDARD_IS_ATLEAST(17) && PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     STATIC_REQUIRE_FALSE(std::is_enum_v<TypeT>);
 #    endif
 #endif

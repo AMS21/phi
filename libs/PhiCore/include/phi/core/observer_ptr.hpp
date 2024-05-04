@@ -30,6 +30,10 @@
 DETAIL_PHI_BEGIN_NAMESPACE()
 
 PHI_GCC_SUPPRESS_WARNING_WITH_PUSH("-Wnonnull-compare")
+// gcc-6 wrongly complains about ignoring return values
+#if PHI_COMPILER_IS_BELOW(GCC, 7, 0, 0)
+PHI_GCC_SUPPRESS_WARNING("-Wunused-result")
+#endif
 
 // A non owning smart pointer
 template <typename TypeT>

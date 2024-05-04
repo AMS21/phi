@@ -109,7 +109,11 @@ TEST_CASE("is_trivially_constructible")
     test_is_trivially_constructible<B>();
     test_is_not_trivially_constructible<B, int>();
 
+#if PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     test_is_not_trivially_constructible<wrap<nocopy>, const wrap<nocopy>&>();
+#else
+    SKIP_CHECK();
+#endif
 
     test_is_not_trivially_constructible<HasTemplateCCtor>();
     test_is_not_trivially_constructible<HasTemplateCCtor, HasTemplateCCtor>();

@@ -63,7 +63,7 @@ void test_is_nothrow_swappable_with()
     TEST_TYPE_TRAITS_TYPE_DEFS(phi::is_not_nothrow_swappable_with<LhsT, RhsT>);
 
     // Standard compatibility
-#if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#if PHI_CPP_STANDARD_IS_ATLEAST(17) && PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     STATIC_REQUIRE(std::is_nothrow_swappable_with<LhsT, RhsT>::value);
     STATIC_REQUIRE(std::is_swappable_with<LhsT, RhsT>::value);
 #endif
@@ -84,7 +84,7 @@ void test_is_not_nothrow_swappable_with()
     TEST_TYPE_TRAITS_TYPE_DEFS(phi::is_not_nothrow_swappable_with<LhsT, RhsT>);
 
     // Standard compatibility
-#if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#if PHI_CPP_STANDARD_IS_ATLEAST(17) && PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     STATIC_REQUIRE_FALSE(std::is_nothrow_swappable_with<LhsT, RhsT>::value);
 #endif
 }

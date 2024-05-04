@@ -2177,19 +2177,100 @@ TEST_CASE("min_index")
     }
 }
 
-const static auto lambda_eq0   = [](const int& value) PHI_NOEXCEPT { return value == 0; };
-const static auto lambda_eq1   = [](const int& value) PHI_NOEXCEPT { return value == 1; };
-const static auto lambda_eq2   = [](const int& value) PHI_NOEXCEPT { return value == 2; };
-const static auto lambda_eq3   = [](const int& value) PHI_NOEXCEPT { return value == 3; };
-const static auto lambda_ne0   = [](const int& value) PHI_NOEXCEPT { return value != 0; };
-const static auto lambda_ne1   = [](const int& value) PHI_NOEXCEPT { return value != 1; };
-const static auto lambda_ne2   = [](const int& value) PHI_NOEXCEPT { return value != 2; };
-const static auto lambda_ne3   = [](const int& value) PHI_NOEXCEPT { return value != 3; };
-const static auto lambda_even  = [](const int& value) PHI_NOEXCEPT { return value % 2 == 0; };
-const static auto lambda_odd   = [](const int& value) PHI_NOEXCEPT { return value % 2 == 1; };
-const static auto lambda_true  = [](const int& /*value*/) PHI_NOEXCEPT { return true; };
-const static auto lambda_false = [](const int& /*value*/) PHI_NOEXCEPT { return false; };
-const static auto lambda_throw = [](const int& /*value*/) -> bool { throw ""; };
+static PHI_CONSTEXPR bool eq0(const int& value) PHI_NOEXCEPT
+{
+    return value == 0;
+}
+
+static PHI_CONSTEXPR bool eq1(const int& value) PHI_NOEXCEPT
+{
+    return value == 1;
+}
+
+static PHI_CONSTEXPR bool eq2(const int& value) PHI_NOEXCEPT
+{
+    return value == 2;
+}
+
+static PHI_CONSTEXPR bool eq3(const int& value) PHI_NOEXCEPT
+{
+    return value == 3;
+}
+
+static PHI_CONSTEXPR bool ne0(const int& value) PHI_NOEXCEPT
+{
+    return value != 0;
+}
+
+static PHI_CONSTEXPR bool ne1(const int& value) PHI_NOEXCEPT
+{
+    return value != 1;
+}
+
+static PHI_CONSTEXPR bool ne2(const int& value) PHI_NOEXCEPT
+{
+    return value != 2;
+}
+
+static PHI_CONSTEXPR bool ne3(const int& value) PHI_NOEXCEPT
+{
+    return value != 3;
+}
+
+static PHI_CONSTEXPR bool even(const int& value) PHI_NOEXCEPT
+{
+    return value % 2 == 0;
+}
+
+static PHI_CONSTEXPR bool odd(const int& value) PHI_NOEXCEPT
+{
+    return value % 2 == 1;
+}
+
+static PHI_CONSTEXPR bool always_true(const int& /*value*/) PHI_NOEXCEPT
+{
+    return true;
+}
+
+static PHI_CONSTEXPR bool always_false(const int& /*value*/) PHI_NOEXCEPT
+{
+    return false;
+}
+
+static bool always_throw(const int& /*value*/)
+{
+    throw "";
+}
+
+#if PHI_HAS_FEATURE_LAMBDA()
+
+static PHI_CONSTEXPR_AND_CONST auto lambda_eq0 = [](const int& value)
+                                                         PHI_NOEXCEPT { return value == 0; };
+static PHI_CONSTEXPR_AND_CONST auto lambda_eq1 = [](const int& value)
+                                                         PHI_NOEXCEPT { return value == 1; };
+static PHI_CONSTEXPR_AND_CONST auto lambda_eq2 = [](const int& value)
+                                                         PHI_NOEXCEPT { return value == 2; };
+static PHI_CONSTEXPR_AND_CONST auto lambda_eq3 = [](const int& value)
+                                                         PHI_NOEXCEPT { return value == 3; };
+static PHI_CONSTEXPR_AND_CONST auto lambda_ne0 = [](const int& value)
+                                                         PHI_NOEXCEPT { return value != 0; };
+static PHI_CONSTEXPR_AND_CONST auto lambda_ne1 = [](const int& value)
+                                                         PHI_NOEXCEPT { return value != 1; };
+static PHI_CONSTEXPR_AND_CONST auto lambda_ne2 = [](const int& value)
+                                                         PHI_NOEXCEPT { return value != 2; };
+static PHI_CONSTEXPR_AND_CONST auto lambda_ne3 = [](const int& value)
+                                                         PHI_NOEXCEPT { return value != 3; };
+static PHI_CONSTEXPR_AND_CONST auto lambda_even = [](const int& value)
+                                                          PHI_NOEXCEPT { return value % 2 == 0; };
+static PHI_CONSTEXPR_AND_CONST auto lambda_odd = [](const int& value)
+                                                         PHI_NOEXCEPT { return value % 2 == 1; };
+static PHI_CONSTEXPR_AND_CONST auto lambda_true = [](const int& /*value*/)
+                                                          PHI_NOEXCEPT { return true; };
+static PHI_CONSTEXPR_AND_CONST auto lambda_false = [](const int& /*value*/)
+                                                           PHI_NOEXCEPT { return false; };
+static PHI_CONSTEXPR_AND_CONST auto lambda_throw = [](const int& /*value*/) -> bool { throw ""; };
+
+#endif
 
 TEST_CASE("array find")
 {
@@ -2277,6 +2358,23 @@ TEST_CASE("array find_if")
         using array = phi::array<int, 3u>;
         array arr{1, 2, 3};
 
+        CHECK(arr.find_if(eq0) == arr.end());
+        CHECK(arr.find_if(eq1) == &arr.at(0u));
+        CHECK(arr.find_if(eq2) == &arr.at(1u));
+        CHECK(arr.find_if(eq3) == &arr.at(2u));
+        CHECK(arr.find_if(ne0) == &arr.at(0u));
+        CHECK(arr.find_if(ne1) == &arr.at(1u));
+        CHECK(arr.find_if(ne2) == &arr.at(0u));
+        CHECK(arr.find_if(ne3) == &arr.at(0u));
+        CHECK(arr.find_if(even) == &arr.at(1u));
+        CHECK(arr.find_if(odd) == &arr.at(0u));
+        CHECK(arr.find_if(always_false) == arr.end());
+        CHECK(arr.find_if(always_true) == &arr.at(0u));
+        CHECK_SAME_TYPE(decltype(arr.find_if(always_false)), array::iterator);
+        CHECK_NOT_NOEXCEPT(arr.find_if(always_throw));
+        CHECK_NOEXCEPT(arr.find_if(always_false));
+
+#if PHI_HAS_FEATURE_LAMBDA()
         CHECK(arr.find_if(lambda_eq0) == arr.end());
         CHECK(arr.find_if(lambda_eq1) == &arr.at(0u));
         CHECK(arr.find_if(lambda_eq2) == &arr.at(1u));
@@ -2291,13 +2389,33 @@ TEST_CASE("array find_if")
         CHECK(arr.find_if(lambda_true) == &arr.at(0u));
         CHECK_SAME_TYPE(decltype(arr.find_if(lambda_false)), array::iterator);
         CHECK_NOT_NOEXCEPT(arr.find_if(lambda_throw));
+#    if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
         CHECK_NOEXCEPT(arr.find_if(lambda_false));
+#    endif
+#endif
     }
 
     {
         using array = phi::array<int, 0u>;
         array arr;
 
+        CHECK(arr.find_if(eq0) == arr.end());
+        CHECK(arr.find_if(eq1) == arr.end());
+        CHECK(arr.find_if(eq2) == arr.end());
+        CHECK(arr.find_if(eq3) == arr.end());
+        CHECK(arr.find_if(ne0) == arr.end());
+        CHECK(arr.find_if(ne1) == arr.end());
+        CHECK(arr.find_if(ne2) == arr.end());
+        CHECK(arr.find_if(ne3) == arr.end());
+        CHECK(arr.find_if(even) == arr.end());
+        CHECK(arr.find_if(odd) == arr.end());
+        CHECK(arr.find_if(always_false) == arr.end());
+        CHECK(arr.find_if(always_true) == arr.end());
+        CHECK_SAME_TYPE(decltype(arr.find_if(always_false)), array::iterator);
+        CHECK_NOEXCEPT(arr.find_if(always_throw));
+        CHECK_NOEXCEPT(arr.find_if(always_false));
+
+#if PHI_HAS_FEATURE_LAMBDA()
         CHECK(arr.find_if(lambda_eq0) == arr.end());
         CHECK(arr.find_if(lambda_eq1) == arr.end());
         CHECK(arr.find_if(lambda_eq2) == arr.end());
@@ -2313,12 +2431,30 @@ TEST_CASE("array find_if")
         CHECK_SAME_TYPE(decltype(arr.find_if(lambda_false)), array::iterator);
         CHECK_NOEXCEPT(arr.find_if(lambda_throw));
         CHECK_NOEXCEPT(arr.find_if(lambda_false));
+#endif
     }
 
     {
         using array = phi::array<int, 3u>;
         const array arr{1, 2, 3};
 
+        CHECK(arr.find_if(eq0) == arr.end());
+        CHECK(arr.find_if(eq1) == &arr.at(0u));
+        CHECK(arr.find_if(eq2) == &arr.at(1u));
+        CHECK(arr.find_if(eq3) == &arr.at(2u));
+        CHECK(arr.find_if(ne0) == &arr.at(0u));
+        CHECK(arr.find_if(ne1) == &arr.at(1u));
+        CHECK(arr.find_if(ne2) == &arr.at(0u));
+        CHECK(arr.find_if(ne3) == &arr.at(0u));
+        CHECK(arr.find_if(even) == &arr.at(1u));
+        CHECK(arr.find_if(odd) == &arr.at(0u));
+        CHECK(arr.find_if(always_false) == arr.end());
+        CHECK(arr.find_if(always_true) == &arr.at(0u));
+        CHECK_SAME_TYPE(decltype(arr.find_if(always_false)), array::const_iterator);
+        CHECK_NOT_NOEXCEPT(arr.find_if(always_throw));
+        CHECK_NOEXCEPT(arr.find_if(always_false));
+
+#if PHI_HAS_FEATURE_LAMBDA()
         CHECK(arr.find_if(lambda_eq0) == arr.end());
         CHECK(arr.find_if(lambda_eq1) == &arr.at(0u));
         CHECK(arr.find_if(lambda_eq2) == &arr.at(1u));
@@ -2333,13 +2469,33 @@ TEST_CASE("array find_if")
         CHECK(arr.find_if(lambda_true) == &arr.at(0u));
         CHECK_SAME_TYPE(decltype(arr.find_if(lambda_false)), array::const_iterator);
         CHECK_NOT_NOEXCEPT(arr.find_if(lambda_throw));
+#    if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
         CHECK_NOEXCEPT(arr.find_if(lambda_false));
+#    endif
+#endif
     }
 
     {
         using array = phi::array<int, 0u>;
         const array arr;
 
+        CHECK(arr.find_if(eq0) == arr.end());
+        CHECK(arr.find_if(eq1) == arr.end());
+        CHECK(arr.find_if(eq2) == arr.end());
+        CHECK(arr.find_if(eq3) == arr.end());
+        CHECK(arr.find_if(ne0) == arr.end());
+        CHECK(arr.find_if(ne1) == arr.end());
+        CHECK(arr.find_if(ne2) == arr.end());
+        CHECK(arr.find_if(ne3) == arr.end());
+        CHECK(arr.find_if(even) == arr.end());
+        CHECK(arr.find_if(odd) == arr.end());
+        CHECK(arr.find_if(always_false) == arr.end());
+        CHECK(arr.find_if(always_true) == arr.end());
+        CHECK_SAME_TYPE(decltype(arr.find_if(always_false)), array::const_iterator);
+        CHECK_NOEXCEPT(arr.find_if(always_throw));
+        CHECK_NOEXCEPT(arr.find_if(always_false));
+
+#if PHI_HAS_FEATURE_LAMBDA()
         CHECK(arr.find_if(lambda_eq0) == arr.end());
         CHECK(arr.find_if(lambda_eq1) == arr.end());
         CHECK(arr.find_if(lambda_eq2) == arr.end());
@@ -2355,12 +2511,31 @@ TEST_CASE("array find_if")
         CHECK_SAME_TYPE(decltype(arr.find_if(lambda_false)), array::const_iterator);
         CHECK_NOEXCEPT(arr.find_if(lambda_throw));
         CHECK_NOEXCEPT(arr.find_if(lambda_false));
+#endif
     }
 
     {
         using array = phi::array<int, 3u>;
         PHI_CONSTEXPR array arr{1, 2, 3};
 
+        EXT_STATIC_REQUIRE(arr.find_if(eq0) == arr.end());
+        EXT_STATIC_REQUIRE(arr.find_if(eq1) == &arr.at(0u));
+        EXT_STATIC_REQUIRE(arr.find_if(eq2) == &arr.at(1u));
+        EXT_STATIC_REQUIRE(arr.find_if(eq3) == &arr.at(2u));
+        EXT_STATIC_REQUIRE(arr.find_if(ne0) == &arr.at(0u));
+        EXT_STATIC_REQUIRE(arr.find_if(ne1) == &arr.at(1u));
+        EXT_STATIC_REQUIRE(arr.find_if(ne2) == &arr.at(0u));
+        EXT_STATIC_REQUIRE(arr.find_if(ne3) == &arr.at(0u));
+        EXT_STATIC_REQUIRE(arr.find_if(even) == &arr.at(1u));
+        EXT_STATIC_REQUIRE(arr.find_if(odd) == &arr.at(0u));
+        EXT_STATIC_REQUIRE(arr.find_if(always_false) == arr.end());
+        CHECK_SAME_TYPE(decltype(arr.find_if(always_false)), array::const_iterator);
+        CHECK_NOT_NOEXCEPT(arr.find_if(always_throw));
+#if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
+        CHECK_NOEXCEPT(arr.find_if(always_false));
+#endif
+
+#if PHI_HAS_FEATURE_LAMBDA() && PHI_HAS_FEATURE_CONSTEXPR_LAMBDA()
         EXT_STATIC_REQUIRE(arr.find_if(lambda_eq0) == arr.end());
         EXT_STATIC_REQUIRE(arr.find_if(lambda_eq1) == &arr.at(0u));
         EXT_STATIC_REQUIRE(arr.find_if(lambda_eq2) == &arr.at(1u));
@@ -2374,13 +2549,25 @@ TEST_CASE("array find_if")
         EXT_STATIC_REQUIRE(arr.find_if(lambda_false) == arr.end());
         CHECK_SAME_TYPE(decltype(arr.find_if(lambda_false)), array::const_iterator);
         CHECK_NOT_NOEXCEPT(arr.find_if(lambda_throw));
+#    if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
         CHECK_NOEXCEPT(arr.find_if(lambda_false));
+#    endif
+#endif
     }
 
     {
         using array = phi::array<int, 0u>;
         PHI_CONSTEXPR array arr;
 
+        STATIC_REQUIRE(arr.find_if(eq1) == arr.end());
+        STATIC_REQUIRE(arr.find_if(eq2) == arr.end());
+        STATIC_REQUIRE(arr.find_if(even) == arr.end());
+        STATIC_REQUIRE(arr.find_if(always_false) == arr.end());
+        CHECK_SAME_TYPE(decltype(arr.find_if(always_false)), array::const_iterator);
+        CHECK_NOEXCEPT(arr.find_if(always_throw));
+        CHECK_NOEXCEPT(arr.find_if(always_false));
+
+#if PHI_HAS_FEATURE_LAMBDA() && PHI_HAS_FEATURE_CONSTEXPR_LAMBDA()
         STATIC_REQUIRE(arr.find_if(lambda_eq1) == arr.end());
         STATIC_REQUIRE(arr.find_if(lambda_eq2) == arr.end());
         STATIC_REQUIRE(arr.find_if(lambda_even) == arr.end());
@@ -2388,6 +2575,7 @@ TEST_CASE("array find_if")
         CHECK_SAME_TYPE(decltype(arr.find_if(lambda_false)), array::const_iterator);
         CHECK_NOEXCEPT(arr.find_if(lambda_throw));
         CHECK_NOEXCEPT(arr.find_if(lambda_false));
+#endif
     }
 }
 
@@ -2397,6 +2585,25 @@ TEST_CASE("array find_if_not")
         using array = phi::array<int, 3u>;
         array arr{1, 2, 3};
 
+        CHECK(arr.find_if_not(eq0) == &arr.at(0u));
+        CHECK(arr.find_if_not(eq1) == &arr.at(1u));
+        CHECK(arr.find_if_not(eq2) == &arr.at(0u));
+        CHECK(arr.find_if_not(eq3) == &arr.at(0u));
+        CHECK(arr.find_if_not(ne0) == arr.end());
+        CHECK(arr.find_if_not(ne1) == &arr.at(0u));
+        CHECK(arr.find_if_not(ne2) == &arr.at(1u));
+        CHECK(arr.find_if_not(ne3) == &arr.at(2u));
+        CHECK(arr.find_if_not(even) == &arr.at(0u));
+        CHECK(arr.find_if_not(odd) == &arr.at(1u));
+        CHECK(arr.find_if_not(always_false) == &arr.at(0u));
+        CHECK(arr.find_if_not(always_true) == arr.end());
+        CHECK_SAME_TYPE(decltype(arr.find_if_not(always_false)), array::iterator);
+        CHECK_NOT_NOEXCEPT(arr.find_if_not(always_throw));
+#if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
+        CHECK_NOEXCEPT(arr.find_if_not(always_false));
+#endif
+
+#if PHI_HAS_FEATURE_LAMBDA()
         CHECK(arr.find_if_not(lambda_eq0) == &arr.at(0u));
         CHECK(arr.find_if_not(lambda_eq1) == &arr.at(1u));
         CHECK(arr.find_if_not(lambda_eq2) == &arr.at(0u));
@@ -2411,13 +2618,25 @@ TEST_CASE("array find_if_not")
         CHECK(arr.find_if_not(lambda_true) == arr.end());
         CHECK_SAME_TYPE(decltype(arr.find_if_not(lambda_false)), array::iterator);
         CHECK_NOT_NOEXCEPT(arr.find_if_not(lambda_throw));
+#    if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
         CHECK_NOEXCEPT(arr.find_if_not(lambda_false));
+#    endif
+#endif
     }
 
     {
         using array = phi::array<int, 0u>;
         array arr;
 
+        CHECK(arr.find_if_not(eq1) == arr.end());
+        CHECK(arr.find_if_not(eq2) == arr.end());
+        CHECK(arr.find_if_not(even) == arr.end());
+        CHECK(arr.find_if_not(always_false) == arr.end());
+        CHECK_SAME_TYPE(decltype(arr.find_if_not(always_false)), array::iterator);
+        CHECK_NOEXCEPT(arr.find_if_not(always_throw));
+        CHECK_NOEXCEPT(arr.find_if_not(always_false));
+
+#if PHI_HAS_FEATURE_LAMBDA()
         CHECK(arr.find_if_not(lambda_eq1) == arr.end());
         CHECK(arr.find_if_not(lambda_eq2) == arr.end());
         CHECK(arr.find_if_not(lambda_even) == arr.end());
@@ -2425,12 +2644,32 @@ TEST_CASE("array find_if_not")
         CHECK_SAME_TYPE(decltype(arr.find_if_not(lambda_false)), array::iterator);
         CHECK_NOEXCEPT(arr.find_if_not(lambda_throw));
         CHECK_NOEXCEPT(arr.find_if_not(lambda_false));
+#endif
     }
 
     {
         using array = phi::array<int, 3u>;
         const array arr{1, 2, 3};
 
+        CHECK(arr.find_if_not(eq0) == &arr.at(0u));
+        CHECK(arr.find_if_not(eq1) == &arr.at(1u));
+        CHECK(arr.find_if_not(eq2) == &arr.at(0u));
+        CHECK(arr.find_if_not(eq3) == &arr.at(0u));
+        CHECK(arr.find_if_not(ne0) == arr.end());
+        CHECK(arr.find_if_not(ne1) == &arr.at(0u));
+        CHECK(arr.find_if_not(ne2) == &arr.at(1u));
+        CHECK(arr.find_if_not(ne3) == &arr.at(2u));
+        CHECK(arr.find_if_not(even) == &arr.at(0u));
+        CHECK(arr.find_if_not(odd) == &arr.at(1u));
+        CHECK(arr.find_if_not(always_false) == &arr.at(0u));
+        CHECK(arr.find_if_not(always_true) == arr.end());
+        CHECK_SAME_TYPE(decltype(arr.find_if_not(always_false)), array::const_iterator);
+        CHECK_NOT_NOEXCEPT(arr.find_if_not(always_throw));
+#if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
+        CHECK_NOEXCEPT(arr.find_if_not(always_false));
+#endif
+
+#if PHI_HAS_FEATURE_LAMBDA()
         CHECK(arr.find_if_not(lambda_eq0) == &arr.at(0u));
         CHECK(arr.find_if_not(lambda_eq1) == &arr.at(1u));
         CHECK(arr.find_if_not(lambda_eq2) == &arr.at(0u));
@@ -2445,13 +2684,25 @@ TEST_CASE("array find_if_not")
         CHECK(arr.find_if_not(lambda_true) == arr.end());
         CHECK_SAME_TYPE(decltype(arr.find_if_not(lambda_false)), array::const_iterator);
         CHECK_NOT_NOEXCEPT(arr.find_if_not(lambda_throw));
+#    if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
         CHECK_NOEXCEPT(arr.find_if_not(lambda_false));
+#    endif
+#endif
     }
 
     {
         using array = phi::array<int, 0u>;
         const array arr;
 
+        CHECK(arr.find_if_not(eq1) == arr.end());
+        CHECK(arr.find_if_not(eq2) == arr.end());
+        CHECK(arr.find_if_not(even) == arr.end());
+        CHECK(arr.find_if_not(always_false) == arr.end());
+        CHECK_SAME_TYPE(decltype(arr.find_if_not(always_false)), array::const_iterator);
+        CHECK_NOEXCEPT(arr.find_if_not(always_throw));
+        CHECK_NOEXCEPT(arr.find_if_not(always_false));
+
+#if PHI_HAS_FEATURE_LAMBDA()
         CHECK(arr.find_if_not(lambda_eq1) == arr.end());
         CHECK(arr.find_if_not(lambda_eq2) == arr.end());
         CHECK(arr.find_if_not(lambda_even) == arr.end());
@@ -2459,12 +2710,32 @@ TEST_CASE("array find_if_not")
         CHECK_SAME_TYPE(decltype(arr.find_if_not(lambda_false)), array::const_iterator);
         CHECK_NOEXCEPT(arr.find_if_not(lambda_throw));
         CHECK_NOEXCEPT(arr.find_if_not(lambda_false));
+#endif
     }
 
     {
         using array = phi::array<int, 3u>;
         PHI_CONSTEXPR array arr{1, 2, 3};
 
+        EXT_STATIC_REQUIRE(arr.find_if_not(eq0) == &arr.at(0u));
+        EXT_STATIC_REQUIRE(arr.find_if_not(eq1) == &arr.at(1u));
+        EXT_STATIC_REQUIRE(arr.find_if_not(eq2) == &arr.at(0u));
+        EXT_STATIC_REQUIRE(arr.find_if_not(eq3) == &arr.at(0u));
+        EXT_STATIC_REQUIRE(arr.find_if_not(ne0) == arr.end());
+        EXT_STATIC_REQUIRE(arr.find_if_not(ne1) == &arr.at(0u));
+        EXT_STATIC_REQUIRE(arr.find_if_not(ne2) == &arr.at(1u));
+        EXT_STATIC_REQUIRE(arr.find_if_not(ne3) == &arr.at(2u));
+        EXT_STATIC_REQUIRE(arr.find_if_not(even) == &arr.at(0u));
+        EXT_STATIC_REQUIRE(arr.find_if_not(odd) == &arr.at(1u));
+        EXT_STATIC_REQUIRE(arr.find_if_not(always_false) == &arr.at(0u));
+        EXT_STATIC_REQUIRE(arr.find_if_not(always_true) == arr.end());
+        CHECK_SAME_TYPE(decltype(arr.find_if_not(always_false)), array::const_iterator);
+        CHECK_NOT_NOEXCEPT(arr.find_if_not(always_throw));
+#if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
+        CHECK_NOEXCEPT(arr.find_if_not(always_false));
+#endif
+
+#if PHI_HAS_FEATURE_LAMBDA() && PHI_HAS_FEATURE_CONSTEXPR_LAMBDA()
         EXT_STATIC_REQUIRE(arr.find_if_not(lambda_eq0) == &arr.at(0u));
         EXT_STATIC_REQUIRE(arr.find_if_not(lambda_eq1) == &arr.at(1u));
         EXT_STATIC_REQUIRE(arr.find_if_not(lambda_eq2) == &arr.at(0u));
@@ -2479,13 +2750,25 @@ TEST_CASE("array find_if_not")
         EXT_STATIC_REQUIRE(arr.find_if_not(lambda_true) == arr.end());
         CHECK_SAME_TYPE(decltype(arr.find_if_not(lambda_false)), array::const_iterator);
         CHECK_NOT_NOEXCEPT(arr.find_if_not(lambda_throw));
+#    if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
         CHECK_NOEXCEPT(arr.find_if_not(lambda_false));
+#    endif
+#endif
     }
 
     {
         using array = phi::array<int, 0u>;
         PHI_CONSTEXPR array arr;
 
+        STATIC_REQUIRE(arr.find_if_not(eq1) == arr.end());
+        STATIC_REQUIRE(arr.find_if_not(eq2) == arr.end());
+        STATIC_REQUIRE(arr.find_if_not(even) == arr.end());
+        STATIC_REQUIRE(arr.find_if_not(always_false) == arr.end());
+        CHECK_SAME_TYPE(decltype(arr.find_if_not(always_false)), array::const_iterator);
+        CHECK_NOEXCEPT(arr.find_if_not(always_throw));
+        CHECK_NOEXCEPT(arr.find_if_not(always_false));
+
+#if PHI_HAS_FEATURE_LAMBDA() && PHI_HAS_FEATURE_CONSTEXPR_LAMBDA()
         STATIC_REQUIRE(arr.find_if_not(lambda_eq1) == arr.end());
         STATIC_REQUIRE(arr.find_if_not(lambda_eq2) == arr.end());
         STATIC_REQUIRE(arr.find_if_not(lambda_even) == arr.end());
@@ -2493,6 +2776,7 @@ TEST_CASE("array find_if_not")
         CHECK_SAME_TYPE(decltype(arr.find_if_not(lambda_false)), array::const_iterator);
         CHECK_NOEXCEPT(arr.find_if_not(lambda_throw));
         CHECK_NOEXCEPT(arr.find_if_not(lambda_false));
+#endif
     }
 }
 
@@ -2604,6 +2888,25 @@ TEST_CASE("array find_last_if")
         using array = phi::array<int, 3u>;
         array arr{1, 2, 3};
 
+        CHECK(arr.find_last_if(eq0) == arr.end());
+        CHECK(arr.find_last_if(eq1) == &arr.at(0u));
+        CHECK(arr.find_last_if(eq2) == &arr.at(1u));
+        CHECK(arr.find_last_if(eq3) == &arr.at(2u));
+        CHECK(arr.find_last_if(ne0) == &arr.at(2u));
+        CHECK(arr.find_last_if(ne1) == &arr.at(2u));
+        CHECK(arr.find_last_if(ne2) == &arr.at(2u));
+        CHECK(arr.find_last_if(ne3) == &arr.at(1u));
+        CHECK(arr.find_last_if(even) == &arr.at(1u));
+        CHECK(arr.find_last_if(odd) == &arr.at(2u));
+        CHECK(arr.find_last_if(always_false) == arr.end());
+        CHECK(arr.find_last_if(always_true) == &arr.at(2u));
+        CHECK_SAME_TYPE(decltype(arr.find_last_if(always_false)), array::iterator);
+        CHECK_NOT_NOEXCEPT(arr.find_last_if(always_throw));
+#if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
+        CHECK_NOEXCEPT(arr.find_last_if(always_false));
+#endif
+
+#if PHI_HAS_FEATURE_LAMBDA()
         CHECK(arr.find_last_if(lambda_eq0) == arr.end());
         CHECK(arr.find_last_if(lambda_eq1) == &arr.at(0u));
         CHECK(arr.find_last_if(lambda_eq2) == &arr.at(1u));
@@ -2618,13 +2921,25 @@ TEST_CASE("array find_last_if")
         CHECK(arr.find_last_if(lambda_true) == &arr.at(2u));
         CHECK_SAME_TYPE(decltype(arr.find_last_if(lambda_false)), array::iterator);
         CHECK_NOT_NOEXCEPT(arr.find_last_if(lambda_throw));
+#    if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
         CHECK_NOEXCEPT(arr.find_last_if(lambda_false));
+#    endif
+#endif
     }
 
     {
         using array = phi::array<int, 0u>;
         array arr;
 
+        CHECK(arr.find_last_if(eq1) == arr.end());
+        CHECK(arr.find_last_if(eq2) == arr.end());
+        CHECK(arr.find_last_if(even) == arr.end());
+        CHECK(arr.find_last_if(always_false) == arr.end());
+        CHECK_SAME_TYPE(decltype(arr.find_last_if(always_false)), array::iterator);
+        CHECK_NOEXCEPT(arr.find_last_if(always_throw));
+        CHECK_NOEXCEPT(arr.find_last_if(always_false));
+
+#if PHI_HAS_FEATURE_LAMBDA()
         CHECK(arr.find_last_if(lambda_eq1) == arr.end());
         CHECK(arr.find_last_if(lambda_eq2) == arr.end());
         CHECK(arr.find_last_if(lambda_even) == arr.end());
@@ -2632,12 +2947,32 @@ TEST_CASE("array find_last_if")
         CHECK_SAME_TYPE(decltype(arr.find_last_if(lambda_false)), array::iterator);
         CHECK_NOEXCEPT(arr.find_last_if(lambda_throw));
         CHECK_NOEXCEPT(arr.find_last_if(lambda_false));
+#endif
     }
 
     {
         using array = phi::array<int, 3u>;
         const array arr{1, 2, 3};
 
+        CHECK(arr.find_last_if(eq0) == arr.end());
+        CHECK(arr.find_last_if(eq1) == &arr.at(0u));
+        CHECK(arr.find_last_if(eq2) == &arr.at(1u));
+        CHECK(arr.find_last_if(eq3) == &arr.at(2u));
+        CHECK(arr.find_last_if(ne0) == &arr.at(2u));
+        CHECK(arr.find_last_if(ne1) == &arr.at(2u));
+        CHECK(arr.find_last_if(ne2) == &arr.at(2u));
+        CHECK(arr.find_last_if(ne3) == &arr.at(1u));
+        CHECK(arr.find_last_if(even) == &arr.at(1u));
+        CHECK(arr.find_last_if(odd) == &arr.at(2u));
+        CHECK(arr.find_last_if(always_false) == arr.end());
+        CHECK(arr.find_last_if(always_true) == &arr.at(2u));
+        CHECK_SAME_TYPE(decltype(arr.find_last_if(always_false)), array::const_iterator);
+        CHECK_NOT_NOEXCEPT(arr.find_last_if(always_throw));
+#if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
+        CHECK_NOEXCEPT(arr.find_last_if(always_false));
+#endif
+
+#if PHI_HAS_FEATURE_LAMBDA()
         CHECK(arr.find_last_if(lambda_eq0) == arr.end());
         CHECK(arr.find_last_if(lambda_eq1) == &arr.at(0u));
         CHECK(arr.find_last_if(lambda_eq2) == &arr.at(1u));
@@ -2652,13 +2987,25 @@ TEST_CASE("array find_last_if")
         CHECK(arr.find_last_if(lambda_true) == &arr.at(2u));
         CHECK_SAME_TYPE(decltype(arr.find_last_if(lambda_false)), array::const_iterator);
         CHECK_NOT_NOEXCEPT(arr.find_last_if(lambda_throw));
+#    if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
         CHECK_NOEXCEPT(arr.find_last_if(lambda_false));
+#    endif
+#endif
     }
 
     {
         using array = phi::array<int, 0u>;
         const array arr;
 
+        CHECK(arr.find_last_if(eq1) == arr.end());
+        CHECK(arr.find_last_if(eq2) == arr.end());
+        CHECK(arr.find_last_if(even) == arr.end());
+        CHECK(arr.find_last_if(always_false) == arr.end());
+        CHECK_SAME_TYPE(decltype(arr.find_last_if(always_false)), array::const_iterator);
+        CHECK_NOEXCEPT(arr.find_last_if(always_throw));
+        CHECK_NOEXCEPT(arr.find_last_if(always_false));
+
+#if PHI_HAS_FEATURE_LAMBDA()
         CHECK(arr.find_last_if(lambda_eq1) == arr.end());
         CHECK(arr.find_last_if(lambda_eq2) == arr.end());
         CHECK(arr.find_last_if(lambda_even) == arr.end());
@@ -2666,6 +3013,7 @@ TEST_CASE("array find_last_if")
         CHECK_SAME_TYPE(decltype(arr.find_last_if(lambda_false)), array::const_iterator);
         CHECK_NOEXCEPT(arr.find_last_if(lambda_throw));
         CHECK_NOEXCEPT(arr.find_last_if(lambda_false));
+#endif
     }
 
     {
@@ -2674,26 +3022,58 @@ TEST_CASE("array find_last_if")
 
         // NOTE: Before gcc-10 some of the sanitizer pointer functions are not constexpr
 #if PHI_COMPILER_IS_BELOW(GCC, 10, 0, 0)
+        CHECK(arr.find_last_if(eq1) == &arr.at(0u));
+        CHECK(arr.find_last_if(eq2) == &arr.at(1u));
+        CHECK(arr.find_last_if(even) == &arr.at(1u));
+        CHECK(arr.find_last_if(always_false) == arr.end());
+#else
+        EXT_STATIC_REQUIRE(arr.find_last_if(eq1) == &arr.at(0u));
+        EXT_STATIC_REQUIRE(arr.find_last_if(eq2) == &arr.at(1u));
+        EXT_STATIC_REQUIRE(arr.find_last_if(even) == &arr.at(1u));
+        EXT_STATIC_REQUIRE(arr.find_last_if(always_false) == arr.end());
+#endif
+
+        CHECK_SAME_TYPE(decltype(arr.find_last_if(always_false)), array::const_iterator);
+        CHECK_NOT_NOEXCEPT(arr.find_last_if(always_throw));
+#if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
+        CHECK_NOEXCEPT(arr.find_last_if(always_false));
+#endif
+
+#if PHI_HAS_FEATURE_LAMBDA() && PHI_HAS_FEATURE_CONSTEXPR_LAMBDA()
+        // NOTE: Before gcc-10 some of the sanitizer pointer functions are not constexpr
+#    if PHI_COMPILER_IS_BELOW(GCC, 10, 0, 0)
         CHECK(arr.find_last_if(lambda_eq1) == &arr.at(0u));
         CHECK(arr.find_last_if(lambda_eq2) == &arr.at(1u));
         CHECK(arr.find_last_if(lambda_even) == &arr.at(1u));
         CHECK(arr.find_last_if(lambda_false) == arr.end());
-#else
+#    else
         EXT_STATIC_REQUIRE(arr.find_last_if(lambda_eq1) == &arr.at(0u));
         EXT_STATIC_REQUIRE(arr.find_last_if(lambda_eq2) == &arr.at(1u));
         EXT_STATIC_REQUIRE(arr.find_last_if(lambda_even) == &arr.at(1u));
         EXT_STATIC_REQUIRE(arr.find_last_if(lambda_false) == arr.end());
-#endif
+#    endif
 
         CHECK_SAME_TYPE(decltype(arr.find_last_if(lambda_false)), array::const_iterator);
         CHECK_NOT_NOEXCEPT(arr.find_last_if(lambda_throw));
+#    if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
         CHECK_NOEXCEPT(arr.find_last_if(lambda_false));
+#    endif
+#endif
     }
 
     {
         using array = phi::array<int, 0u>;
         PHI_CONSTEXPR array arr;
 
+        STATIC_REQUIRE(arr.find_last_if(eq1) == arr.end());
+        STATIC_REQUIRE(arr.find_last_if(eq2) == arr.end());
+        STATIC_REQUIRE(arr.find_last_if(even) == arr.end());
+        STATIC_REQUIRE(arr.find_last_if(always_false) == arr.end());
+        CHECK_SAME_TYPE(decltype(arr.find_last_if(always_false)), array::const_iterator);
+        CHECK_NOEXCEPT(arr.find_last_if(always_throw));
+        CHECK_NOEXCEPT(arr.find_last_if(always_false));
+
+#if PHI_HAS_FEATURE_LAMBDA() && PHI_HAS_FEATURE_CONSTEXPR_LAMBDA()
         STATIC_REQUIRE(arr.find_last_if(lambda_eq1) == arr.end());
         STATIC_REQUIRE(arr.find_last_if(lambda_eq2) == arr.end());
         STATIC_REQUIRE(arr.find_last_if(lambda_even) == arr.end());
@@ -2701,6 +3081,7 @@ TEST_CASE("array find_last_if")
         CHECK_SAME_TYPE(decltype(arr.find_last_if(lambda_false)), array::const_iterator);
         CHECK_NOEXCEPT(arr.find_last_if(lambda_throw));
         CHECK_NOEXCEPT(arr.find_last_if(lambda_false));
+#endif
     }
 }
 
@@ -2710,6 +3091,25 @@ TEST_CASE("array find_last_if_not")
         using array = phi::array<int, 3u>;
         array arr{1, 2, 3};
 
+        CHECK(arr.find_last_if_not(eq0) == &arr.at(2u));
+        CHECK(arr.find_last_if_not(eq1) == &arr.at(2u));
+        CHECK(arr.find_last_if_not(eq2) == &arr.at(2u));
+        CHECK(arr.find_last_if_not(eq3) == &arr.at(1u));
+        CHECK(arr.find_last_if_not(ne0) == arr.end());
+        CHECK(arr.find_last_if_not(ne1) == &arr.at(0u));
+        CHECK(arr.find_last_if_not(ne2) == &arr.at(1u));
+        CHECK(arr.find_last_if_not(ne3) == &arr.at(2u));
+        CHECK(arr.find_last_if_not(odd) == &arr.at(1u));
+        CHECK(arr.find_last_if_not(even) == &arr.at(2u));
+        CHECK(arr.find_last_if_not(always_false) == &arr.at(2u));
+        CHECK(arr.find_last_if_not(always_true) == arr.end());
+        CHECK_SAME_TYPE(decltype(arr.find_last_if_not(always_false)), array::iterator);
+        CHECK_NOT_NOEXCEPT(arr.find_last_if_not(always_throw));
+#if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
+        CHECK_NOEXCEPT(arr.find_last_if_not(always_false));
+#endif
+
+#if PHI_HAS_FEATURE_LAMBDA()
         CHECK(arr.find_last_if_not(lambda_eq0) == &arr.at(2u));
         CHECK(arr.find_last_if_not(lambda_eq1) == &arr.at(2u));
         CHECK(arr.find_last_if_not(lambda_eq2) == &arr.at(2u));
@@ -2724,13 +3124,25 @@ TEST_CASE("array find_last_if_not")
         CHECK(arr.find_last_if_not(lambda_true) == arr.end());
         CHECK_SAME_TYPE(decltype(arr.find_last_if_not(lambda_false)), array::iterator);
         CHECK_NOT_NOEXCEPT(arr.find_last_if_not(lambda_throw));
+#    if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
         CHECK_NOEXCEPT(arr.find_last_if_not(lambda_false));
+#    endif
+#endif
     }
 
     {
         using array = phi::array<int, 0u>;
         array arr;
 
+        CHECK(arr.find_last_if_not(eq1) == arr.end());
+        CHECK(arr.find_last_if_not(eq2) == arr.end());
+        CHECK(arr.find_last_if_not(even) == arr.end());
+        CHECK(arr.find_last_if_not(always_true) == arr.end());
+        CHECK_SAME_TYPE(decltype(arr.find_last_if_not(always_false)), array::iterator);
+        CHECK_NOEXCEPT(arr.find_last_if_not(always_throw));
+        CHECK_NOEXCEPT(arr.find_last_if_not(always_false));
+
+#if PHI_HAS_FEATURE_LAMBDA()
         CHECK(arr.find_last_if_not(lambda_eq1) == arr.end());
         CHECK(arr.find_last_if_not(lambda_eq2) == arr.end());
         CHECK(arr.find_last_if_not(lambda_even) == arr.end());
@@ -2738,12 +3150,32 @@ TEST_CASE("array find_last_if_not")
         CHECK_SAME_TYPE(decltype(arr.find_last_if_not(lambda_false)), array::iterator);
         CHECK_NOEXCEPT(arr.find_last_if_not(lambda_throw));
         CHECK_NOEXCEPT(arr.find_last_if_not(lambda_false));
+#endif
     }
 
     {
         using array = phi::array<int, 3u>;
         const array arr{1, 2, 3};
 
+        CHECK(arr.find_last_if_not(eq0) == &arr.at(2u));
+        CHECK(arr.find_last_if_not(eq1) == &arr.at(2u));
+        CHECK(arr.find_last_if_not(eq2) == &arr.at(2u));
+        CHECK(arr.find_last_if_not(eq3) == &arr.at(1u));
+        CHECK(arr.find_last_if_not(ne0) == arr.end());
+        CHECK(arr.find_last_if_not(ne1) == &arr.at(0u));
+        CHECK(arr.find_last_if_not(ne2) == &arr.at(1u));
+        CHECK(arr.find_last_if_not(ne3) == &arr.at(2u));
+        CHECK(arr.find_last_if_not(even) == &arr.at(2u));
+        CHECK(arr.find_last_if_not(odd) == &arr.at(1u));
+        CHECK(arr.find_last_if_not(always_false) == &arr.at(2u));
+        CHECK(arr.find_last_if_not(always_true) == arr.end());
+        CHECK_SAME_TYPE(decltype(arr.find_last_if_not(always_false)), array::const_iterator);
+        CHECK_NOT_NOEXCEPT(arr.find_last_if_not(always_throw));
+#if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
+        CHECK_NOEXCEPT(arr.find_last_if_not(always_false));
+#endif
+
+#if PHI_HAS_FEATURE_LAMBDA()
         CHECK(arr.find_last_if_not(lambda_eq0) == &arr.at(2u));
         CHECK(arr.find_last_if_not(lambda_eq1) == &arr.at(2u));
         CHECK(arr.find_last_if_not(lambda_eq2) == &arr.at(2u));
@@ -2758,13 +3190,25 @@ TEST_CASE("array find_last_if_not")
         CHECK(arr.find_last_if_not(lambda_true) == arr.end());
         CHECK_SAME_TYPE(decltype(arr.find_last_if_not(lambda_false)), array::const_iterator);
         CHECK_NOT_NOEXCEPT(arr.find_last_if_not(lambda_throw));
+#    if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
         CHECK_NOEXCEPT(arr.find_last_if_not(lambda_false));
+#    endif
+#endif
     }
 
     {
         using array = phi::array<int, 0u>;
         const array arr;
 
+        CHECK(arr.find_last_if_not(eq1) == arr.end());
+        CHECK(arr.find_last_if_not(eq2) == arr.end());
+        CHECK(arr.find_last_if_not(even) == arr.end());
+        CHECK(arr.find_last_if_not(always_true) == arr.end());
+        CHECK_SAME_TYPE(decltype(arr.find_last_if_not(always_false)), array::const_iterator);
+        CHECK_NOEXCEPT(arr.find_last_if_not(always_throw));
+        CHECK_NOEXCEPT(arr.find_last_if_not(always_false));
+
+#if PHI_HAS_FEATURE_LAMBDA()
         CHECK(arr.find_last_if_not(lambda_eq1) == arr.end());
         CHECK(arr.find_last_if_not(lambda_eq2) == arr.end());
         CHECK(arr.find_last_if_not(lambda_even) == arr.end());
@@ -2772,6 +3216,7 @@ TEST_CASE("array find_last_if_not")
         CHECK_SAME_TYPE(decltype(arr.find_last_if_not(lambda_false)), array::const_iterator);
         CHECK_NOEXCEPT(arr.find_last_if_not(lambda_throw));
         CHECK_NOEXCEPT(arr.find_last_if_not(lambda_false));
+#endif
     }
 
     {
@@ -2780,26 +3225,58 @@ TEST_CASE("array find_last_if_not")
 
         // NOTE: Before gcc-10 some of the sanitizer pointer functions are not constexpr
 #if PHI_COMPILER_IS_BELOW(GCC, 10, 0, 0)
+        CHECK(arr.find_last_if_not(eq3) == &arr.at(1u));
+        CHECK(arr.find_last_if_not(eq1) == &arr.at(2u));
+        CHECK(arr.find_last_if_not(odd) == &arr.at(1u));
+        CHECK(arr.find_last_if_not(always_true) == arr.end());
+#else
+        EXT_STATIC_REQUIRE(arr.find_last_if_not(eq3) == &arr.at(1u));
+        EXT_STATIC_REQUIRE(arr.find_last_if_not(eq1) == &arr.at(2u));
+        EXT_STATIC_REQUIRE(arr.find_last_if_not(odd) == &arr.at(1u));
+        EXT_STATIC_REQUIRE(arr.find_last_if_not(always_true) == arr.end());
+#endif
+
+        CHECK_SAME_TYPE(decltype(arr.find_last_if_not(always_false)), array::const_iterator);
+        CHECK_NOT_NOEXCEPT(arr.find_last_if_not(always_throw));
+#if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
+        CHECK_NOEXCEPT(arr.find_last_if_not(always_false));
+#endif
+
+#if PHI_HAS_FEATURE_LAMBDA() && PHI_HAS_FEATURE_CONSTEXPR_LAMBDA()
+        // NOTE: Before gcc-10 some of the sanitizer pointer functions are not constexpr
+#    if PHI_COMPILER_IS_BELOW(GCC, 10, 0, 0)
         CHECK(arr.find_last_if_not(lambda_eq3) == &arr.at(1u));
         CHECK(arr.find_last_if_not(lambda_eq1) == &arr.at(2u));
         CHECK(arr.find_last_if_not(lambda_odd) == &arr.at(1u));
         CHECK(arr.find_last_if_not(lambda_true) == arr.end());
-#else
+#    else
         EXT_STATIC_REQUIRE(arr.find_last_if_not(lambda_eq3) == &arr.at(1u));
         EXT_STATIC_REQUIRE(arr.find_last_if_not(lambda_eq1) == &arr.at(2u));
         EXT_STATIC_REQUIRE(arr.find_last_if_not(lambda_odd) == &arr.at(1u));
         EXT_STATIC_REQUIRE(arr.find_last_if_not(lambda_true) == arr.end());
-#endif
+#    endif
 
         CHECK_SAME_TYPE(decltype(arr.find_last_if_not(lambda_false)), array::const_iterator);
         CHECK_NOT_NOEXCEPT(arr.find_last_if_not(lambda_throw));
+#    if PHI_HAS_FEATURE_NOEXCEPT_CLASS_EXPR()
         CHECK_NOEXCEPT(arr.find_last_if_not(lambda_false));
+#    endif
+#endif
     }
 
     {
         using array = phi::array<int, 0u>;
         PHI_CONSTEXPR array arr;
 
+        STATIC_REQUIRE(arr.find_last_if_not(eq1) == arr.end());
+        STATIC_REQUIRE(arr.find_last_if_not(eq2) == arr.end());
+        STATIC_REQUIRE(arr.find_last_if_not(even) == arr.end());
+        STATIC_REQUIRE(arr.find_last_if_not(always_false) == arr.end());
+        CHECK_SAME_TYPE(decltype(arr.find_last_if_not(always_false)), array::const_iterator);
+        CHECK_NOEXCEPT(arr.find_last_if_not(always_throw));
+        CHECK_NOEXCEPT(arr.find_last_if_not(always_false));
+
+#if PHI_HAS_FEATURE_LAMBDA() && PHI_HAS_FEATURE_CONSTEXPR_LAMBDA()
         STATIC_REQUIRE(arr.find_last_if_not(lambda_eq1) == arr.end());
         STATIC_REQUIRE(arr.find_last_if_not(lambda_eq2) == arr.end());
         STATIC_REQUIRE(arr.find_last_if_not(lambda_even) == arr.end());
@@ -2807,6 +3284,7 @@ TEST_CASE("array find_last_if_not")
         CHECK_SAME_TYPE(decltype(arr.find_last_if_not(lambda_false)), array::const_iterator);
         CHECK_NOEXCEPT(arr.find_last_if_not(lambda_throw));
         CHECK_NOEXCEPT(arr.find_last_if_not(lambda_false));
+#endif
     }
 }
 

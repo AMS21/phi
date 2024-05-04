@@ -42,14 +42,14 @@ struct source_location
     }
 
 #if PHI_SUPPORTS_BUILTIN_LINE()
-    static PHI_CONSTEXPR source_location current(const char*    file     = __builtin_FILE(),
-                                                 const char*    function = __builtin_FUNCTION(),
-                                                 uint_least32_t line     = __builtin_LINE()
+    static PHI_CONSTEXPR source_location current(
+            const char* file = __builtin_FILE(), const char* function = __builtin_FUNCTION(),
+            uint_least32_t line = static_cast<uint_least32_t>(__builtin_LINE())
 #    if PHI_SUPPORTS_BUILTIN_COLUMN()
-                                                         ,
-                                                 uint_least32_t column = __builtin_COLUMN()
+                    ,
+            uint_least32_t column = __builtin_COLUMN()
 #    endif
-                                                         ) PHI_NOEXCEPT
+                    ) PHI_NOEXCEPT
     {
         return source_location{file, function, line,
 #    if PHI_SUPPORTS_BUILTIN_COLUMN()

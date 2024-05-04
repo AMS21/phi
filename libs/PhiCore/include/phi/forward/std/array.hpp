@@ -15,7 +15,8 @@
 //       And removed in this commit: https://github.com/gcc-mirror/gcc/commit/6db082477ad839438c4b54fc61083276c68d47ec
 // It was added with the gcc release 4.8.0 from March 22, 2013
 // and removed with the gcc release 11.1.0 from April 27, 2021
-#if PHI_STANDARD_LIBRARY_LIBSTDCXX() && __GLIBCXX__ >= 20130322 && _GLIBCXX_RELEASE < 11
+#if PHI_STANDARD_LIBRARY_LIBSTDCXX() && __GLIBCXX__ >= 20130322 &&                                 \
+        (!defined(_GLIBCXX_RELEASE) || _GLIBCXX_RELEASE < 11)
 #    define DETAIL_PHI_FORWARD_STD_DEBUG_ARRAY() 1
 #else
 #    define DETAIL_PHI_FORWARD_STD_DEBUG_ARRAY() 0

@@ -78,12 +78,16 @@ TEST_CASE("type_traits.true_type")
 
     STATIC_REQUIRE(phi::true_type::value != false);
 
+#if PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     PHI_CONSTEXPR phi::true_type true1;
     PHI_CONSTEXPR phi::true_type true2 = true1;
     STATIC_REQUIRE(true1);
     STATIC_REQUIRE(true2);
     STATIC_REQUIRE(static_cast<bool>(true1));
     STATIC_REQUIRE(static_cast<bool>(true2));
+#else
+    SKIP_CHECK();
+#endif
 }
 
 TEST_CASE("type_traits.false_type")
@@ -106,10 +110,14 @@ TEST_CASE("type_traits.false_type")
 
     STATIC_REQUIRE(phi::false_type::value != true);
 
+#if PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     PHI_CONSTEXPR phi::false_type false1;
     PHI_CONSTEXPR phi::false_type false2 = false1;
     STATIC_REQUIRE_FALSE(false1);
     STATIC_REQUIRE_FALSE(false2);
     STATIC_REQUIRE_FALSE(static_cast<bool>(false1));
     STATIC_REQUIRE_FALSE(static_cast<bool>(false2));
+#else
+    SKIP_CHECK();
+#endif
 }

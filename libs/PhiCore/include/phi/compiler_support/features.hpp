@@ -311,7 +311,7 @@
 
 // attribute fallthrough
 // https://en.cppreference.com/w/cpp/language/attributes/fallthrough
-// https://en.cppreference.com/w/cpp/language/attributes/fallthrough
+// https://wg21.link/P0188R1
 #    if PHI_COMPILER_IS_ATLEAST(GCC, 7, 0, 0) || PHI_COMPILER_IS_ATLEAST(CLANG, 3, 9, 0) ||        \
             PHI_COMPILER_IS_ATLEAST(MSVC, 19, 10, 0) || PHI_COMPILER_IS(APPLECLANG) ||             \
             PHI_COMPILER_IS(EMCC)
@@ -320,15 +320,39 @@
 #        define PHI_HAS_FEATURE_ATTRIBUTE_FALLTHROUGH() 0
 #    endif
 
+// Class template argument deduction
+// https://en.cppreference.com/w/cpp/language/class_template_argument_deduction
+// https://wg21.link/P0091R3
+#    if PHI_COMPILER_IS_ATLEAST(GCC, 7, 0, 0) || PHI_COMPILER_IS_ATLEAST(CLANG, 5, 0, 0) ||        \
+            PHI_COMPILER_IS_ATLEAST(MSVC, 19, 14, 0) || PHI_COMPILER_IS(APPLECLANG) ||             \
+            PHI_COMPILER_IS(EMCC)
+#        define PHI_HAS_FEATURE_CLASS_TEMPLATE_ARGUMENT_DEDUCTION() 1
+#    else
+#        define PHI_HAS_FEATURE_CLASS_TEMPLATE_ARGUMENT_DEDUCTION() 0
+#    endif
+
+// Guaranteed copy elision
+// https://en.cppreference.com/w/cpp/language/copy_elision
+// https://wg21.link/P0135R1
+#    if PHI_COMPILER_IS_ATLEAST(GCC, 7, 0, 0) || PHI_COMPILER_IS_ATLEAST(CLANG, 4, 0, 0) ||        \
+            PHI_COMPILER_IS_ATLEAST(MSVC, 19, 13, 0) || PHI_COMPILER_IS(APPLECLANG) ||             \
+            PHI_COMPILER_IS(EMCC)
+#        define PHI_HAS_FEATURE_GUARANTEED_COPY_ELISION() 1
+#    else
+#        define PHI_HAS_FEATURE_GUARANTEED_COPY_ELISION() 0
+#    endif
+
 #else
-#    define PHI_HAS_FEATURE_INLINE_VARIABLES()       0
-#    define PHI_HAS_FEATURE_NOEXCEPT_FUNCTION_TYPE() 0
-#    define PHI_HAS_FEATURE_ATTRIBUTE_NODISCARD()    0
-#    define PHI_HAS_FEATURE_DEDUCTION_GUIDES()       0
-#    define PHI_HAS_FEATURE_CONSTEXPR_LAMBDA()       0
-#    define PHI_HAS_FEATURE_ATTRIBUTE_MAYBE_UNUSED() 0
-#    define PHI_HAS_FEATURE_IF_CONSTEXPR()           0
-#    define PHI_HAS_FEATURE_ATTRIBUTE_FALLTHROUGH()  0
+#    define PHI_HAS_FEATURE_INLINE_VARIABLES()                  0
+#    define PHI_HAS_FEATURE_NOEXCEPT_FUNCTION_TYPE()            0
+#    define PHI_HAS_FEATURE_ATTRIBUTE_NODISCARD()               0
+#    define PHI_HAS_FEATURE_DEDUCTION_GUIDES()                  0
+#    define PHI_HAS_FEATURE_CONSTEXPR_LAMBDA()                  0
+#    define PHI_HAS_FEATURE_ATTRIBUTE_MAYBE_UNUSED()            0
+#    define PHI_HAS_FEATURE_IF_CONSTEXPR()                      0
+#    define PHI_HAS_FEATURE_ATTRIBUTE_FALLTHROUGH()             0
+#    define PHI_HAS_FEATURE_CLASS_TEMPLATE_ARGUMENT_DEDUCTION() 0
+#    define PHI_HAS_FEATURE_GUARANTEED_COPY_ELISION()           0
 #endif
 
 // C++-20 features

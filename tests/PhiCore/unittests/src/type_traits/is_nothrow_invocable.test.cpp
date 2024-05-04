@@ -54,7 +54,7 @@ PHI_CONSTEXPR bool throws_invocable()
            !phi::is_not_invocable<FunctionT, ArgsT...>::value &&
            !phi::is_nothrow_invocable<FunctionT, ArgsT...>::value &&
            phi::is_not_nothrow_invocable<FunctionT, ArgsT...>::value
-#if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#if PHI_CPP_STANDARD_IS_ATLEAST(17) && PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
            && std::is_invocable<FunctionT, ArgsT...>::value &&
            !std::is_nothrow_invocable<FunctionT, ArgsT...>::value
 #endif
@@ -78,10 +78,14 @@ void test_noexcept_function_pointers()
 #if PHI_HAS_WORKING_IS_INVOCABLE()
 #    if !PHI_HAS_FEATURE_NOEXCEPT_FUNCTION_TYPE()
     {
+#        if PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
         // Check that PMF's and function pointers *work*. is_nothrow_invocable will always
         // return false because 'noexcept' is not part of the function type.
         STATIC_REQUIRE(throws_invocable<decltype(&Dummy::foo), Dummy&>());
         STATIC_REQUIRE(throws_invocable<decltype(&Dummy::bar)>());
+#        else
+        SKIP_CHECK();
+#        endif
     }
 #    else
     {
@@ -141,7 +145,7 @@ void test_is_nothrow_invocable()
     TEST_TYPE_TRAITS_TYPE_DEFS(phi::is_not_nothrow_invocable<FunctionT, ArgsT...>);
 
     // Standard compatibility
-#    if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#    if PHI_CPP_STANDARD_IS_ATLEAST(17) && PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     STATIC_REQUIRE(std::is_nothrow_invocable<FunctionT, ArgsT...>::value);
     STATIC_REQUIRE(std::is_invocable<FunctionT, ArgsT...>::value);
 #    endif
@@ -172,7 +176,7 @@ void test_is_not_nothrow_invocable()
     test_is_not_nothrow_invocable_no_std<FunctionT, ArgsT...>();
 
     // Standard compatibility
-#    if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#    if PHI_CPP_STANDARD_IS_ATLEAST(17) && PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     STATIC_REQUIRE_FALSE(std::is_nothrow_invocable<FunctionT, ArgsT...>::value);
 #    endif
 #endif

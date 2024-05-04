@@ -85,10 +85,19 @@ TEST_CASE("core.monitor.functions")
 
         const phi::monitor<MonitorTestData> const_mon{3, 3.14};
 
-        auto const_lock = const_mon.ManuallyLock();
+        {
+            auto const_lock = const_mon.ManuallyLock();
 
-        CHECK(const_lock->val == 2u);
-        CHECK(const_lock.monitor == &const_mon);
+            CHECK(const_lock->val == 2u);
+            CHECK(const_lock.monitor == &const_mon);
+        }
+
+        {
+            const auto c_const_lock = const_mon.ManuallyLock();
+
+            CHECK(c_const_lock->val == 2u);
+            CHECK(c_const_lock.monitor == &const_mon);
+        }
     }
 
     SECTION("GetThreadUnsafeAccess")

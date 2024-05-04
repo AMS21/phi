@@ -873,7 +873,7 @@ public:
     }
 
     // NOLINTNEXTLINE(bugprone-unhandled-self-assignment)
-    PHI_EXTENDED_CONSTEXPR tracked& operator=(const tracked& other) PHI_NOEXCEPT
+    PHI_EXTENDED_CONSTEXPR_CLASS tracked& operator=(const tracked& other) PHI_NOEXCEPT
     {
         PHI_RELEASE_ASSERT(m_State != State::Destroyed, "this object is already destroyed");
         PHI_RELEASE_ASSERT(other.m_State != State::MovedFrom, "other object is already moved-from");
@@ -883,7 +883,7 @@ public:
         return *this;
     }
 
-    PHI_EXTENDED_CONSTEXPR tracked& operator=(tracked&& other) PHI_NOEXCEPT
+    PHI_EXTENDED_CONSTEXPR_CLASS tracked& operator=(tracked&& other) PHI_NOEXCEPT
     {
         PHI_RELEASE_ASSERT(m_State != State::Destroyed, "this object is already destroyed");
         PHI_RELEASE_ASSERT(other.m_State != State::MovedFrom, "other object is already moved-from");
@@ -903,7 +903,7 @@ public:
         m_State = State::Destroyed;
     }
 
-    PHI_EXTENDED_CONSTEXPR void set_value(int new_val) PHI_NOEXCEPT
+    PHI_EXTENDED_CONSTEXPR_CLASS void set_value(int new_val) PHI_NOEXCEPT
     {
         PHI_RELEASE_ASSERT(m_State != State::Destroyed, "set_value() called on destroyed object");
         PHI_RELEASE_ASSERT(m_State != State::MovedFrom, "set_value() called on moved-from object");
@@ -911,7 +911,7 @@ public:
         m_Value = new_val;
     }
 
-    PHI_NODISCARD PHI_EXTENDED_CONSTEXPR int value() const PHI_NOEXCEPT
+    PHI_NODISCARD PHI_EXTENDED_CONSTEXPR_CLASS int value() const PHI_NOEXCEPT
     {
         PHI_RELEASE_ASSERT(m_State != State::Destroyed, "value() called on destroyed object");
         PHI_RELEASE_ASSERT(m_State != State::MovedFrom, "value() called on moved-from object");

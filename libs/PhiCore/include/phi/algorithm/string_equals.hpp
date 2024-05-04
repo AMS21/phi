@@ -66,7 +66,7 @@ template <typename CharT>
 PHI_NODISCARD PHI_EXTENDED_CONSTEXPR boolean string_equals(const CharT* lhs,
                                                            const CharT* rhs) PHI_NOEXCEPT
 {
-    if ((lhs == nullptr || rhs == nullptr))
+    if (lhs == nullptr || rhs == nullptr)
     {
         return static_cast<bool>(lhs == rhs);
     }

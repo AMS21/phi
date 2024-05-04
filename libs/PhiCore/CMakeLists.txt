@@ -144,6 +144,7 @@ file(
   "include/phi/compiler_support/counter.hpp"
   "include/phi/compiler_support/cpp_standard.hpp"
   "include/phi/compiler_support/current_function.hpp"
+  "include/phi/compiler_support/defect_report.hpp"
   "include/phi/compiler_support/deprecated.hpp"
   "include/phi/compiler_support/extended_attributes.hpp"
   "include/phi/compiler_support/features.hpp"

@@ -1134,42 +1134,12 @@ public:
     }
 
     /// Returns `rhs` if `*this` is empty, otherwise the current value.
-    PHI_NODISCARD PHI_EXTENDED_CONSTEXPR optional disjunction(const optional& rhs) &
-    {
-        return has_value() ? *this : rhs;
-    }
-
-    PHI_NODISCARD PHI_EXTENDED_CONSTEXPR optional disjunction(const optional& rhs) const&
-    {
-        return has_value() ? *this : rhs;
-    }
-
-    PHI_NODISCARD PHI_EXTENDED_CONSTEXPR optional disjunction(const optional& rhs) &&
+    PHI_NODISCARD PHI_EXTENDED_CONSTEXPR optional disjunction(const optional& rhs) const
     {
         return has_value() ? move(*this) : rhs;
     }
 
-    PHI_NODISCARD PHI_EXTENDED_CONSTEXPR optional disjunction(const optional& rhs) const&&
-    {
-        return has_value() ? move(*this) : rhs;
-    }
-
-    PHI_NODISCARD PHI_EXTENDED_CONSTEXPR optional disjunction(optional&& rhs) &
-    {
-        return has_value() ? *this : move(rhs);
-    }
-
-    PHI_NODISCARD PHI_EXTENDED_CONSTEXPR optional disjunction(optional&& rhs) const&
-    {
-        return has_value() ? *this : move(rhs);
-    }
-
-    PHI_NODISCARD PHI_EXTENDED_CONSTEXPR optional disjunction(optional&& rhs) &&
-    {
-        return has_value() ? move(*this) : move(rhs);
-    }
-
-    PHI_NODISCARD PHI_EXTENDED_CONSTEXPR optional disjunction(optional&& rhs) const&&
+    PHI_NODISCARD PHI_EXTENDED_CONSTEXPR optional disjunction(optional&& rhs) const
     {
         return has_value() ? move(*this) : move(rhs);
     }
@@ -1854,49 +1824,15 @@ public:
     }
 
     /// Returns `rhs` if `*this` is empty, otherwise the current value.
-    PHI_NODISCARD PHI_CONSTEXPR optional disjunction(const optional& rhs) &
-    {
-        return has_value() ? *this : rhs;
-    }
-
-    PHI_NODISCARD PHI_CONSTEXPR optional disjunction(const optional& rhs) &&
+    PHI_NODISCARD PHI_CONSTEXPR optional disjunction(const optional& rhs) const
     {
         return has_value() ? move(*this) : rhs;
     }
 
-#    if PHI_HAS_FEATURE_EXTENDED_CONSTEXPR()
-    PHI_NODISCARD PHI_CONSTEXPR optional disjunction(const optional& rhs) const&
-    {
-        return has_value() ? *this : rhs;
-    }
-
-    PHI_NODISCARD PHI_CONSTEXPR optional disjunction(const optional& rhs) const&&
-    {
-        return has_value() ? move(*this) : rhs;
-    }
-#    endif
-
-    PHI_NODISCARD PHI_CONSTEXPR optional disjunction(optional&& rhs) &
-    {
-        return has_value() ? *this : move(rhs);
-    }
-
-    PHI_NODISCARD PHI_CONSTEXPR optional disjunction(optional&& rhs) &&
+    PHI_NODISCARD PHI_CONSTEXPR optional disjunction(optional&& rhs) const
     {
         return has_value() ? move(*this) : move(rhs);
     }
-
-#    if PHI_HAS_FEATURE_EXTENDED_CONSTEXPR()
-    PHI_NODISCARD PHI_CONSTEXPR optional disjunction(optional&& rhs) const&
-    {
-        return has_value() ? *this : move(rhs);
-    }
-
-    PHI_NODISCARD PHI_CONSTEXPR optional disjunction(optional&& rhs) const&&
-    {
-        return has_value() ? move(*this) : move(rhs);
-    }
-#    endif
 
     /// Takes the value out of the optional, leaving it empty
     PHI_EXTENDED_CONSTEXPR optional take()

@@ -3,7 +3,6 @@
 #include <phi/compiler_support/constexpr.hpp>
 #include <phi/core/assert.hpp>
 #include <phi/core/to_address.hpp>
-#include <memory>
 
 struct Irrelevant;
 
@@ -47,14 +46,18 @@ struct P3
     int* m_pointer;
 };
 
+DETAIL_PHI_BEGIN_NAMESPACE()
+
 template <>
-struct phi::pointer_traits<P3>
+struct pointer_traits<P3>
 {
     static PHI_CONSTEXPR int* to_address(const P3& pointer)
     {
         return pointer.m_pointer;
     }
 };
+
+DETAIL_PHI_END_NAMESPACE()
 
 struct P4
 {
@@ -67,14 +70,18 @@ struct P4
     int* m_pointer;
 };
 
+DETAIL_PHI_BEGIN_NAMESPACE()
+
 template <>
-struct phi::pointer_traits<P4>
+struct pointer_traits<P4>
 {
     static PHI_CONSTEXPR int* to_address(const P4& pointer)
     {
         return pointer.m_pointer;
     }
 };
+
+DETAIL_PHI_END_NAMESPACE()
 
 struct P5
 {
@@ -85,11 +92,15 @@ struct P5
 struct P6
 {};
 
+DETAIL_PHI_BEGIN_NAMESPACE()
+
 template <>
-struct phi::pointer_traits<P6>
+struct pointer_traits<P6>
 {
     static int const* const& to_address(const P6&);
 };
+
+DETAIL_PHI_END_NAMESPACE()
 
 // Taken from a build breakage caused in Clang
 namespace P7
@@ -149,14 +160,18 @@ namespace P8
     };
 } // namespace P8
 
+DETAIL_PHI_BEGIN_NAMESPACE()
+
 template <typename TypeT>
-struct phi::pointer_traits<P8::FancyPtrB<TypeT>>
+struct pointer_traits<P8::FancyPtrB<TypeT>>
 {
     static PHI_CONSTEXPR TypeT* to_address(const P8::FancyPtrB<TypeT>& pointer)
     {
         return pointer.m_pointer;
     }
 };
+
+DETAIL_PHI_END_NAMESPACE()
 
 struct Incomplete;
 

@@ -9,6 +9,53 @@
 #include <phi/iterator/begin.hpp>
 #include <phi/iterator/end.hpp>
 
+static PHI_CONSTEXPR bool eq0(const int& value) PHI_NOEXCEPT
+{
+    return value == 0;
+}
+
+static PHI_CONSTEXPR bool eq1(const int& value) PHI_NOEXCEPT
+{
+    return value == 1;
+}
+
+static PHI_CONSTEXPR bool eq9(const int& value) PHI_NOEXCEPT
+{
+    return value == 9;
+}
+
+static PHI_CONSTEXPR bool eq10(const int& value) PHI_NOEXCEPT
+{
+    return value == 10;
+}
+
+static PHI_CONSTEXPR bool even(const int& value) PHI_NOEXCEPT
+{
+    return value % 2 == 0;
+}
+
+static PHI_CONSTEXPR bool odd(const int& value) PHI_NOEXCEPT
+{
+    return value % 2 == 1;
+}
+
+static PHI_CONSTEXPR bool always_true(const int& /*value*/) PHI_NOEXCEPT
+{
+    return true;
+}
+
+static PHI_CONSTEXPR bool always_false(const int& /*value*/) PHI_NOEXCEPT
+{
+    return false;
+}
+
+static bool always_false_throw(const int& /*value*/)
+{
+    throw "";
+}
+
+#if PHI_HAS_FEATURE_LAMBDA()
+
 static PHI_CONSTEXPR_AND_CONST auto lambda_eq0 = [](const int& value)
                                                          PHI_NOEXCEPT { return value == 0; };
 static PHI_CONSTEXPR_AND_CONST auto lambda_eq1 = [](const int& value)
@@ -29,11 +76,23 @@ static PHI_CONSTEXPR_AND_CONST auto lambda_false_throw = [](const int& /*value*/
     throw "";
 };
 
+#endif
+
 TEST_CASE("algorithm.find_if - c-array")
 {
     static PHI_CONSTEXPR_AND_CONST int array[10]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
     // Runtime
+    CHECK(phi::find_if(phi::begin(array), phi::end(array), eq0) == phi::begin(array));
+    CHECK(phi::find_if(phi::begin(array), phi::end(array), eq1) == &phi::at(array, 1u));
+    CHECK(phi::find_if(phi::begin(array), phi::end(array), eq9) == &phi::at(array, 9u));
+    CHECK(phi::find_if(phi::begin(array), phi::end(array), eq10) == phi::end(array));
+    CHECK(phi::find_if(phi::begin(array), phi::end(array), even) == &phi::at(array, 0u));
+    CHECK(phi::find_if(phi::begin(array), phi::end(array), odd) == &phi::at(array, 1u));
+    CHECK(phi::find_if(phi::begin(array), phi::end(array), always_true) == &phi::at(array, 0u));
+    CHECK(phi::find_if(phi::begin(array), phi::end(array), always_false) == phi::end(array));
+
+#if PHI_HAS_FEATURE_LAMBDA()
     CHECK(phi::find_if(phi::begin(array), phi::end(array), lambda_eq0) == phi::begin(array));
     CHECK(phi::find_if(phi::begin(array), phi::end(array), lambda_eq1) == &phi::at(array, 1u));
     CHECK(phi::find_if(phi::begin(array), phi::end(array), lambda_eq9) == &phi::at(array, 9u));
@@ -42,8 +101,25 @@ TEST_CASE("algorithm.find_if - c-array")
     CHECK(phi::find_if(phi::begin(array), phi::end(array), lambda_odd) == &phi::at(array, 1u));
     CHECK(phi::find_if(phi::begin(array), phi::end(array), lambda_true) == &phi::at(array, 0u));
     CHECK(phi::find_if(phi::begin(array), phi::end(array), lambda_false) == phi::end(array));
+#endif
 
     // Constexpr
+    EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), eq0) == phi::begin(array));
+    EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), eq1) ==
+                       &phi::at(array, 1u));
+    EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), eq9) ==
+                       &phi::at(array, 9u));
+    EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), eq10) == phi::end(array));
+    EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), even) ==
+                       &phi::at(array, 0u));
+    EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), odd) ==
+                       &phi::at(array, 1u));
+    EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), always_true) ==
+                       &phi::at(array, 0u));
+    EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), always_false) ==
+                       phi::end(array));
+
+#if PHI_HAS_FEATURE_LAMBDA() && PHI_HAS_FEATURE_CONSTEXPR_LAMBDA()
     EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), lambda_eq0) ==
                        phi::begin(array));
     EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), lambda_eq1) ==
@@ -60,8 +136,20 @@ TEST_CASE("algorithm.find_if - c-array")
                        &phi::at(array, 0u));
     EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), lambda_false) ==
                        phi::end(array));
+#endif
 
     // Noexcept
+    CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), eq0));
+    CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), eq1));
+    CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), eq9));
+    CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), eq10));
+    CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), even));
+    CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), odd));
+    CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), always_true));
+    CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), always_false));
+    CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), always_false_throw));
+
+#if PHI_HAS_FEATURE_LAMBDA()
     CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), lambda_eq0));
     CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), lambda_eq1));
     CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), lambda_eq9));
@@ -70,7 +158,8 @@ TEST_CASE("algorithm.find_if - c-array")
     CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), lambda_odd));
     CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), lambda_true));
     CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), lambda_false));
-    CHECK_NOT_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), lambda_false_throw));
+    CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), lambda_false_throw));
+#endif
 }
 
 TEST_CASE("algorithm.find_if - phi::array")
@@ -78,6 +167,16 @@ TEST_CASE("algorithm.find_if - phi::array")
     static PHI_CONSTEXPR_AND_CONST phi::array<int, 10u> array{{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}};
 
     // Runtime
+    CHECK(phi::find_if(phi::begin(array), phi::end(array), eq0) == phi::begin(array));
+    CHECK(phi::find_if(phi::begin(array), phi::end(array), eq1) == &phi::at(array, 1u));
+    CHECK(phi::find_if(phi::begin(array), phi::end(array), eq9) == &phi::at(array, 9u));
+    CHECK(phi::find_if(phi::begin(array), phi::end(array), eq10) == phi::end(array));
+    CHECK(phi::find_if(phi::begin(array), phi::end(array), even) == &phi::at(array, 0u));
+    CHECK(phi::find_if(phi::begin(array), phi::end(array), odd) == &phi::at(array, 1u));
+    CHECK(phi::find_if(phi::begin(array), phi::end(array), always_true) == &phi::at(array, 0u));
+    CHECK(phi::find_if(phi::begin(array), phi::end(array), always_false) == phi::end(array));
+
+#if PHI_HAS_FEATURE_LAMBDA()
     CHECK(phi::find_if(phi::begin(array), phi::end(array), lambda_eq0) == phi::begin(array));
     CHECK(phi::find_if(phi::begin(array), phi::end(array), lambda_eq1) == &phi::at(array, 1u));
     CHECK(phi::find_if(phi::begin(array), phi::end(array), lambda_eq9) == &phi::at(array, 9u));
@@ -86,8 +185,25 @@ TEST_CASE("algorithm.find_if - phi::array")
     CHECK(phi::find_if(phi::begin(array), phi::end(array), lambda_odd) == &phi::at(array, 1u));
     CHECK(phi::find_if(phi::begin(array), phi::end(array), lambda_true) == &phi::at(array, 0u));
     CHECK(phi::find_if(phi::begin(array), phi::end(array), lambda_false) == phi::end(array));
+#endif
 
     // Constexpr
+    EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), eq0) == phi::begin(array));
+    EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), eq1) ==
+                       &phi::at(array, 1u));
+    EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), eq9) ==
+                       &phi::at(array, 9u));
+    EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), eq10) == phi::end(array));
+    EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), even) ==
+                       &phi::at(array, 0u));
+    EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), odd) ==
+                       &phi::at(array, 1u));
+    EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), always_true) ==
+                       &phi::at(array, 0u));
+    EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), always_false) ==
+                       phi::end(array));
+
+#if PHI_HAS_FEATURE_LAMBDA() && PHI_HAS_FEATURE_CONSTEXPR_LAMBDA()
     EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), lambda_eq0) ==
                        phi::begin(array));
     EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), lambda_eq1) ==
@@ -104,8 +220,20 @@ TEST_CASE("algorithm.find_if - phi::array")
                        &phi::at(array, 0u));
     EXT_STATIC_REQUIRE(phi::find_if(phi::begin(array), phi::end(array), lambda_false) ==
                        phi::end(array));
+#endif
 
     // Noexcept
+    CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), eq0));
+    CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), eq1));
+    CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), eq9));
+    CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), eq10));
+    CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), even));
+    CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), odd));
+    CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), always_true));
+    CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), always_false));
+    CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), always_false_throw));
+
+#if PHI_HAS_FEATURE_LAMBDA()
     CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), lambda_eq0));
     CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), lambda_eq1));
     CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), lambda_eq9));
@@ -114,5 +242,6 @@ TEST_CASE("algorithm.find_if - phi::array")
     CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), lambda_odd));
     CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), lambda_true));
     CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), lambda_false));
-    CHECK_NOT_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), lambda_false_throw));
+    CHECK_NOEXCEPT(phi::find_if(phi::begin(array), phi::end(array), lambda_false_throw));
+#endif
 }

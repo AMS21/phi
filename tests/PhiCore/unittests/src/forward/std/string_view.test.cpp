@@ -1,5 +1,6 @@
 #include <phi/test/test_macros.hpp>
 
+#include <phi/compiler_support/libraries.hpp>
 #include <phi/forward/std/string_view.hpp>
 
 TEST_CASE("forward.std.string_view.forward")
@@ -19,7 +20,9 @@ TEST_CASE("forward.std.string_view.forward")
     CHECK(pointer6 == nullptr);
 }
 
-#include <string_view>
+#if PHI_SUPPORTS_STDLIB_STRING_VIEW()
+
+#    include <string_view>
 
 TEST_CASE("forward.std.string_view")
 {
@@ -37,3 +40,5 @@ TEST_CASE("forward.std.string_view")
     (void)view5;
     (void)view6;
 }
+
+#endif

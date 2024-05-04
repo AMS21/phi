@@ -899,13 +899,13 @@ TEST_CASE("integer")
 PHI_CLANG_SUPPRESS_WARNING_POP()
 PHI_GCC_SUPPRESS_WARNING_POP()
 
-PHI_CONSTEXPR static phi::detail::signed_integer_tag   stag;
-PHI_CONSTEXPR static phi::detail::unsigned_integer_tag utag;
+PHI_CONSTEXPR_AND_CONST static phi::detail::signed_integer_tag   stag{};
+PHI_CONSTEXPR_AND_CONST static phi::detail::unsigned_integer_tag utag{};
 
-PHI_CONSTEXPR static int imax = std::numeric_limits<int>::max();
-PHI_CONSTEXPR static int imin = std::numeric_limits<int>::min();
+PHI_CONSTEXPR_AND_CONST static int imax = std::numeric_limits<int>::max();
+PHI_CONSTEXPR_AND_CONST static int imin = std::numeric_limits<int>::min();
 
-PHI_CONSTEXPR static unsigned umax = std::numeric_limits<unsigned>::max();
+PHI_CONSTEXPR_AND_CONST static unsigned umax = std::numeric_limits<unsigned>::max();
 
 TEST_CASE("detail::will_addition_error")
 {

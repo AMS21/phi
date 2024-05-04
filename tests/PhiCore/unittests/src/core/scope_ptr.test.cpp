@@ -14,6 +14,8 @@
 #include <phi/type_traits/is_move_assignable.hpp>
 #include <phi/type_traits/is_move_constructible.hpp>
 
+PHI_GCC_SUPPRESS_WARNING("-Wunused-result")
+
 struct A
 {
     // NOLINTNEXTLINE(readability-convert-member-functions-to-static)

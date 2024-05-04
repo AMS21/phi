@@ -359,8 +359,13 @@ TEST_CASE("optional Constructors")
 
     std::vector<foo> v;
     v.emplace_back();
+
+#    if PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     phi::optional<std::vector<foo>> ov = phi::move(v);
     REQUIRE(ov->size() == 1);
+#    else
+    SKIP_CHECK();
+#    endif
 }
 
 TEST_CASE("optional emplace")

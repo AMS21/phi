@@ -18,6 +18,12 @@
 // MSVC before 2019 uses 201704 for C++-17
 #    define PHI_CPLUSPLUS_17() (201704L)
 
+#elif PHI_COMPILER_IS_BELOW(GCC, 7, 0, 0)
+
+// GCC versions before gcc-7 use 201500 for C++-17
+// See: https://godbolt.org/z/MEPP5xrEb
+#    define PHI_CPLUSPLUS_17() (201500L)
+
 #else
 
 // C++-17 standard from march 2017

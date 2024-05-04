@@ -165,7 +165,11 @@ TEST_CASE("BasicStringView", "[Container][StringView]")
         EXT_STATIC_REQUIRE_FALSE(move_view2.is_empty());
         EXT_STATIC_REQUIRE_FALSE(move_view2.is_null());
         EXT_STATIC_REQUIRE_FALSE(move_view2.begin() == nullptr);
+#if PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
         EXT_STATIC_REQUIRE_FALSE(move_view2.end() == nullptr);
+#else
+        SKIP_CHECK();
+#endif
     }
 
 #if PHI_SUPPORTS_STDLIB_STRING_VIEW()
@@ -372,7 +376,11 @@ TEST_CASE("BasicStringView", "[Container][StringView]")
 #else
         EXT_STATIC_REQUIRE(test_view.end() == (str + 4));
 #endif
+#if PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
         EXT_STATIC_REQUIRE_FALSE(test_view.end() == nullptr);
+#else
+        SKIP_CHECK();
+#endif
     }
 
     SECTION("cbegin")
@@ -402,7 +410,11 @@ TEST_CASE("BasicStringView", "[Container][StringView]")
 #else
         EXT_STATIC_REQUIRE(test_view.cend() == (str + 4));
 #endif
+#if PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
         EXT_STATIC_REQUIRE_FALSE(test_view.cend() == nullptr);
+#else
+        SKIP_CHECK();
+#endif
     }
 
     SECTION("rbegin")
@@ -703,7 +715,11 @@ TEST_CASE("BasicStringView", "[Container][StringView]")
             PHI_EXTENDED_CONSTEXPR phi::string_view sub_view = base_view.substring_view(
                     6u); // TODO: This line generates a linker error with GCC when npos is defined to be size_type instead of size_t
 
+#if PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
             EXT_STATIC_REQUIRE(phi::string_equals(sub_view.data(), "World"));
+#else
+            SKIP_CHECK();
+#endif
             EXT_STATIC_REQUIRE(sub_view.length() == 5u);
 
             PHI_EXTENDED_CONSTEXPR phi::string_view sub_view2 = base_view.substring_view(0u, 5u);

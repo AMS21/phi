@@ -26,7 +26,7 @@ void test_is_swappable_with()
     TEST_TYPE_TRAITS_TYPE_DEFS(phi::is_not_swappable_with<TypeT, OtherT>);
     TEST_TYPE_TRAITS_TYPE_DEFS(phi::is_not_swappable_with<OtherT, TypeT>);
 
-#if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#if PHI_CPP_STANDARD_IS_ATLEAST(17) && PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     STATIC_REQUIRE(std::is_swappable_with<TypeT, OtherT>::value);
     STATIC_REQUIRE(std::is_swappable_with<OtherT, TypeT>::value);
 #endif
@@ -52,7 +52,7 @@ void test_is_not_swappable_with()
     TEST_TYPE_TRAITS_TYPE_DEFS(phi::is_not_swappable_with<TypeT, OtherT>);
     TEST_TYPE_TRAITS_TYPE_DEFS(phi::is_not_swappable_with<OtherT, TypeT>);
 
-#if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#if PHI_CPP_STANDARD_IS_ATLEAST(17) && PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     STATIC_REQUIRE_FALSE(std::is_swappable_with<TypeT, OtherT>::value);
     STATIC_REQUIRE_FALSE(std::is_swappable_with<OtherT, TypeT>::value);
 #endif

@@ -42,6 +42,9 @@ SOFTWARE.
 #include <unordered_map>
 #include <vector>
 
+// gcc-6 throws this warning here
+PHI_GCC_SUPPRESS_WARNING("-Wunsafe-loop-optimizations")
+
 #if PHI_SUPPORTS_ADDRESS_OF() || PHI_SUPPORTS_IS_UNION()
 #    define STATIC_REQUIRE_ADR(...) EXT_STATIC_REQUIRE(__VA_ARGS__)
 #else

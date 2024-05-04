@@ -354,7 +354,9 @@ TEST_CASE("is_trivially_copy_constructible")
     test_is_trivially_copy_constructible<non_moveable>();
     test_is_not_trivially_copy_constructible<non_constructible>();
     test_is_not_trivially_copy_constructible<tracked>();
+#if PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     test_is_trivially_copy_constructible<trap_constructible>();
+#endif
     test_is_trivially_copy_constructible<trap_implicit_conversion>();
     test_is_trivially_copy_constructible<trap_comma>();
     test_is_trivially_copy_constructible<trap_call>();

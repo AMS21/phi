@@ -56,7 +56,7 @@ PHI_CONSTEXPR bool throws_invocable_r()
            !phi::is_not_invocable_r<RetT, FuncT, ArgsT...>::value &&
            !phi::is_nothrow_invocable_r<RetT, FuncT, ArgsT...>::value &&
            phi::is_not_nothrow_invocable_r<RetT, FuncT, ArgsT...>::value
-#    if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#    if PHI_CPP_STANDARD_IS_ATLEAST(17) && PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
            && std::is_invocable_r<RetT, FuncT, ArgsT...>::value &&
            !std::is_nothrow_invocable_r<RetT, FuncT, ArgsT...>::value
 #    endif
@@ -84,7 +84,7 @@ void test_is_nothrow_invocable_r()
     TEST_TYPE_TRAITS_TYPE_DEFS(phi::is_not_nothrow_invocable_r<FunctionT, ArgsT...>);
 
     // Standard compatibility
-#    if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#    if PHI_CPP_STANDARD_IS_ATLEAST(17) && PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     STATIC_REQUIRE(std::is_invocable_r<FunctionT, ArgsT...>::value);
     STATIC_REQUIRE(std::is_nothrow_invocable_r<FunctionT, ArgsT...>::value);
 #    endif
@@ -115,7 +115,7 @@ void test_is_not_nothrow_invocable_r()
     test_is_not_nothrow_invocable_r_no_std<FunctionT, ArgsT...>();
 
     // Standard compatibility
-#    if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#    if PHI_CPP_STANDARD_IS_ATLEAST(17) && PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     STATIC_REQUIRE_FALSE(std::is_nothrow_invocable_r<FunctionT, ArgsT...>::value);
 #    endif
 #endif

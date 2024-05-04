@@ -100,13 +100,7 @@ public:
     }
 #endif
 
-    PHI_NODISCARD PHI_EXTENDED_CONSTEXPR monitor_helper ManuallyLock() PHI_NOEXCEPT
-    {
-        return monitor_helper{this};
-    }
-
-    // NOLINTNEXTLINE(readability-const-return-type)
-    PHI_NODISCARD PHI_EXTENDED_CONSTEXPR const monitor_helper ManuallyLock() const PHI_NOEXCEPT
+    PHI_NODISCARD PHI_EXTENDED_CONSTEXPR monitor_helper ManuallyLock() const PHI_NOEXCEPT
     {
         return monitor_helper{this};
     }

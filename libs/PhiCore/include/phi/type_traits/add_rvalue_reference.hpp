@@ -7,9 +7,12 @@
 #    pragma once
 #endif
 
+#include "phi/compiler_support/features.hpp"
 #include "phi/compiler_support/intrinsics/add_rvalue_reference.hpp"
 
-#if PHI_SUPPORTS_ADD_RVALUE_REFERENCE()
+#if PHI_HAS_FEATURE_RVALUE_REFERENCES()
+
+#    if PHI_SUPPORTS_ADD_RVALUE_REFERENCE()
 
 DETAIL_PHI_BEGIN_NAMESPACE()
 
@@ -19,17 +22,22 @@ struct add_rvalue_reference
     using type = PHI_ADD_RVALUE_REFERENCE(TypeT);
 };
 
+#        if PHI_HAS_FEATURE_ALIAS_TEMPLATES()
+
 template <typename TypeT>
 using add_rvalue_reference_t = PHI_ADD_RVALUE_REFERENCE(TypeT);
 
-#else
+#        endif
 
-#    include "phi/type_traits/is_referenceable.hpp"
+#    else
+
+#        include "phi/type_traits/is_referenceable.hpp"
 
 DETAIL_PHI_BEGIN_NAMESPACE()
 
 namespace detail
 {
+
     template <typename TypeT, bool = is_referenceable<TypeT>::value>
     struct add_rvalue_reference_impl
     {
@@ -41,6 +49,7 @@ namespace detail
     {
         using type = TypeT&&;
     };
+
 } // namespace detail
 
 template <typename TypeT>
@@ -49,8 +58,32 @@ struct add_rvalue_reference
     using type = typename detail::add_rvalue_reference_impl<TypeT>::type;
 };
 
+#        if PHI_HAS_FEATURE_ALIAS_TEMPLATES()
+
 template <typename TypeT>
 using add_rvalue_reference_t = typename add_rvalue_reference<TypeT>::type;
+
+#        endif
+
+#    endif
+
+#else
+
+DETAIL_PHI_BEGIN_NAMESPACE()
+
+// We can't add rvalue reference since we don't support them, so just return them as is
+template <typename TypeT>
+struct add_rvalue_reference
+{
+    using type = TypeT;
+};
+
+#    if PHI_HAS_FEATURE_ALIAS_TEMPLATES()
+
+template <typename TypeT>
+using add_rvalue_reference_t = typename add_rvalue_reference<TypeT>::type;
+
+#    endif
 
 #endif
 

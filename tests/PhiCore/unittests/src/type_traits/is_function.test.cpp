@@ -115,7 +115,7 @@ void test_is_function_impl()
 
     // Standard compatibility
     STATIC_REQUIRE(std::is_function<TypeT>::value);
-#if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#if PHI_CPP_STANDARD_IS_ATLEAST(17) && PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     STATIC_REQUIRE(std::is_function_v<TypeT>);
 #endif
 }
@@ -145,7 +145,7 @@ void test_is_not_function_impl()
 
     // Standard compatibility
     STATIC_REQUIRE_FALSE(std::is_function<TypeT>::value);
-#if PHI_CPP_STANDARD_IS_ATLEAST(17)
+#if PHI_CPP_STANDARD_IS_ATLEAST(17) && PHI_COMPILER_WORKAROUND(GCC, 7, 0, 0)
     STATIC_REQUIRE_FALSE(std::is_function_v<TypeT>);
 #endif
 }

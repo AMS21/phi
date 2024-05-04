@@ -1,6 +1,9 @@
 #include <phi/test/test_macros.hpp>
 
+#include <phi/compiler_support/warning.hpp>
 #include <phi/forward/scope_ptr.hpp>
+
+PHI_GCC_SUPPRESS_WARNING("-Wunused-result")
 
 TEST_CASE("forward.scope_ptr.forward")
 {
