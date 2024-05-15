@@ -80,7 +80,7 @@ jobs:
         run: gcovr -j ${PROC_COUNT} --delete --root ../ --print-summary --exclude-unreachable-branches --exclude-function-lines --xml-pretty --xml coverage.xml . --gcov-executable "${GCOV_EXECUTABLE}" --exclude-lines-by-pattern "^\s*{$" --exclude-lines-by-pattern "^\s*}$"
 
       - name: Upload coverage data
-        uses: codecov/codecov-action@v4.3.1
+        uses: codecov/codecov-action@v4.4.0
         with:
           file: ./build/coverage.xml
           flags: ${{ runner.os }},${{ matrix.compiler }},${{ matrix.build_type }}
