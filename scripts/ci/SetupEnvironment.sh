@@ -99,7 +99,7 @@ echo "UBSAN_OPTIONS=print_stacktrace=1:report_error_type=1:halt_on_error=1" >>"$
 
 # Latest versions
 echo "LATEST_LLVM_VERSION=18" >>"$GITHUB_ENV"
-echo "LATEST_GCC_VERSION=13" >>"$GITHUB_ENV"
+echo "LATEST_GCC_VERSION=14" >>"$GITHUB_ENV"
 
 if [[ $machine == "linux" ]]; then
     # Workaround for the unreliable Github Actions caching proxy

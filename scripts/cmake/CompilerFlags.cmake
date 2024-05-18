@@ -530,8 +530,8 @@ elseif(PHI_COMPILER_GCC)
   set(phi_cxx_common_flags -fsized-deallocation -fconcepts)
   set(phi_color_diagnostics_flag -fdiagnostics-color)
   set(phi_disable_all_warnings_flag -w)
-  set(phi_debug_flags -fasynchronous-unwind-tables -fcheck-new -fvar-tracking
-                      -fvar-tracking-assignments -grecord-gcc-switches)
+  set(phi_debug_flags -fasynchronous-unwind-tables -fcheck-new -fvar-tracking-assignments
+                      -grecord-gcc-switches)
   set(phi_debug_only_flags)
   set(phi_coverage_compile_flags -fno-common -fno-inline -fno-default-inline -fno-inline-functions
                                  -fno-omit-frame-pointer)
@@ -638,6 +638,11 @@ elseif(PHI_COMPILER_GCC)
     set(phi_cxx_optimize_flags ${phi_cxx_optimize_flags} -fimplicit-constexpr)
     set(phi_debug_flags ${phi_debug_flags} -fharden-compares -fharden-conditional-branches
                         -ftrivial-auto-var-init=pattern)
+  endif()
+
+  # GCC-14 flags
+  if(PHI_GCC_VERSION VERSION_GREATER_EQUAL 14)
+    set(phi_cxx_warning_flags ${phi_cxx_warning_flags} -Wnrvo)
   endif()
 
 elseif(PHI_COMPILER_MSVC)
