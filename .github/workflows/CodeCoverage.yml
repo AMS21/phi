@@ -34,7 +34,7 @@ on:
 
 jobs:
   linux:
-    runs-on: 'ubuntu-22.04'
+    runs-on: 'ubuntu-24.04'
 
     # Don't run on dependabot PRs
     if: github.actor != 'dependabot[bot]'
@@ -44,7 +44,7 @@ jobs:
 
       matrix:
         compiler:
-          - "gcc-13"
+          - "gcc-14"
 
         build_type:
           - "Debug"
