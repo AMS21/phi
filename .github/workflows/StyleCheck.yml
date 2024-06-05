@@ -158,7 +158,7 @@ jobs:
           if_false: 'github-check'
 
       - name: Run misspell with reviewdog
-        uses: reviewdog/action-misspell@v1.17
+        uses: reviewdog/action-misspell@v1.18
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           locale: US
