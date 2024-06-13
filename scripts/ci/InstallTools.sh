@@ -6,7 +6,6 @@
 set -e
 set -u
 
-upgraded_pip=0
 added_llvm_apt=0
 added_ubuntu_test_ppa=0
 root_dir=$(pwd)
@@ -34,30 +33,6 @@ function apt_install() {
     echo "- Running apt-get install [$*]..."
     retry sudo apt-get install "$@" --no-install-recommends -y
     echo "- Running apt-get install [$*] done"
-}
-
-function pip_install() {
-    echo "- Running pip install [$*]..."
-    retry sudo -H pip3 --no-cache-dir install "$@"
-    echo "- Running pip install [$*] done"
-}
-
-# Make sure pip is using the latest version
-upgrade_pip() {
-    if [[ "$upgraded_pip" == 0 ]]; then
-        echo "-- Upgrading pip..."
-
-        pip_install --upgrade pip
-        upgraded_pip=1
-
-        echo "-- Upgrading pip done"
-    fi
-}
-
-install_python_wheel() {
-    echo "--- Installing wheel on pip..."
-    pip_install wheel
-    echo "--- Installing wheel on pip done"
 }
 
 add_llvm_apt() {
@@ -99,11 +74,8 @@ add_ubuntu_test_ppa() {
 }
 
 install_gcovr() {
-    upgrade_pip
-    install_python_wheel
-
     echo "-- Installing gcovr..."
-    pip_install gcovr
+    apt_install gcovr
     echo "-- Installing gcovr done"
 
     # Verify
@@ -114,12 +86,8 @@ install_gcovr() {
 }
 
 install_cmake_format() {
-    upgrade_pip
-    install_python_wheel
-
     echo "-- Installing cmake-format..."
-    # See https://cmake-format.readthedocs.io/en/latest/installation.html#installation
-    pip_install cmakelang pyyaml
+    apt_install cmake-format
     echo "-- Installing cmake-format done"
 
     # Verify
