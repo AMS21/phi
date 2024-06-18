@@ -351,7 +351,7 @@ jobs:
           if_false: 'github-check'
 
       - name: Run actionlint with reviewdog
-        uses: reviewdog/action-actionlint@v1.49.0
+        uses: reviewdog/action-actionlint@v1.50.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: ${{ steps.reporter.outputs.value }}
