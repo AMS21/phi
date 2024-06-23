@@ -45,7 +45,7 @@ public:
     }
 
     PHI_EXTENDED_CONSTEXPR dynamic_array(const dynamic_array& other) PHI_NOEXCEPT
-        : m_Elements{new(std::nothrow) TypeT[other.m_Size]},
+        : m_Elements{new(std::nothrow) TypeT[other.m_Size.unsafe()]},
           m_Size{other.m_Size}
     {
         // Copy elements
@@ -76,7 +76,7 @@ public:
             return *this;
         }
 
-        m_Elements = new (std::nothrow) TypeT[other.m_Size];
+        m_Elements = new (std::nothrow) TypeT[other.m_Size.unsafe()];
         m_Size     = other.m_Size;
 
         PHI_ASSERT(m_Elements != nullptr, "Failed to allocate elements");

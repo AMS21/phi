@@ -512,7 +512,7 @@ public:
             return npos;
         }
 
-        if (view.empty())
+        if (view.is_empty())
         {
             return min(length(), pos);
         }
@@ -1429,11 +1429,6 @@ public:
         if (length() < view.length())
         {
             return npos;
-        }
-
-        if (view.empty())
-        {
-            return min(length(), pos);
         }
 
         const_iterator last   = cbegin() + min(length() - view.length(), pos) + view.length();
