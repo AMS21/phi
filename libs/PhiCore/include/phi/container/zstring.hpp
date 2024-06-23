@@ -358,7 +358,7 @@ public:
             return npos;
         }
 
-        if (view.empty())
+        if (view.is_empty())
         {
             return min(length(), pos);
         }
