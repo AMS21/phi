@@ -38,7 +38,7 @@ concurrency:
 
 jobs:
   Build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     # Don't run on dependabot PRs
     if: github.actor != 'dependabot[bot]'
@@ -165,7 +165,6 @@ jobs:
         continue-on-error: true
         with:
           version: ${{ matrix.em_version }}
-          no-cache: true
 
       - name: Verify version
         run: emcc --version
@@ -176,12 +175,20 @@ jobs:
       - name: Install ninja
         run: scripts/ci/InstallTools.sh ninja
 
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: ${{ runner.os }}-emcc-${{ matrix.em_version }}-${{ matrix.build_type }}
+
       - name: Configure build directory
         run: |
           mkdir -p build
           cd build
 
-          emcmake cmake -DCMAKE_BUILD_TYPE:STRING=${{ matrix.build_type }} -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON ..
+          emcmake cmake .. \
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_BUILD_TYPE:STRING=${{ matrix.build_type }} \
+            -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
 
       - name: Build
         working-directory: ./build

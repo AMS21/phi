@@ -38,27 +38,23 @@ concurrency:
 
 jobs:
   cppcheck:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+    container: 'ams21/cppcheck:latest'
 
     # Don't run on dependabot PRs
     if: github.actor != 'dependabot[bot]'
-
-    env:
-      LLVM_VERSION: 18
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Reviewdog
-        uses: reviewdog/action-setup@v1.3.0
+        uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
 
-      - name: Install
-        env:
-          CPPCHECK_VERSION: "2.14.0"
-        run: scripts/ci/InstallTools.sh clang-${{ env.LLVM_VERSION }} cppcheck-${{ env.CPPCHECK_VERSION }} ninja
+      - name: Install build requirements
+        run: apk add cmake ninja gcc g++ --no-cache
 
       - name: Configure
         run: |
@@ -67,7 +63,7 @@ jobs:
           cd build
 
           # Generate compile_commands.json
-          cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=ON -DPHI_TEST_WITH_ALL_STANDARDS:BOOL=OFF
+          cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=ON -DPHI_TEST_WITH_ALL_STANDARDS:BOOL=OFF -G Ninja
 
       - name: Run cppcheck
         env:
@@ -96,7 +92,7 @@ jobs:
           cat cppcheck_filtered.log | reviewdog -efm="%f:%l:%c: %m" -reporter=${{ steps.reporter.outputs.value }} -name CppCheck -level warning
 
   clang-tidy:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     # Don't run on dependabot PRs
     if: github.actor != 'dependabot[bot]'
@@ -112,7 +108,7 @@ jobs:
         run: scripts/ci/SetupEnvironment.sh
 
       - name: Setup Reviewdog
-        uses: reviewdog/action-setup@v1.3.0
+        uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
 
@@ -160,7 +156,7 @@ jobs:
           cat build/clang_tidy_output.log | reviewdog -efm="%f:%l:%c: warning: %m" -reporter=${{ steps.reporter.outputs.value }} -name Clang-Tidy -level warning
 
   include-what-you-use:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     # Don't run on dependabot PRs
     if: github.actor != 'dependabot[bot]'
@@ -178,7 +174,7 @@ jobs:
           python-version: '3.x'
 
       - name: Setup Reviewdog
-        uses: reviewdog/action-setup@v1.3.0
+        uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
 
@@ -219,7 +215,7 @@ jobs:
           cat build/iwyu_filtered.log | reviewdog -efm="%Z%A%f:%l:%c: error: %m" -efm="%C%m" -reporter=${{ steps.reporter.outputs.value }} -name include-what-you-use -level warning
 
   cmake-lint:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     # Don't run on dependabot PRs
     if: github.actor != 'dependabot[bot]'
@@ -229,7 +225,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Reviewdog
-        uses: reviewdog/action-setup@v1.3.0
+        uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
 
@@ -262,7 +258,7 @@ jobs:
           cat cmake_lint.log | reviewdog -efm="%f:%l: %m" -reporter=${{ steps.reporter.outputs.value }} -name cmake-lint -level warning
 
   pvs-studio:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     # Don't run on dependabot PRs
     if: false && github.actor != 'dependabot[bot]'
@@ -278,7 +274,7 @@ jobs:
         run: scripts/ci/SetupEnvironment.sh
 
       - name: Setup Reviewdog
-        uses: reviewdog/action-setup@v1.3.0
+        uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
 
@@ -326,7 +322,7 @@ jobs:
           cat build/PVS-Studio_filtered.err | reviewdog -efm="%f:%l:%c: %m" -reporter=${{ steps.reporter.outputs.value }} -name PVS-Studio -level warning
 
   code-ql:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     # Don't run on dependabot PRs
     if: github.actor != 'dependabot[bot]'
@@ -401,7 +397,7 @@ jobs:
         run: scripts/ci/SetupEnvironment.sh
 
       - name: Setup Reviewdog
-        uses: reviewdog/action-setup@v1.3.0
+        uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
 
@@ -517,7 +513,7 @@ jobs:
 
   dev-skim:
     name: DevSkim
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     # Don't run on dependabot PRs
     if: github.actor != 'dependabot[bot]'
@@ -541,7 +537,7 @@ jobs:
 
   codacy-security-scan:
     name: Codacy Security Scan
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     # Don't run on dependabot PRs
     if: github.actor != 'dependabot[bot]'
@@ -557,7 +553,7 @@ jobs:
 
       # Execute Codacy Analysis CLI and generate a SARIF output with the security issues identified during the analysis
       - name: Run Codacy Analysis CLI
-        uses: codacy/codacy-analysis-cli-action@v4.4.5
+        uses: codacy/codacy-analysis-cli-action@v4
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           verbose: true
@@ -578,7 +574,7 @@ jobs:
 
   shellcheck:
     name: ShellCheck
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     # Don't run on dependabot PRs
     if: github.actor != 'dependabot[bot]'

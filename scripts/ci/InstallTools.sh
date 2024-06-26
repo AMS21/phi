@@ -110,14 +110,14 @@ install_clang() {
         apt_install "llvm-$1-linker-tools"
     fi
 
-    # Starting with llvm-14 there is a separate package for the compiler runtime (rt) which is needed for things like sanitizers and fuzzers
-    if [[ $1 -ge 14 ]]; then
-        apt_install "libclang-rt-$1-dev"
-    fi
-
     # Starting with llvm-15 we need to install 'llvm-runtime' aswell for lto support to work
     if [[ $1 -ge 15 ]]; then
         apt_install "llvm-$1-runtime"
+    fi
+
+    # Starting with llvm-16 we beed to install separate package for the compiler runtime (rt) which is needed for things like sanitizers and fuzzers
+    if [[ $1 -ge 16 ]]; then
+        apt_install "libclang-rt-$1-dev"
     fi
 
     echo "-- Installing clang-$1 done"
@@ -194,7 +194,7 @@ install_valgrind() {
 install_cppcheck() {
     # Install dependencies
     echo "-- Installing dependencies for cppcheck..."
-    apt_install "libpcre3" "libpcre3-dev"
+    apt_install "libpcre3" "libpcre3-dev" "cmake" "build-essential"
     echo "-- Installing dependencies for cppcheck done"
 
     mkdir cppcheck -p
@@ -211,7 +211,7 @@ install_cppcheck() {
     mkdir build -p
     cd build || exit
 
-    cmake .. -DCMAKE_BUILD_TYPE:STRING="Release" -DUSE_MATCHCOMPILER:BOOL=On -DHAVE_RULES:BOOL=ON -DCMAKE_CXX_FLAGS:STRING="$cmake_build_flags"
+    cmake .. -DCMAKE_BUILD_TYPE:STRING="Release" -DUSE_MATCHCOMPILER:BOOL=On -DHAVE_RULES:BOOL=ON -DCMAKE_CXX_FLAGS:STRING="${cmake_build_flags}"
     cmake --build . "-j$(nproc)"
     echo "-- Building cppcheck done"
 
@@ -271,6 +271,11 @@ install_llvm() {
 install_iwyu() {
     # Install the appropriate llvm version
     install_llvm "$1"
+
+    # Install required dependencies
+    echo "-- Installing dependencies for iwyu..."
+    apt_install "git" "cmake" "build-essential"
+    echo "-- Installing dependencies for iwyu done"
 
     echo "-- Cloning iwyu..."
     retry git clone https://github.com/include-what-you-use/include-what-you-use.git
@@ -395,7 +400,7 @@ fi
 
 # Ensure required packages are installed (mostly for running inside a docker container)
 echo "- Ensuring required packages are installed..."
-apt_install wget gnupg lsb-release software-properties-common pip
+apt_install wget gnupg lsb-release software-properties-common
 echo "- Ensuring required packages are installed done"
 
 for tool in "$@"; do

@@ -38,7 +38,7 @@ concurrency:
 
 jobs:
   clang:
-    runs-on: 'ubuntu-20.04'
+    runs-on: '${{ matrix.cfg.os }}'
 
     # Don't run on dependabot PRs
     if: github.actor != 'dependabot[bot]'
@@ -47,17 +47,17 @@ jobs:
       fail-fast: false
 
       matrix:
-        compiler_version:
-          - "9"
-          - "10"
-          - "11"
-          - "12"
-          - "13"
-          - "14"
-          - "15"
-          - "16"
-          - "17"
-          - "18"
+        cfg:
+          - { os: ubuntu-20.04, compiler_version: "9"  }
+          - { os: ubuntu-20.04, compiler_version: "10" }
+          - { os: ubuntu-20.04, compiler_version: "11" }
+          - { os: ubuntu-20.04, compiler_version: "12" }
+          - { os: ubuntu-22.04, compiler_version: "13" }
+          - { os: ubuntu-22.04, compiler_version: "14" }
+          - { os: ubuntu-22.04, compiler_version: "15" }
+          - { os: ubuntu-22.04, compiler_version: "16" }
+          - { os: ubuntu-24.04, compiler_version: "17" }
+          - { os: ubuntu-24.04, compiler_version: "18" }
 
         build_type:
           - "Debug"
@@ -78,14 +78,26 @@ jobs:
         run: scripts/ci/SetupEnvironment.sh
 
       - name: Install compiler
-        run: scripts/ci/InstallTools.sh clang-${{ matrix.compiler_version }} ninja
+        run: scripts/ci/InstallTools.sh clang-${{ matrix.cfg.compiler_version }} ninja
+
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: ${{ runner.os }}-clang-${{ matrix.cfg.compiler_version }}-${{ matrix.build_type }}
 
       - name: Configure build directory
         run: |
           mkdir build -p
           cd build
 
-          cmake -DCMAKE_BUILD_TYPE:STRING=${{ matrix.build_type }} -DPHI_ENABLE_SANITIZER_ADDRESS:BOOL=${{ matrix.dynamic_test == 'asan' }} -DPHI_ENABLE_SANITIZER_LEAK:BOOL=${{ matrix.dynamic_test == 'lsan' }} -DPHI_ENABLE_SANITIZER_MEMORY:BOOL=${{ matrix.dynamic_test == 'msan' }} -DPHI_ENABLE_SANITIZER_THREAD:BOOL=${{ matrix.dynamic_test == 'tsan' }} -DPHI_ENABLE_SANITIZER_UNDEFINED:BOOL=${{ matrix.dynamic_test == 'ubsan' }} ..
+          cmake .. \
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_BUILD_TYPE:STRING=${{ matrix.build_type }} \
+            -DPHI_ENABLE_SANITIZER_ADDRESS:BOOL=${{ matrix.dynamic_test == 'asan' }} \
+            -DPHI_ENABLE_SANITIZER_LEAK:BOOL=${{ matrix.dynamic_test == 'lsan' }} \
+            -DPHI_ENABLE_SANITIZER_MEMORY:BOOL=${{ matrix.dynamic_test == 'msan' }} \
+            -DPHI_ENABLE_SANITIZER_THREAD:BOOL=${{ matrix.dynamic_test == 'tsan' }} \
+            -DPHI_ENABLE_SANITIZER_UNDEFINED:BOOL=${{ matrix.dynamic_test == 'ubsan' }}
 
       - name: Build
         working-directory: ./build
@@ -109,11 +121,11 @@ jobs:
         cfg:
           - { os: ubuntu-20.04, compiler_version: "7" }
           - { os: ubuntu-20.04, compiler_version: "8" }
-          - { os: ubuntu-20.04, compiler_version: "9" }
-          - { os: ubuntu-20.04, compiler_version: "10" }
-          - { os: ubuntu-20.04, compiler_version: "11" }
-          - { os: ubuntu-22.04, compiler_version: "12" }
-          - { os: ubuntu-22.04, compiler_version: "13" }
+          - { os: ubuntu-24.04, compiler_version: "9" }
+          - { os: ubuntu-24.04, compiler_version: "10" }
+          - { os: ubuntu-24.04, compiler_version: "11" }
+          - { os: ubuntu-24.04, compiler_version: "12" }
+          - { os: ubuntu-24.04, compiler_version: "13" }
           - { os: ubuntu-24.04, compiler_version: "14" }
 
         build_type:
@@ -137,12 +149,24 @@ jobs:
       - name: Install compiler
         run: scripts/ci/InstallTools.sh gcc-${{ matrix.cfg.compiler_version }} ninja
 
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: ${{ runner.os }}-gcc-${{ matrix.cfg.compiler_version }}-${{ matrix.build_type }}
+
       - name: Configure build directory
         run: |
           mkdir build -p
           cd build
 
-          cmake -DCMAKE_BUILD_TYPE:STRING=${{ matrix.build_type }} -DPHI_ENABLE_SANITIZER_ADDRESS:BOOL=${{ matrix.dynamic_test == 'asan' }} -DPHI_ENABLE_SANITIZER_LEAK:BOOL=${{ matrix.dynamic_test == 'lsan' }} -DPHI_ENABLE_SANITIZER_MEMORY:BOOL=${{ matrix.dynamic_test == 'msan' }} -DPHI_ENABLE_SANITIZER_THREAD:BOOL=${{ matrix.dynamic_test == 'tsan' }} -DPHI_ENABLE_SANITIZER_UNDEFINED:BOOL=${{ matrix.dynamic_test == 'ubsan' }} ..
+          cmake .. \
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_BUILD_TYPE:STRING=${{ matrix.build_type }} \
+            -DPHI_ENABLE_SANITIZER_ADDRESS:BOOL=${{ matrix.dynamic_test == 'asan' }} \
+            -DPHI_ENABLE_SANITIZER_LEAK:BOOL=${{ matrix.dynamic_test == 'lsan' }} \
+            -DPHI_ENABLE_SANITIZER_MEMORY:BOOL=${{ matrix.dynamic_test == 'msan' }} \
+            -DPHI_ENABLE_SANITIZER_THREAD:BOOL=${{ matrix.dynamic_test == 'tsan' }} \
+            -DPHI_ENABLE_SANITIZER_UNDEFINED:BOOL=${{ matrix.dynamic_test == 'ubsan' }}
 
       - name: Build
         working-directory: ./build
