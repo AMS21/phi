@@ -5,8 +5,16 @@ include(CompilerFlags)
 
 set(phi_extra_debug_defines
     _GLIBCXX_ASSERTIONS _GLIBCXX_DEBUG _GLIBCXX_DEBUG_PEDANTIC _GLIBCXX_SANITIZE_VECTOR
-    _LIBCPP_ENABLE_ASSERTIONS=1 _LIBCPP_ENABLE_THREAD_SAFETY_ANNOTATIONS
+    _LIBCPP_ENABLE_THREAD_SAFETY_ANNOTATIONS
     CACHE INTERNAL "")
+
+# Starting with LLVM 17 _LIBCPP_ENABLE_ASSERTIONS was replaced with _LIBCPP_HARDENING_MODE
+if(PHI_COMPILER_CLANG AND PHI_CLANG_VERSION VERSION_GREATER_EQUAL 17)
+  set(phi_extra_debug_defines ${phi_extra_debug_defines}
+                              _LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_DEBUG)
+else()
+  set(phi_extra_debug_defines ${phi_extra_debug_defines} _LIBCPP_ENABLE_ASSERTIONS=1)
+endif()
 
 function(phi_target_enable_extra_debug_flags)
   # Command line arguments
