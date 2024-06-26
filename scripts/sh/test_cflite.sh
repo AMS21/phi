@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # See these links for help and information
 # https://google.github.io/clusterfuzzlite/build-integration/
