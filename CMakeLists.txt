@@ -10,10 +10,10 @@ else()
 endif()
 
 # Policy
-if(${CMAKE_VERSION} VERSION_LESS 3.29)
+if(${CMAKE_VERSION} VERSION_LESS 3.30)
   cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 else()
-  cmake_policy(VERSION 3.29)
+  cmake_policy(VERSION 3.30)
 endif()
 
 # CMake modules
