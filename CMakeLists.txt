@@ -16,8 +16,11 @@ else()
   cmake_policy(VERSION 3.30)
 endif()
 
-# Disable scanning for modules since we don't use them and they increase build times and break some GCC-14 builds
-set(CMAKE_CXX_SCAN_FOR_MODULES OFF CACHE FORCE INTERNAL "")
+# Disable scanning for modules since we don't use them and they increase build times and break some
+# GCC-14 builds
+set(CMAKE_CXX_SCAN_FOR_MODULES
+    OFF
+    CACHE FORCE INTERNAL "")
 
 # CMake modules
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/scripts/cmake)
