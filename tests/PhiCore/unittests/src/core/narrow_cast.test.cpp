@@ -14,7 +14,6 @@
 
 using namespace phi::literals;
 
-PHI_CLANG_AND_GCC_SUPPRESS_WARNING_PUSH()
 PHI_CLANG_AND_GCC_SUPPRESS_WARNING("-Wfloat-equal")
 
 template <typename TypeT>
@@ -132,4 +131,78 @@ TEST_CASE("narrow_cast const usage")
     }
 }
 
-PHI_CLANG_AND_GCC_SUPPRESS_WARNING_POP()
+enum E1
+{
+    A = 0,
+    B = 1,
+};
+
+enum E2 : unsigned
+{
+    C = 1u,
+    D = 2u,
+};
+
+enum E3
+{
+    E = -1,
+    F = -2,
+};
+
+TEST_CASE("narrow_cast enum -> int")
+{
+    TEST_NARROW_CAST(phi::narrow_cast<int>(E1::A) == 0);
+    TEST_NARROW_CAST(phi::narrow_cast<int>(E1::B) == 1);
+    TEST_NARROW_CAST(phi::narrow_cast<int>(E2::C) == 1);
+    TEST_NARROW_CAST(phi::narrow_cast<int>(E2::D) == 2);
+    TEST_NARROW_CAST(phi::narrow_cast<int>(E3::E) == -1);
+    TEST_NARROW_CAST(phi::narrow_cast<int>(E3::F) == -2);
+}
+
+TEST_CASE("narrow_cast int -> enum")
+{
+    TEST_NARROW_CAST(phi::narrow_cast<E1>(0) == E1::A);
+    TEST_NARROW_CAST(phi::narrow_cast<E1>(1) == E1::B);
+    TEST_NARROW_CAST(phi::narrow_cast<E2>(1) == E2::C);
+    TEST_NARROW_CAST(phi::narrow_cast<E2>(2) == E2::D);
+    TEST_NARROW_CAST(phi::narrow_cast<E3>(-1) == E3::E);
+    TEST_NARROW_CAST(phi::narrow_cast<E3>(-2) == E3::F);
+}
+
+enum class SE1
+{
+    A = 0,
+    B = 1,
+};
+
+enum class SE2 : unsigned
+{
+    A = 0u,
+    B = 2u,
+};
+
+enum class SE3
+{
+    A = -1,
+    B = -2,
+};
+
+TEST_CASE("narrow_cast strong enum -> int")
+{
+    TEST_NARROW_CAST(phi::narrow_cast<int>(SE1::A) == 0);
+    TEST_NARROW_CAST(phi::narrow_cast<int>(SE1::B) == 1);
+    TEST_NARROW_CAST(phi::narrow_cast<int>(SE2::A) == 0);
+    TEST_NARROW_CAST(phi::narrow_cast<int>(SE2::B) == 2);
+    TEST_NARROW_CAST(phi::narrow_cast<int>(SE3::A) == -1);
+    TEST_NARROW_CAST(phi::narrow_cast<int>(SE3::B) == -2);
+}
+
+TEST_CASE("narrow_cast int -> strong enum")
+{
+    TEST_NARROW_CAST(phi::narrow_cast<SE1>(0) == SE1::A);
+    TEST_NARROW_CAST(phi::narrow_cast<SE1>(1) == SE1::B);
+    TEST_NARROW_CAST(phi::narrow_cast<SE2>(0) == SE2::A);
+    TEST_NARROW_CAST(phi::narrow_cast<SE2>(2) == SE2::B);
+    TEST_NARROW_CAST(phi::narrow_cast<SE3>(-1) == SE3::A);
+    TEST_NARROW_CAST(phi::narrow_cast<SE3>(-2) == SE3::B);
+}
