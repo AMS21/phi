@@ -8,10 +8,7 @@
 #    define TEST_BUGGED_MSVC
 #endif
 
-PHI_CLANG_SUPPRESS_WARNING_PUSH()
 PHI_CLANG_SUPPRESS_WARNING("-Wfloat-equal")
-
-PHI_GCC_SUPPRESS_WARNING_PUSH()
 PHI_GCC_SUPPRESS_WARNING("-Wfloat-equal")
 PHI_GCC_SUPPRESS_WARNING("-Wuseless-cast")
 
@@ -70,7 +67,7 @@ void test_unsafe_cast_to_integer()
     STATIC_REQUIRE(phi::unsafe_cast<TypeT>(phi::uint32_t(6)).unsafe() == vt(6));
     STATIC_REQUIRE(phi::unsafe_cast<TypeT>(phi::uint64_t(7)).unsafe() == vt(7));
 
-    // Fron safe type
+    // From safe type
     STATIC_REQUIRE(phi::unsafe_cast<TypeT>(phi::i8(phi::int8_t(0))).unsafe() == vt(0));
     STATIC_REQUIRE(phi::unsafe_cast<TypeT>(phi::i16(phi::int16_t(1))).unsafe() == vt(1));
     STATIC_REQUIRE(phi::unsafe_cast<TypeT>(phi::i32(phi::int32_t(2))).unsafe() == vt(2));
@@ -252,12 +249,20 @@ enum E2 : unsigned
     D = 2u,
 };
 
+enum E3
+{
+    E = -1,
+    F = -2,
+};
+
 TEST_CASE("unsafe_cast enum -> int")
 {
     STATIC_REQUIRE(phi::unsafe_cast<int>(E1::A) == 0);
     STATIC_REQUIRE(phi::unsafe_cast<int>(E1::B) == 1);
     STATIC_REQUIRE(phi::unsafe_cast<int>(E2::C) == 1);
     STATIC_REQUIRE(phi::unsafe_cast<int>(E2::D) == 2);
+    STATIC_REQUIRE(phi::unsafe_cast<int>(E3::E) == -1);
+    STATIC_REQUIRE(phi::unsafe_cast<int>(E3::F) == -2);
 }
 
 TEST_CASE("unsafe_cast int -> enum")
@@ -266,6 +271,8 @@ TEST_CASE("unsafe_cast int -> enum")
     STATIC_REQUIRE(phi::unsafe_cast<E1>(1) == E1::B);
     STATIC_REQUIRE(phi::unsafe_cast<E2>(1) == E2::C);
     STATIC_REQUIRE(phi::unsafe_cast<E2>(2) == E2::D);
+    STATIC_REQUIRE(phi::unsafe_cast<E3>(-1) == E3::E);
+    STATIC_REQUIRE(phi::unsafe_cast<E3>(-2) == E3::F);
 }
 
 enum class SE1
@@ -280,12 +287,20 @@ enum class SE2 : unsigned
     B = 2u,
 };
 
+enum class SE3
+{
+    A = -1,
+    B = -2,
+};
+
 TEST_CASE("unsafe_cast strong enum -> int")
 {
     STATIC_REQUIRE(phi::unsafe_cast<int>(SE1::A) == 0);
     STATIC_REQUIRE(phi::unsafe_cast<int>(SE1::B) == 1);
     STATIC_REQUIRE(phi::unsafe_cast<int>(SE2::A) == 0);
     STATIC_REQUIRE(phi::unsafe_cast<int>(SE2::B) == 2);
+    STATIC_REQUIRE(phi::unsafe_cast<int>(SE3::A) == -1);
+    STATIC_REQUIRE(phi::unsafe_cast<int>(SE3::B) == -2);
 }
 
 TEST_CASE("unsafe_cast int -> strong enum")
@@ -294,4 +309,6 @@ TEST_CASE("unsafe_cast int -> strong enum")
     STATIC_REQUIRE(phi::unsafe_cast<SE1>(1) == SE1::B);
     STATIC_REQUIRE(phi::unsafe_cast<SE2>(0) == SE2::A);
     STATIC_REQUIRE(phi::unsafe_cast<SE2>(2) == SE2::B);
+    STATIC_REQUIRE(phi::unsafe_cast<SE3>(-1) == SE3::A);
+    STATIC_REQUIRE(phi::unsafe_cast<SE3>(-2) == SE3::B);
 }
