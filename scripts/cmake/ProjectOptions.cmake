@@ -42,21 +42,24 @@ function(phi_configure_project)
   if(DEFINED conf_EXTERNAL)
     # Make path absolute
     if(NOT IS_ABSOLUTE ${conf_EXTERNAL})
-      get_filename_component(external_absolute "${conf_EXTERNAL}" REALPATH BASE_DIR
+      get_filename_component(external_path "${conf_EXTERNAL}" REALPATH BASE_DIR
                              "${CMAKE_CURRENT_SOURCE_DIR}")
+    else()
+      # Just use the given path as is
+      set(external_path "${conf_EXTERNAL}")
     endif()
 
     # Check if path exists
-    if(NOT EXISTS "${external_absolute}")
+    if(NOT EXISTS "${external_path}")
       phi_error(
-        "phi_configure_project: The given external path \"${conf_EXTERNAL}\" (${external_absolute}) doesn't seem to exist"
+        "phi_configure_project: The given external path \"${conf_EXTERNAL}\" (${external_path}) doesn't seem to exist"
       )
     endif()
 
     # Check if directory
-    if(NOT IS_DIRECTORY "${external_absolute}")
+    if(NOT IS_DIRECTORY "${external_path}")
       phi_error(
-        "phi_configure_project: The given external directory \"${conf_EXTERNAL}\" (${external_absolute}) doesn't seem to be a directory!"
+        "phi_configure_project: The given external directory \"${conf_EXTERNAL}\" (${external_path}) doesn't seem to be a directory!"
       )
     endif()
 
