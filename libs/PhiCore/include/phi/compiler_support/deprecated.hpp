@@ -28,7 +28,7 @@
 
 #else
 
-#    define ASL_ATTRIBUTE_DEPRECATED /* Nothing */
+#    define PHI_DEPRECATED /* Nothing */
 #    define PHI_DEPRECATED_MSG(msg)  /* Nothing */
 
 #endif
