@@ -41,10 +41,8 @@ namespace my_ns
 
     struct ThrowingMove
     {
-        // NOLINTNEXTLINE(performance-noexcept-move-constructor)
         ThrowingMove(ThrowingMove&&);
 
-        // NOLINTNEXTLINE(performance-noexcept-move-constructor)
         ThrowingMove& operator=(ThrowingMove&&);
     };
 

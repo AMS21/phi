@@ -90,8 +90,7 @@ public:
     pair(pair const&) = default;
 
     // Default move constructor
-    // NOTE: clang-tidy is wrong here see https://github.com/llvm/llvm-project/issues/56026
-    pair(pair&&) = default; // NOLINT(performance-noexcept-move-constructor)
+    pair(pair&&) = default;
 
     // Explicit copy constructor
     template <typename enable_if<
@@ -181,8 +180,6 @@ public:
 
     pair& operator=(const pair&) = default;
 
-    // NOTE: clang-tidy is wrong here see https://github.com/llvm/llvm-project/issues/56026
-    // NOLINTNEXTLINE(performance-noexcept-move-constructor)
     pair& operator=(pair&&) = default;
 
     PHI_CONSTEXPR pair& operator=(typename conditional<is_copy_assignable<FirstT>::value &&

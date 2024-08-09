@@ -75,13 +75,11 @@ struct E
 
 struct F
 {
-    // NOLINTNEXTLINE(performance-noexcept-move-constructor)
     F(F&&);
 };
 
 struct G
 {
-    // NOLINTNEXTLINE(performance-noexcept-move-constructor)
     G& operator=(G&&);
 };
 

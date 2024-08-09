@@ -36,7 +36,6 @@ struct MoveOnly
     MoveOnly()
     {}
 
-    // NOLINTNEXTLINE(performance-noexcept-move-constructor)
     MoveOnly(MoveOnly&& /*other*/)
     {}
 
@@ -63,7 +62,6 @@ struct NoexceptMoveOnly
 
 struct NotMoveConstructible
 {
-    // NOLINTNEXTLINE(performance-noexcept-move-constructor)
     NotMoveConstructible& operator=(NotMoveConstructible&& /*other*/)
     {
         return *this;
@@ -74,11 +72,9 @@ struct NotMoveConstructible
 
 struct NotMoveAssignable
 {
-    // NOLINTNEXTLINE(performance-noexcept-move-constructor)
     NotMoveAssignable(NotMoveAssignable&&);
 
 private:
-    // NOLINTNEXTLINE(performance-noexcept-move-constructor)
     NotMoveAssignable& operator=(NotMoveAssignable&&);
 };
 

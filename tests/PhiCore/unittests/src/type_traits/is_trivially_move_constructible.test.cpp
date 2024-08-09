@@ -133,7 +133,6 @@ struct A
 
 struct MoveOnly1
 {
-    // NOLINTNEXTLINE(performance-noexcept-move-constructor)
     MoveOnly1(MoveOnly1&&);
 };
 

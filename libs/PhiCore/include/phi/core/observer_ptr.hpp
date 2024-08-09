@@ -119,7 +119,6 @@ public:
 
     observer_ptr<TypeT>& operator=(const observer_ptr<TypeT>& other) = default;
 
-    // NOLINTNEXTLINE(performance-noexcept-move-constructor)
     observer_ptr<TypeT>& operator=(observer_ptr<TypeT>&& other) = default;
 
     template <typename OtherT, enable_if_t<is_convertible<OtherT*, TypeT*>::value, int> = 0>

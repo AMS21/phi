@@ -124,7 +124,6 @@ struct I
     I(const I&);
     I(I&&) = default;
 
-    // NOLINTNEXTLINE(performance-noexcept-move-constructor)
     I& operator=(I&&);
     I& operator=(const I&) = default;
 };

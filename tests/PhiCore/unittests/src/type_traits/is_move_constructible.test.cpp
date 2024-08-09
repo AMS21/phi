@@ -106,7 +106,6 @@ struct A
 
 struct B
 {
-    // NOLINTNEXTLINE(performance-noexcept-move-constructor)
     B(B&&);
 };
 

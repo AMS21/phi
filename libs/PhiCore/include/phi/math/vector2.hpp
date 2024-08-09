@@ -64,7 +64,6 @@ public:
 
     vector2<TypeT>& operator=(const vector2<TypeT>& other) = default;
 
-    // NOLINTNEXTLINE(performance-noexcept-move-constructor)
     vector2<TypeT>& operator=(vector2<TypeT>&& other) = default;
 
     TypeT x;
