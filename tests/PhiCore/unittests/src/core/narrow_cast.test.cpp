@@ -6,7 +6,7 @@
 #include <phi/type_traits/make_unsafe.hpp>
 #include <phi/type_traits/to_unsafe.hpp>
 
-#if PHI_HAS_FEATURE_EXTENDED_CONSTEXPR() || !defined(PHI_DEBUG)
+#if PHI_NARROW_CAST_CONSTEXPR()
 #    define TEST_NARROW_CAST(...) STATIC_REQUIRE(__VA_ARGS__)
 #else
 #    define TEST_NARROW_CAST(...) REQUIRE(__VA_ARGS__)
