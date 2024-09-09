@@ -11,7 +11,8 @@
 
 #if !defined(PHI_IS_DESTRUCTIBLE) && !defined(PHI_SUPPORTS_IS_DESTRUCTIBLE)
 
-#    if PHI_COMPILER_IS(MSVC)
+#    if PHI_COMPILER_IS_ATLEAST(CLANG, 16, 0, 0) || PHI_COMPILER_IS(APPLECLANG) ||                 \
+            PHI_COMPILER_IS(EMCC) || PHI_COMPILER_IS(MSVC)
 #        define PHI_IS_DESTRUCTIBLE(type)      __is_destructible(type)
 #        define PHI_SUPPORTS_IS_DESTRUCTIBLE() 1
 #    else

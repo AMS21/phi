@@ -17,11 +17,11 @@
 DETAIL_PHI_BEGIN_NAMESPACE()
 
 template <typename TypeT>
-struct is_destructible : integral_constant<bool, PHI_IS_DESTRUCTIBLE(TypeT)>
+struct is_destructible : public integral_constant<bool, PHI_IS_DESTRUCTIBLE(TypeT)>
 {};
 
 template <typename TypeT>
-struct is_not_destructible : integral_constant<bool, !PHI_IS_DESTRUCTIBLE(TypeT)>
+struct is_not_destructible : public integral_constant<bool, !PHI_IS_DESTRUCTIBLE(TypeT)>
 {};
 
 #    if PHI_HAS_FEATURE_VARIABLE_TEMPLATE()
