@@ -80,4 +80,14 @@
 #    endif
 #endif
 
+// Checked narrow_cast
+#ifndef PHI_CONFIG_NARROW_CAST_CHECKED
+// Automatically enable checked narrow_cast for debug builds
+#    if defined(PHI_DEBUG)
+#        define PHI_CONFIG_NARROW_CAST_CHECKED 1
+#    else
+#        define PHI_CONFIG_NARROW_CAST_CHECKED 0
+#    endif
+#endif
+
 #endif // INCG_PHI_PHI_CONFIG_HPP

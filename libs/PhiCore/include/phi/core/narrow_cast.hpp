@@ -20,19 +20,26 @@
 
 DETAIL_PHI_BEGIN_NAMESPACE()
 
+// Determines if narrow_cast can be used in constexpr contexts
+#if PHI_HAS_FEATURE_EXTENDED_CONSTEXPR() || !PHI_CONFIG_NARROW_CAST_CHECKED
+#    define PHI_NARROW_CAST_CONSTEXPR() 1
+#else
+#    define PHI_NARROW_CAST_CONSTEXPR() 0
+#endif
+
 // Don't warn about float equal comparisons here since its a cast to ensure that your mixed float and int conversions are actually safe
 PHI_CLANG_AND_GCC_SUPPRESS_WARNING_PUSH()
 PHI_CLANG_AND_GCC_SUPPRESS_WARNING("-Wfloat-equal")
 
 template <typename TargetT, typename SourceT>
 PHI_NODISCARD
-#if PHI_HAS_FEATURE_EXTENDED_CONSTEXPR() || !defined(PHI_DEBUG)
+#if PHI_NARROW_CAST_CONSTEXPR()
         PHI_CONSTEXPR
 #endif
                 TargetT
                 narrow_cast(SourceT&& source) PHI_NOEXCEPT
 {
-#if defined(PHI_DEBUG)
+#if PHI_CONFIG_NARROW_CAST_CHECKED
     using unsafe_target_t = make_unsafe_t<phi::remove_reference_t<TargetT>>;
     using unsafe_source_t = make_unsafe_t<phi::remove_reference_t<SourceT>>;
 
@@ -41,10 +48,11 @@ PHI_NODISCARD
 
     const TargetT target = unsafe_cast<TargetT>(source);
 
-    PHI_ASSERT(unsafe_cast<unsafe_source_t>(target) == to_unsafe(source) &&
-                       (is_different_signedness || ((target < unsafe_cast<unsafe_target_t>(0)) ==
-                                                    (source < unsafe_cast<unsafe_source_t>(0)))),
-               "Invalid narrowing conversion. Source {}. Converted {}.", source, target);
+    PHI_RELEASE_ASSERT(
+            unsafe_cast<unsafe_source_t>(target) == to_unsafe(source) &&
+                    (is_different_signedness || ((target < unsafe_cast<unsafe_target_t>(0)) ==
+                                                 (source < unsafe_cast<unsafe_source_t>(0)))),
+            "Invalid narrowing conversion. Source {}. Converted {}.", source, target);
 
     return target;
 #else
