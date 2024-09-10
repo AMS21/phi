@@ -87,3 +87,4 @@ jobs:
           name: ${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.build_type }}
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
+          plugin: noop
