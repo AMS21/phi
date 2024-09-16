@@ -260,7 +260,7 @@ jobs:
           if_false: 'github-check'
 
       - name: Run languagetool with Reviewdog
-        uses: reviewdog/action-languagetool@v1.19.0
+        uses: reviewdog/action-languagetool@v1.20.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: ${{ steps.reporter.outputs.value }}
