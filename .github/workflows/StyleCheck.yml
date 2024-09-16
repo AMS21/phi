@@ -235,7 +235,7 @@ jobs:
           if_false: 'github-check'
 
       - name: Run remark-lint with reviewdog
-        uses: prologic/action-remark-lint@v5.14.0
+        uses: prologic/action-remark-lint@v5.15.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: ${{ steps.reporter.outputs.value }}
