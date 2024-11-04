@@ -44,7 +44,7 @@ jobs:
     if: github.actor != 'dependabot[bot]'
 
     env:
-      LLVM_VERSION: 18
+      LLVM_VERSION: 19
 
     steps:
       - name: Checkout
@@ -102,7 +102,7 @@ jobs:
     if: github.actor != 'dependabot[bot]'
 
     env:
-      LLVM_VERSION: 18
+      LLVM_VERSION: 19
 
     steps:
       - name: Checkout
@@ -268,7 +268,7 @@ jobs:
     if: false && github.actor != 'dependabot[bot]'
 
     env:
-      LLVM_VERSION: 18
+      LLVM_VERSION: 19
 
     steps:
       - name: Checkout
@@ -333,7 +333,7 @@ jobs:
 
     env:
       CODEQL_ACTION_EXTRA_OPTIONS: '{"database": {"run-queries": ["--off-heap-ram=0"]}}'
-      LLVM_VERSION: 18
+      LLVM_VERSION: 19
 
     permissions:
       actions: read
