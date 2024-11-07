@@ -1,19 +1,22 @@
 # Phi top level cmake file
 
 # Set minimum required cmake version
-if(${CMAKE_VERSION} VERSION_GREATER 3.26)
+# https://cmake.org/cmake/help/latest/command/cmake_minimum_required.html#policy-settings
+if (${CMAKE_VERSION} VERSION_GREATER 3.30)
+  # Since CMake 3.31 all versions before 3.10 are deprecated
+  cmake_minimum_required(VERSION 3.10)
+elseif(${CMAKE_VERSION} VERSION_GREATER 3.26)
   # Since CMake 3.27 all versions before 3.5 are deprecated
-  # https://cmake.org/cmake/help/latest/command/cmake_minimum_required.html#policy-settings
   cmake_minimum_required(VERSION 3.5)
 else()
   cmake_minimum_required(VERSION 2.8.12)
 endif()
 
 # Policy
-if(${CMAKE_VERSION} VERSION_LESS 3.30)
+if(${CMAKE_VERSION} VERSION_LESS 3.31)
   cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 else()
-  cmake_policy(VERSION 3.30)
+  cmake_policy(VERSION 3.31)
 endif()
 
 # Disable scanning for modules since we don't use them and they increase build times and break some
