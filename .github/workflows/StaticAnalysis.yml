@@ -166,7 +166,7 @@ jobs:
     if: github.actor != 'dependabot[bot]'
 
     env:
-      LLVM_VERSION: 18
+      LLVM_VERSION: 19
 
     steps:
       - name: Checkout
