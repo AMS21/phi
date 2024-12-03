@@ -285,7 +285,7 @@ jobs:
           if_false: 'github-check'
 
       - name: Run alex with reviewdog
-        uses: reviewdog/action-alex@v1.14
+        uses: reviewdog/action-alex@v1.15
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: ${{ steps.reporter.outputs.value }}
