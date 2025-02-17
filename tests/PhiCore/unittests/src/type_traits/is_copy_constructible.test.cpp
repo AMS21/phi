@@ -277,38 +277,38 @@ TEST_CASE("is_copy_constructible")
     test_is_not_copy_constructible<void * class_type::*&&>();
     test_is_not_copy_constructible<int * class_type::*&&>();
 #if PHI_COMPILER_IS_NOT(MSVC) || PHI_SUPPORTS_IS_CONSTRUCTIBLE()
-    test_is_copy_constructible<int class_type::*const>();
-    test_is_copy_constructible<float class_type::*const>();
-    test_is_copy_constructible<void * class_type::*const>();
+    test_is_copy_constructible<int class_type::* const>();
+    test_is_copy_constructible<float class_type::* const>();
+    test_is_copy_constructible<void * class_type::* const>();
 #endif
-    test_is_copy_constructible<int class_type::*const&>();
-    test_is_copy_constructible<float class_type::*const&>();
-    test_is_copy_constructible<void * class_type::*const&>();
-    test_is_not_copy_constructible<int class_type::*const&&>();
-    test_is_not_copy_constructible<float class_type::*const&&>();
-    test_is_not_copy_constructible<void * class_type::*const&&>();
+    test_is_copy_constructible<int class_type::* const&>();
+    test_is_copy_constructible<float class_type::* const&>();
+    test_is_copy_constructible<void * class_type::* const&>();
+    test_is_not_copy_constructible<int class_type::* const&&>();
+    test_is_not_copy_constructible<float class_type::* const&&>();
+    test_is_not_copy_constructible<void * class_type::* const&&>();
 #if PHI_COMPILER_IS_NOT(MSVC) || PHI_SUPPORTS_IS_CONSTRUCTIBLE()
-    test_is_copy_constructible<int class_type::*volatile>();
-    test_is_copy_constructible<float class_type::*volatile>();
-    test_is_copy_constructible<void * class_type::*volatile>();
+    test_is_copy_constructible<int class_type::* volatile>();
+    test_is_copy_constructible<float class_type::* volatile>();
+    test_is_copy_constructible<void * class_type::* volatile>();
 #endif
-    test_is_copy_constructible<int class_type::*volatile&>();
-    test_is_copy_constructible<float class_type::*volatile&>();
-    test_is_copy_constructible<void * class_type::*volatile&>();
-    test_is_not_copy_constructible<int class_type::*volatile&&>();
-    test_is_not_copy_constructible<float class_type::*volatile&&>();
-    test_is_not_copy_constructible<void * class_type::*volatile&&>();
+    test_is_copy_constructible<int class_type::* volatile&>();
+    test_is_copy_constructible<float class_type::* volatile&>();
+    test_is_copy_constructible<void * class_type::* volatile&>();
+    test_is_not_copy_constructible<int class_type::* volatile&&>();
+    test_is_not_copy_constructible<float class_type::* volatile&&>();
+    test_is_not_copy_constructible<void * class_type::* volatile&&>();
 #if PHI_COMPILER_IS_NOT(MSVC) || PHI_SUPPORTS_IS_CONSTRUCTIBLE()
-    test_is_copy_constructible<int class_type::*const volatile>();
-    test_is_copy_constructible<float class_type::*const volatile>();
-    test_is_copy_constructible<void * class_type::*const volatile>();
+    test_is_copy_constructible<int class_type::* const volatile>();
+    test_is_copy_constructible<float class_type::* const volatile>();
+    test_is_copy_constructible<void * class_type::* const volatile>();
 #endif
-    test_is_copy_constructible<int class_type::*const volatile&>();
-    test_is_copy_constructible<float class_type::*const volatile&>();
-    test_is_copy_constructible<void * class_type::*const volatile&>();
-    test_is_not_copy_constructible<int class_type::*const volatile&&>();
-    test_is_not_copy_constructible<float class_type::*const volatile&&>();
-    test_is_not_copy_constructible<void * class_type::*const volatile&&>();
+    test_is_copy_constructible<int class_type::* const volatile&>();
+    test_is_copy_constructible<float class_type::* const volatile&>();
+    test_is_copy_constructible<void * class_type::* const volatile&>();
+    test_is_not_copy_constructible<int class_type::* const volatile&&>();
+    test_is_not_copy_constructible<float class_type::* const volatile&&>();
+    test_is_not_copy_constructible<void * class_type::* const volatile&&>();
     test_is_not_copy_constructible<non_copyable>();
     test_is_copy_constructible<non_moveable>();
     test_is_not_copy_constructible<non_constructible>();

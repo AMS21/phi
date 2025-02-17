@@ -211,37 +211,39 @@ TEST_CASE("remove_reference")
     test_remove_reference_ref<float class_type::*&&, float class_type::*>();
     test_remove_reference_ref<void * class_type::*&&, void * class_type::*>();
     test_remove_reference_ref<int * class_type::*&&, int * class_type::*>();
-    test_remove_reference<int class_type::*const>();
-    test_remove_reference<float class_type::*const>();
-    test_remove_reference<void * class_type::*const>();
-    test_remove_reference_ref<int class_type::*const&, int class_type::*const>();
-    test_remove_reference_ref<float class_type::*const&, float class_type::*const>();
-    test_remove_reference_ref<void * class_type::*const&, void * class_type::*const>();
-    test_remove_reference_ref<int class_type::*const&&, int class_type::*const>();
-    test_remove_reference_ref<float class_type::*const&&, float class_type::*const>();
-    test_remove_reference_ref<void * class_type::*const&&, void * class_type::*const>();
-    test_remove_reference<int class_type::*volatile>();
-    test_remove_reference<float class_type::*volatile>();
-    test_remove_reference<void * class_type::*volatile>();
-    test_remove_reference_ref<int class_type::*volatile&, int class_type::*volatile>();
-    test_remove_reference_ref<float class_type::*volatile&, float class_type::*volatile>();
-    test_remove_reference_ref<void * class_type::*volatile&, void * class_type::*volatile>();
-    test_remove_reference_ref<int class_type::*volatile&&, int class_type::*volatile>();
-    test_remove_reference_ref<float class_type::*volatile&&, float class_type::*volatile>();
-    test_remove_reference_ref<void * class_type::*volatile&&, void * class_type::*volatile>();
-    test_remove_reference<int class_type::*const volatile>();
-    test_remove_reference<float class_type::*const volatile>();
-    test_remove_reference<void * class_type::*const volatile>();
-    test_remove_reference_ref<int class_type::*const volatile&, int class_type::*const volatile>();
-    test_remove_reference_ref<float class_type::*const volatile&,
-                              float class_type::*const volatile>();
-    test_remove_reference_ref<void * class_type::*const volatile&,
-                              void * class_type::*const volatile>();
-    test_remove_reference_ref<int class_type::*const volatile&&, int class_type::*const volatile>();
-    test_remove_reference_ref<float class_type::*const volatile&&,
-                              float class_type::*const volatile>();
-    test_remove_reference_ref<void * class_type::*const volatile&&,
-                              void * class_type::*const volatile>();
+    test_remove_reference<int class_type::* const>();
+    test_remove_reference<float class_type::* const>();
+    test_remove_reference<void * class_type::* const>();
+    test_remove_reference_ref<int class_type::* const&, int class_type::* const>();
+    test_remove_reference_ref<float class_type::* const&, float class_type::* const>();
+    test_remove_reference_ref<void * class_type::* const&, void * class_type::* const>();
+    test_remove_reference_ref<int class_type::* const&&, int class_type::* const>();
+    test_remove_reference_ref<float class_type::* const&&, float class_type::* const>();
+    test_remove_reference_ref<void * class_type::* const&&, void * class_type::* const>();
+    test_remove_reference<int class_type::* volatile>();
+    test_remove_reference<float class_type::* volatile>();
+    test_remove_reference<void * class_type::* volatile>();
+    test_remove_reference_ref<int class_type::* volatile&, int class_type::* volatile>();
+    test_remove_reference_ref<float class_type::* volatile&, float class_type::* volatile>();
+    test_remove_reference_ref<void * class_type::* volatile&, void * class_type::* volatile>();
+    test_remove_reference_ref<int class_type::* volatile&&, int class_type::* volatile>();
+    test_remove_reference_ref<float class_type::* volatile&&, float class_type::* volatile>();
+    test_remove_reference_ref<void * class_type::* volatile&&, void * class_type::* volatile>();
+    test_remove_reference<int class_type::* const volatile>();
+    test_remove_reference<float class_type::* const volatile>();
+    test_remove_reference<void * class_type::* const volatile>();
+    test_remove_reference_ref<int class_type::* const volatile&,
+                              int class_type::* const volatile>();
+    test_remove_reference_ref<float class_type::* const volatile&,
+                              float class_type::* const volatile>();
+    test_remove_reference_ref<void * class_type::* const volatile&,
+                              void * class_type::* const volatile>();
+    test_remove_reference_ref<int class_type::* const volatile&&,
+                              int class_type::* const volatile>();
+    test_remove_reference_ref<float class_type::* const volatile&&,
+                              float class_type::* const volatile>();
+    test_remove_reference_ref<void * class_type::* const volatile&&,
+                              void * class_type::* const volatile>();
     test_remove_reference<non_copyable>();
     test_remove_reference<non_moveable>();
     test_remove_reference<non_constructible>();

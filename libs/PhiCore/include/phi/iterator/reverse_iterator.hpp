@@ -188,8 +188,8 @@ PHI_CONSTEXPR reverse_iterator<IteratorT> operator+(
 
 template <typename LhsIteratorT, typename RhsIteratorT>
 PHI_CONSTEXPR auto operator-(const reverse_iterator<LhsIteratorT>& lhs,
-                             const reverse_iterator<RhsIteratorT>& rhs) -> decltype(rhs.base() -
-                                                                                    lhs.base())
+                             const reverse_iterator<RhsIteratorT>& rhs)
+        -> decltype(rhs.base() - lhs.base())
 {
     return rhs.base() - lhs.base();
 }

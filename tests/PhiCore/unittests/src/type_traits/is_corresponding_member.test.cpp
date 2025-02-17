@@ -6,8 +6,8 @@
 #include <type_traits>
 
 template <typename LhsT, typename RhsT, typename LhsMemberT, typename RhsMemberT>
-PHI_EXTENDED_CONSTEXPR void test_is_corresponding_member(LhsMemberT LhsT::*lhs,
-                                                         RhsMemberT RhsT::*rhs) noexcept
+PHI_EXTENDED_CONSTEXPR void test_is_corresponding_member(LhsMemberT LhsT::* lhs,
+                                                         RhsMemberT RhsT::* rhs) noexcept
 {
 #if PHI_HAS_WORKING_IS_CORRESPONDING_MEMBER()
     STATIC_REQUIRE(phi::is_corresponding_member(lhs, rhs));
@@ -22,8 +22,8 @@ PHI_EXTENDED_CONSTEXPR void test_is_corresponding_member(LhsMemberT LhsT::*lhs,
 }
 
 template <typename LhsT, typename RhsT, typename LhsMemberT, typename RhsMemberT>
-PHI_EXTENDED_CONSTEXPR void test_is_not_corresponding_member(LhsMemberT LhsT::*lhs,
-                                                             RhsMemberT RhsT::*rhs) noexcept
+PHI_EXTENDED_CONSTEXPR void test_is_not_corresponding_member(LhsMemberT LhsT::* lhs,
+                                                             RhsMemberT RhsT::* rhs) noexcept
 {
 #if PHI_HAS_WORKING_IS_CORRESPONDING_MEMBER()
     STATIC_REQUIRE_FALSE(phi::is_corresponding_member(lhs, rhs));
