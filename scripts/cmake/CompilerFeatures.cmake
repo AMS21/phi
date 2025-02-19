@@ -35,8 +35,13 @@ phi_check_cxx_source_compiles("int main() { static_assert(char(-1) < char(0), \"
 phi_check_cxx_source_compiles("int main() { static_assert(wchar_t(-1) < wchar_t(0), \"\"); }"
                               PHI_TYPE_SYSTEM_WCHAR_T_SIGNED)
 
+# Extended floating point types
+phi_check_cxx_source_compiles("int main() { __float128 f; }" PHI_HAS_EXTENSION_FLOAT128)
+
 # configure files
 configure_file("scripts/cmake/configure/libraries.hpp.in"
                "${PHI_GENERATED_FILES_DIR}/phi/generated/compiler_support/libraries.hpp")
 configure_file("scripts/cmake/configure/type_system.hpp.in"
                "${PHI_GENERATED_FILES_DIR}/phi/generated/compiler_support/type_system.hpp")
+configure_file("scripts/cmake/configure/extensions.hpp.in"
+               "${PHI_GENERATED_FILES_DIR}/phi/generated/compiler_support/extensions.hpp")

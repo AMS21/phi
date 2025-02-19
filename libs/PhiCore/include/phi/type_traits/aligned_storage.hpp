@@ -8,6 +8,7 @@
 #endif
 
 #include "phi/compiler_support/constexpr.hpp"
+#include "phi/compiler_support/extensions/float128.hpp"
 #include "phi/core/size_t.hpp"
 #include "phi/type_traits/alignment_of.hpp"
 #include "phi/type_traits/conditional.hpp"
@@ -55,9 +56,19 @@ namespace detail
                                                                     type_list<
                                                                             align_type<
                                                                                     struct_double4>,
-                                                                            type_list<align_type<
-                                                                                              int*>,
-                                                                                      nat>>>>>>>>>>;
+                                                                            type_list<
+                                                                                    align_type<
+                                                                                            int*>,
+#if PHI_HAS_EXTENSION_FLOAT128()
+                                                                                    type_list<
+                                                                                            align_type<
+                                                                                                    PHI_FLOAT128>,
+#endif
+                                                                                            nat>>>>>>>>>>
+#if PHI_HAS_EXTENSION_FLOAT128()
+            >
+#endif
+            ;
 
     template <size_t Align>
     struct alignas(Align) fallback_overaligned
