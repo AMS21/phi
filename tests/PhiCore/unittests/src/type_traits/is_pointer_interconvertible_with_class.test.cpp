@@ -7,7 +7,7 @@
 
 template <typename TypeT, typename MemberT>
 PHI_EXTENDED_CONSTEXPR void test_is_pointer_interconvertible_with_class(
-        MemberT TypeT::*member_pointer)
+        MemberT TypeT::* member_pointer)
 {
     PHI_UNUSED_PARAMETER(member_pointer);
 #if PHI_HAS_WORKING_IS_POINTER_INTERCONVERTIBLE_WITH_CLASS()
@@ -21,7 +21,7 @@ PHI_EXTENDED_CONSTEXPR void test_is_pointer_interconvertible_with_class(
 
 template <typename TypeT, typename MemberT>
 PHI_EXTENDED_CONSTEXPR void test_is_not_pointer_interconvertible_with_class(
-        MemberT TypeT::*member_pointer)
+        MemberT TypeT::* member_pointer)
 {
     PHI_UNUSED_PARAMETER(member_pointer);
 #if PHI_HAS_WORKING_IS_POINTER_INTERCONVERTIBLE_WITH_CLASS()

@@ -98,8 +98,8 @@ PHI_CONSTEXPR auto to_address(TypeT* pointer) PHI_NOEXCEPT
 }
 
 template <typename PointerT>
-PHI_CONSTEXPR auto to_address(const PointerT& pointer)
-        PHI_NOEXCEPT -> decltype(detail::to_address_impl(pointer))
+PHI_CONSTEXPR auto to_address(const PointerT& pointer) PHI_NOEXCEPT
+        -> decltype(detail::to_address_impl(pointer))
 {
     return detail::to_address_impl(pointer);
 }

@@ -51,8 +51,8 @@ DETAIL_PHI_BEGIN_NAMESPACE()
 namespace detail
 {
     template <typename TypeT>
-    auto test_returnable(int) -> decltype(static_cast<void>(static_cast<TypeT (*)()>(nullptr)),
-                                          true_type{});
+    auto test_returnable(int)
+            -> decltype(static_cast<void>(static_cast<TypeT (*)()>(nullptr)), true_type{});
 
     template <typename>
     auto test_returnable(...) -> false_type;

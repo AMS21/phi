@@ -1024,7 +1024,7 @@ TEST_CASE("PostIncrementable")
 TEST_CASE("PostIncrementable constexpr")
 {
     using StrongInt = phi::named_type<int, struct StrongIntTag, phi::post_incrementable>;
-    EXT_STATIC_REQUIRE((StrongInt { 1 } ++).unsafe() == 1);
+    EXT_STATIC_REQUIRE((StrongInt{1} ++).unsafe() == 1);
 }
 
 TEST_CASE("PreDecrementable")
@@ -1054,5 +1054,5 @@ TEST_CASE("PostDecrementable")
 TEST_CASE("PostDecrementable constexpr")
 {
     using StrongInt = phi::named_type<int, struct StrongIntTag, phi::post_decrementable>;
-    EXT_STATIC_REQUIRE((StrongInt { 1 } --).unsafe() == 1);
+    EXT_STATIC_REQUIRE((StrongInt{1} --).unsafe() == 1);
 }

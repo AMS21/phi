@@ -33,8 +33,8 @@ TEST_CASE("type_traits")
 
     // add_member_const
     CHECK_SAME_TYPE(typename phi::add_member_const<void (class_type::*)()>::type,
-                    void(class_type::*const)());
-    CHECK_SAME_TYPE(phi::add_member_const_t<void (class_type::*)()>, void(class_type::*const)());
+                    void(class_type::* const)());
+    CHECK_SAME_TYPE(phi::add_member_const_t<void (class_type::*)()>, void(class_type::* const)());
 
     // add_pointer
     CHECK_SAME_TYPE(typename phi::add_pointer<int>::type, int*);

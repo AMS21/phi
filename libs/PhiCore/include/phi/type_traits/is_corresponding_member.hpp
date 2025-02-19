@@ -19,8 +19,8 @@
 DETAIL_PHI_BEGIN_NAMESPACE()
 
 template <typename LhsT, typename RhsT, typename LhsMemberT, typename RhsMemberT>
-PHI_NODISCARD PHI_CONSTEXPR bool is_corresponding_member(LhsMemberT LhsT::*lhs,
-                                                         RhsMemberT RhsT::*rhs) PHI_NOEXCEPT
+PHI_NODISCARD PHI_CONSTEXPR bool is_corresponding_member(LhsMemberT LhsT::* lhs,
+                                                         RhsMemberT RhsT::* rhs) PHI_NOEXCEPT
 {
     return PHI_IS_CORRESPONDING_MEMBER(lhs, rhs);
 }
@@ -35,8 +35,8 @@ PHI_NODISCARD PHI_CONSTEXPR bool is_corresponding_member(LhsMemberT LhsT::*lhs,
 DETAIL_PHI_BEGIN_NAMESPACE()
 
 template <typename LhsT, typename RhsT, typename LhsMemberT, typename RhsMemberT>
-PHI_NODISCARD PHI_CONSTEXPR bool is_corresponding_member(LhsMemberT LhsT::*lhs,
-                                                         RhsMemberT RhsT::*rhs) PHI_NOEXCEPT
+PHI_NODISCARD PHI_CONSTEXPR bool is_corresponding_member(LhsMemberT LhsT::* lhs,
+                                                         RhsMemberT RhsT::* rhs) PHI_NOEXCEPT
 {
     static_assert(false_t<LhsT>::value, "phi::is_corresponding_member requires compiler support");
     PHI_UNUSED_PARAMETER(lhs);

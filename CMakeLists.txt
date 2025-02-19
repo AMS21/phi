@@ -2,7 +2,7 @@
 
 # Set minimum required cmake version
 # https://cmake.org/cmake/help/latest/command/cmake_minimum_required.html#policy-settings
-if (${CMAKE_VERSION} VERSION_GREATER 3.30)
+if(${CMAKE_VERSION} VERSION_GREATER 3.30)
   # Since CMake 3.31 all versions before 3.10 are deprecated
   cmake_minimum_required(VERSION 3.10)
 elseif(${CMAKE_VERSION} VERSION_GREATER 3.26)

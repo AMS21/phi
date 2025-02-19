@@ -22,7 +22,7 @@
 #    include "phi/core/size_t.hpp"
 
 #    define offsetof(type, member)                                                                 \
-        ((::phi::size_t) & reinterpret_cast<char const volatile&>((((type*)0)->member)))
+        ((::phi::size_t)&reinterpret_cast<char const volatile&>((((type*)0)->member)))
 
 #endif
 

@@ -124,9 +124,10 @@ namespace detail
     template <typename FunctionPointerT, typename Arg0T, typename... ArgsT,
               typename = enable_if_bullet3<FunctionPointerT, Arg0T>>
     inline PHI_CONSTEXPR auto invoke_impl(FunctionPointerT&& func, Arg0T&& arg0, ArgsT&&... args)
-            PHI_NOEXCEPT_EXPR(noexcept(((*static_cast<Arg0T&&>(arg0)).*func)(static_cast<ArgsT&&>(
-                    args)...))) -> decltype(((*static_cast<Arg0T&&>(arg0)).*
-                                             func)(static_cast<ArgsT&&>(args)...))
+            PHI_NOEXCEPT_EXPR(noexcept(((*static_cast<Arg0T&&>(arg0)).*
+                                        func)(static_cast<ArgsT&&>(args)...)))
+                    -> decltype(((*static_cast<Arg0T&&>(arg0)).*
+                                 func)(static_cast<ArgsT&&>(args)...))
     {
         return ((*static_cast<Arg0T&&>(arg0)).*func)(static_cast<ArgsT&&>(args)...);
     }
@@ -136,8 +137,8 @@ namespace detail
     template <typename FunctionPointerT, typename Arg0T,
               typename = enable_if_bullet4<FunctionPointerT, Arg0T>>
     inline PHI_CONSTEXPR auto invoke_impl(FunctionPointerT&& func, Arg0T&& arg0)
-            PHI_NOEXCEPT_EXPR(noexcept(static_cast<Arg0T&&>(arg0).*
-                                       func)) -> decltype(static_cast<Arg0T&&>(arg0).*func)
+            PHI_NOEXCEPT_EXPR(noexcept(static_cast<Arg0T&&>(arg0).*func))
+                    -> decltype(static_cast<Arg0T&&>(arg0).*func)
     {
         return static_cast<Arg0T&&>(arg0).*func;
     }
@@ -153,8 +154,8 @@ namespace detail
     template <typename FunctionPointerT, typename Arg0T,
               typename = enable_if_bullet6<FunctionPointerT, Arg0T>>
     inline PHI_CONSTEXPR auto invoke_impl(FunctionPointerT&& func, Arg0T&& arg0)
-            PHI_NOEXCEPT_EXPR(noexcept((*static_cast<Arg0T&&>(arg0)).*
-                                       func)) -> decltype((*static_cast<Arg0T&&>(arg0)).*func)
+            PHI_NOEXCEPT_EXPR(noexcept((*static_cast<Arg0T&&>(arg0)).*func))
+                    -> decltype((*static_cast<Arg0T&&>(arg0)).*func)
     {
         return (*static_cast<Arg0T&&>(arg0)).*func;
     }
@@ -180,8 +181,8 @@ namespace detail
     struct invokable_r_impl
     {
         template <typename XFunctionPointerT, typename... XArgsT>
-        static auto try_call(int) -> decltype(invoke_impl(declval<XFunctionPointerT>(),
-                                                          declval<XArgsT>()...));
+        static auto try_call(int)
+                -> decltype(invoke_impl(declval<XFunctionPointerT>(), declval<XArgsT>()...));
 
         template <typename XFunctionPointerT, typename... XArgsT>
         static nat try_call(...);
