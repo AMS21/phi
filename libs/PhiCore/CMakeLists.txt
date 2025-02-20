@@ -45,6 +45,7 @@ file(
   "include/phi/algorithm/swap.hpp"
   # compiler_support/bugs
   "include/phi/compiler_support/bugs/gcc_102305.hpp"
+  "include/phi/compiler_support/bugs/msvc_10741077.hpp"
   # compiler_support/extensions
   "include/phi/compiler_support/extensions/pragma_once.hpp"
   "include/phi/compiler_support/extensions/zero_size_array.hpp"
