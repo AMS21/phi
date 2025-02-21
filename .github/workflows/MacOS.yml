@@ -49,21 +49,12 @@ jobs:
       matrix:
         # Pair of os version and XCode version
         cfg:
-          - { os: macos-11, compiler_version: "11.7"   }
-          - { os: macos-11, compiler_version: "12.4"   }
-          - { os: macos-11, compiler_version: "12.5.1" }
-          - { os: macos-11, compiler_version: "13.0"   }
-          - { os: macos-11, compiler_version: "13.1"   }
-          - { os: macos-11, compiler_version: "13.2.1" }
-          - { os: macos-12, compiler_version: "13.3.1" }
-          - { os: macos-12, compiler_version: "13.4.1" }
-          - { os: macos-12, compiler_version: "14.0.1" }
-          - { os: macos-12, compiler_version: "14.1"   }
-          - { os: macos-12, compiler_version: "14.2"   }
-          - { os: macos-13, compiler_version: "14.3"   }
-          - { os: macos-13, compiler_version: "15.0.1" }
-          - { os: macos-13, compiler_version: "15.1"   }
-          - { os: macos-13, compiler_version: "15.2"   }
+          - { os: macos-13, compiler_version: "14.1"   }
+          - { os: macos-13, compiler_version: "14.2"   }
+          - { os: macos-13, compiler_version: "14.3.1" }
+          - { os: macos-14, compiler_version: "15.0.1" }
+          - { os: macos-14, compiler_version: "15.1"   }
+          - { os: macos-14, compiler_version: "15.2"   }
           - { os: macos-14, compiler_version: "15.3"   }
           - { os: macos-14, compiler_version: "15.4"   }
           - { os: macos-14, compiler_version: "16.1"   }
@@ -104,7 +95,7 @@ jobs:
         run: ctest . -C ${{ matrix.build_type }}
 
   gcc:
-    runs-on: macos-12
+    runs-on: ${{ matrix.cfg.os }}
 
     # Don't run on dependabot PRs
     if: github.actor != 'dependabot[bot]'
@@ -113,12 +104,13 @@ jobs:
       fail-fast: false
 
       matrix:
-        compiler_version:
-          - "10"
-          - "11"
-          - "12"
-          - "13"
-          - "14"
+        # Pair of os version and gcc version
+        cfg:
+          - { os: macos-13, compiler_version: "10" }
+          - { os: macos-14, compiler_version: "11" }
+          - { os: macos-14, compiler_version: "12" }
+          - { os: macos-14, compiler_version: "13" }
+          - { os: macos-14, compiler_version: "14" }
 
         build_type:
           - "Debug"
@@ -133,9 +125,9 @@ jobs:
 
       - name: Install gcc
         run: |
-          brew install gcc@${{ matrix.compiler_version }} ninja
-          echo "CC=gcc-${{ matrix.compiler_version }}" >> $GITHUB_ENV
-          echo "CXX=g++-${{ matrix.compiler_version }}" >> $GITHUB_ENV
+          brew install gcc@${{ matrix.cfg.compiler_version }} ninja
+          echo "CC=gcc-${{ matrix.cfg.compiler_version }}" >> $GITHUB_ENV
+          echo "CXX=g++-${{ matrix.cfg.compiler_version }}" >> $GITHUB_ENV
 
       - name: Configure build directory
         run: |

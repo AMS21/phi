@@ -8,17 +8,13 @@
 #endif
 
 #include "phi/compiler_support/compiler.hpp"
-#include "phi/compiler_support/platform.hpp"
+#include "phi/compiler_support/extensions/float128.hpp"
 
 DETAIL_PHI_BEGIN_NAMESPACE()
 
 #if PHI_COMPILER_IS(MSVC)
 
 using max_align_t = double;
-
-#elif PHI_PLATFORM_IS(APPLE)
-
-using max_align_t = long double;
 
 #else
 
@@ -27,6 +23,12 @@ using max_align_t = struct
 {
     long long   max_align_nonce1 alignas(alignof(long long));
     long double max_align_nonce2 alignas(alignof(long double));
+
+#    if PHI_HAS_EXTENSION_FLOAT128()
+
+    PHI_FLOAT128 max_align_nonce3 alignas(alignof(PHI_FLOAT128));
+
+#    endif
 };
 
 #endif
