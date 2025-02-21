@@ -2,6 +2,7 @@
 
 #include "test_types.hpp"
 #include "type_traits_helper.hpp"
+#include <phi/compiler_support/bugs/msvc_10741077.hpp>
 #include <phi/compiler_support/char8_t.hpp>
 #include <phi/compiler_support/compiler.hpp>
 #include <phi/core/boolean.hpp>
@@ -81,9 +82,9 @@ struct A
 
 TEST_CASE("is_destructible")
 {
-#if PHI_COMPILER_IS_BELOW(MSVC, 19, 20, 0) && !PHI_SUPPORTS_IS_DESTRUCTIBLE()
+#if PHI_HAS_BUG_MSVC_10741077() && !PHI_SUPPORTS_IS_DESTRUCTIBLE()
 
-    // NOTE: Before MSVC-19 it crashes the compiler when compiling the no intrinsic version
+    // NOTE: Skip MSVC versions which crash when compiling the no intrinsic version
     SKIP_CHECK();
 
 #else

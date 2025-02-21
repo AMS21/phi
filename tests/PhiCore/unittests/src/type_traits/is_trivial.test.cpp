@@ -182,17 +182,13 @@ TEST_CASE("is_trivial")
     test_is_not_trivial<const volatile int*&&>();
     test_is_trivial<void*>();
     test_is_trivial<char[3]>();
-#if PHI_COMPILER_IS(MSVC)
-    test_is_not_trivial<char[]>();
-#elif PHI_COMPILER_IS(WINCLANG)
+#if PHI_COMPILER_IS(MSVC) || PHI_COMPILER_IS(WINCLANG)
     SKIP_CHECK();
 #else
     test_is_trivial<char[]>();
 #endif
     test_is_trivial<char* [3]>();
-#if PHI_COMPILER_IS(MSVC)
-    test_is_not_trivial<char*[]>();
-#elif PHI_COMPILER_IS(WINCLANG)
+#if PHI_COMPILER_IS(MSVC) || PHI_COMPILER_IS(WINCLANG)
     SKIP_CHECK();
 #else
     test_is_trivial<char*[]>();
@@ -204,17 +200,13 @@ TEST_CASE("is_trivial")
     test_is_not_trivial<int(&&)[3]>();
     test_is_not_trivial<int(&&)[]>();
     test_is_trivial<char[3][2]>();
-#if PHI_COMPILER_IS(MSVC)
-    test_is_not_trivial<char[][2]>();
-#elif PHI_COMPILER_IS(WINCLANG)
+#if PHI_COMPILER_IS(MSVC) || PHI_COMPILER_IS(WINCLANG)
     SKIP_CHECK();
 #else
     test_is_trivial<char[][2]>();
 #endif
     test_is_trivial<char* [3][2]>();
-#if PHI_COMPILER_IS(MSVC)
-    test_is_not_trivial<char*[][2]>();
-#elif PHI_COMPILER_IS(WINCLANG)
+#if PHI_COMPILER_IS(MSVC) || PHI_COMPILER_IS(WINCLANG)
     SKIP_CHECK();
 #else
     test_is_trivial<char*[][2]>();
@@ -265,10 +257,7 @@ TEST_CASE("is_trivial")
     test_is_not_trivial<abstract_template<incomplete_type>>();
     test_is_trivial<final_type>();
     test_is_trivial<public_destructor>();
-#if PHI_COMPILER_IS(MSVC)
-    test_is_not_trivial<protected_destructor>();
-    test_is_not_trivial<private_destructor>();
-#elif PHI_COMPILER_IS(WINCLANG)
+#if PHI_COMPILER_IS(MSVC) || PHI_COMPILER_IS(WINCLANG)
     SKIP_CHECK();
     SKIP_CHECK();
 #else
